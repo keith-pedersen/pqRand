@@ -9,6 +9,7 @@
 //   version 0.2 (Apr 2017)
 // By Keith Pedersen (Keith.David.Pedersen @ gmail.com)
 //   https://github.com/keith-pedersen/pqRand
+//   https://arxiv.org/abs/1704.07949
 //
 // Special thanks to Andrew Webster, Zack Sullivan and Sebastiano Vigna.
 //
@@ -48,7 +49,7 @@
 //    https://github.com/keith-pedersen/pqRand
 //
 // Based upon work presented in:
-//    "Conditioning your quantile function" <arXiv:1704.xxxxx>
+//    "Conditioning your quantile function", https://arxiv.org/abs/1704.07949
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -130,11 +131,15 @@ namespace pqr
 		public:
 			// Force an initial seed, using the version of Seed taking the 
 			// supplied arguments. This is an example of "perfect forwarding".
-			template <typename... Args>
-			uPRNG_64_Seeder(Args&&... args)
-			{
-				Seed(std::forward<Args>(args)...);
-			}
+			// Doesn't work, creates nasty side effects
+			//~ template <typename... Args>
+			//~ uPRNG_64_Seeder(Args&&... args)
+			//~ {
+				//~ Seed(std::forward<Args>(args)...);
+			//~ }
+			uPRNG_64_Seeder() {Seed();}
+			uPRNG_64_Seeder(std::string const& fileName) {Seed(fileName);}
+			uPRNG_64_Seeder(std::istream& stream) {Seed(stream);}
 		 
 			// The format of the seed file/stream mimics std::mt19937:
 			// A single line, with each word of seed space separated, 
@@ -201,14 +206,6 @@ namespace pqr
 			std::array<uint64_t, state_size> state; 
 			uint64_t p;
 			
-			// Jump forward by 2**512 calls to the generator
-			// WARNING: This seems like much deeper magic than the generator itself,
-			// so I cannot guarantee that this actually works
-			// (e.g. there is no dieharder test for the size of generator jumps)
-			// but we can show that Jump() is commutative 
-			// ((operator()(), Jump(); operator()()) = (Jump(); operator()(), operator()()))
-			void Jump();
-			
 		public:
 			// Initialize p, but not state, placing the generator in a 
 			// valid, but undefined state (unless the state happens to be all zeros, 
@@ -217,6 +214,14 @@ namespace pqr
 			
 			uint64_t operator()(); // generate the next number
 			
+			// Jump forward by 2**512 calls to the generator
+			// WARNING: This seems like much deeper magic than the generator itself,
+			// so I cannot guarantee that this actually works
+			// (e.g. there is no dieharder test for the size of generator jumps)
+			// but we can show that Jump() is commutative 
+			// ((operator()(), Jump(); operator()()) = (Jump(); operator()(), operator()()))
+			void Jump();
+						
 			// Jump forward by (nTimes * 2**512) calls to the generator,
 			// without actually calling the generator that many times.
 			// Useful for parallel threads (each with its own generator)
@@ -334,11 +339,9 @@ namespace pqr
 		public:
 			// Tell the base class not to seed, because we need to call our 
 			// newly redefined virtual Seed() for the intiial seed.
-			template <typename... Args>
-			pqRand_engine(Args&&... args):uPRNG_64_Seeder(false)
-			{
-				Seed(std::forward<Args>(args)...);
-			}			 
+			pqRand_engine():uPRNG_64_Seeder(false) {Seed();}
+			pqRand_engine(std::string const& fileName):uPRNG_64_Seeder(false)  {Seed(fileName);}
+			pqRand_engine(std::istream& stream):uPRNG_64_Seeder(false)  {Seed(stream);}	 
 			
 			// Redefine the base class virtuals, because we need to 
 			// store/refresh the state of the bitCache when we write/seed
