@@ -130,7 +130,7 @@ namespace pqr
 		public:
 			uPRNG_64_Seeder():gen64_t() {/*nothing to do*/}
 			
-			// The format of the seed file/stream mimics std::mt19937:
+			// The format of the seed file/string mimics std::mt19937:
 			// A single line, with each word of seed space separated, 
 			// terminating with the seed_size itself
 			//   s_1 s_2 s_3 ... s_(state_size) state_size

@@ -54,7 +54,7 @@ SEEDING
 	You can supply your own seed (as a file or std::string), 
 	but it must be in the right format.
 
-	The format of the seed file/stream mimics std::mt19937:
+	The format of the seed file/string mimics std::mt19937:
 	A single line, with each word of seed (64 bits) space separated, 
 	terminating with the seed_size itself
 		s_1 s_2 s_3 ... s_(state_size) state_size
