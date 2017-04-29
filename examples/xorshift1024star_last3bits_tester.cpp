@@ -7,6 +7,7 @@ using namespace pqr;
 int main()
 {
 	uPRNG_64_Seeder<xorshift1024_star> gen;
+	gen.Seed();
 	
 	// Continously output random numbers to std::out, for use like ... 
 	// 	./xorshift1024star_last3bits_tester.x | dieharder -g 200 -a

@@ -11,28 +11,24 @@
 //   https://github.com/keith-pedersen/pqRand
 //   https://arxiv.org/abs/1704.07949
 //
-// Special thanks to Andrew Webster, Zack Sullivan and Sebastiano Vigna.
+// Special thanks to Zack Sullivan, Andrew Webster and Sebastiano Vigna.
 //
-// This package is designed to improve sampling from the 
-// TAILS of the following distributions:
+// This package is designed to improve sampling the following distributions:
 //	   * normal
 //    * log-normal
 //    * exponential
 //    * weibull
 //    * pareto
-//
-// This package uses C++11. Hopefully by now (2017), it is supported at your site.
-// My apologies if it is not, but there are SO many reasons to use it.
-//
+// 
 // The principle theory behind this package is presented in the paper
-// "Conditioning your quantile function," which is cited in the <copyright notice>.
+// "Conditioning your quantile function," https://arxiv.org/abs/1704.07949.
 // Distributed with the package are a selection of distributions which possess 
 // an analytic quantile function (or, as is the case for the normal and log-normal, 
 // which can be drawn using a quantile function of an underlying distribution). 
-// The main methods implemented here are the quantile flip-flop and
-// a "quasiuniform sample" of the semi-inclusive unit interval.
-// For quality control, the user is forced to use the supplied PRNG 
-// to generate uniform, unsigned integers.
+// The main methods implemented here are the "quasiuniform sample" of 
+// the semi-inclusive unit interval. For quality control, 
+// the user is forced to use the supplied PRNG to generate uniform, 
+// unsigned integers.
 //
 // Development record
 // =====================================================================
@@ -40,6 +36,7 @@
 //		known as rTailor
 // version 0.2 ===> 25 Apr 17 
 //		changed name to pqRand, pushed paper to arXiv, pushed code to GitHub
+// =====================================================================
 //
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 // BEGIN <copyright notice>
@@ -80,67 +77,59 @@
 //
 // END <copyright notice>
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-
-// Features to add:
+//
+// Coming in version 0.3:
+//   * python API via Cython
+//
+// Features to consider:
 //   * If a regular sample of U produces numbers with weight == 1., 
 //     a sample from U that samples from the tail (u -> 0)
 //     given a supplied weight << 1.
-
+//
 // Bugs to fix:
 
 #ifndef PQ_RAND
 #define PQ_RAND
 
 #include <limits> // numeric_limits
-#include <cmath> // exp
-#include <random> // random_device / mt19937_64
-#include <sstream>
+#include <string>
 #include <array>
+#include <random> // random_device / mt19937_64
 
 namespace pqr
 {
 	// uPRNG_64_Seeder is a template class for seeding a PRNG of uint64_t.
-	// It forces an initial seed AS LARGE as the state of the PRNG
+	// DANGER: IT DOES NOT FORCE AN INITIAL SEED OF THE PRNG;
+	// you must make an explicit call to one of the seeding functions.
+	// These seeding functions fill THE ENTIRE state of the PRNG
 	// (i.e. you can't seed 20 kB of the Mersenne twister with a 32 bit number).
-	// The default seed method (no arguments) seeds from std::random_device 
+	// The default Seed() seeds by repeatedly calling std::random_device
 	// (which internally uses /dev/urandom on many linux distros).
 	// After a default seeding, one can write the generator's state to a file
-	// (or a std::ostream) to allow future re-seeding from a known state.
+	// (or a std::string) to allow future re-seeding from a known state.
 	//
 	// One can also supply a custom seed (filled in some arbitrary way)
-	// by supplying a fileName/istream in the correct format
-	// (see the comments above Seed/WriteSeed).
+	// by supplying a fileName (Seed_FromFile()) or a seed string(Seed_FromString())
+	// in the correct format (see the comments above Seed/WriteSeed).
 	// WARNING: The ONLY check made on the actual seed words themselves is
-	// that they can actually be parsed as uint64_t, so take care 
-	// NOT to supply a bunch of zeroes.
+	// that they can actually be parsed as uint64_t,
+	// so take care  NOT to supply a bunch of zeroes.
 	template<class gen64_t>
 	class uPRNG_64_Seeder : public gen64_t
 	{
 		static_assert(gen64_t::word_size == 64, "uPRNG_64_Seeder requires a 64-bit generator");
 		
 		protected:
-			// This ctor skips the initial seed at base class level.
-			// It is used by a derived class that needs to access its own 
-			// virtual Seed(istream) during its initial seeding,
-			// because you can't call a virtual function in a base-class ctor.
-			// This is a kludge, but I don't know a better way
-			// (at least not one which respects DRY [don't repeat yourself];
-			//  Why do I want to keep my code DRY? It keeps the bugs away).
-			explicit uPRNG_64_Seeder(bool dummy) {}
+			// If a derived class changes the format of the Seed stream
+			// (e.g. because it adds pieces to the internal state),
+			// these virtual istream/ostream methods need redefinition,
+			// as these are the worker functions for the Seed/State functions.
+			virtual void Seed_FromStream(std::istream& stream);
+			virtual void WriteState_ToStream(std::ostream& stream);
 					
 		public:
-			// Force an initial seed, using the version of Seed taking the 
-			// supplied arguments. This is an example of "perfect forwarding".
-			// Doesn't work, creates nasty side effects
-			//~ template <typename... Args>
-			//~ uPRNG_64_Seeder(Args&&... args)
-			//~ {
-				//~ Seed(std::forward<Args>(args)...);
-			//~ }
-			uPRNG_64_Seeder() {Seed();}
-			uPRNG_64_Seeder(std::string const& fileName) {Seed(fileName);}
-			uPRNG_64_Seeder(std::istream& stream) {Seed(stream);}
-		 
+			uPRNG_64_Seeder():gen64_t() {/*nothing to do*/}
+			
 			// The format of the seed file/stream mimics std::mt19937:
 			// A single line, with each word of seed space separated, 
 			// terminating with the seed_size itself
@@ -151,21 +140,11 @@ namespace pqr
 			// ( (# of words) == seed_size),  otherwise an exception is thrown.
 			
 			void Seed(); // seed from random_device
-			void Seed(std::string const& fileName); // seed from a file
-			virtual void Seed(std::istream& stream); // seed from an input-stream
+			void Seed_FromFile(std::string const& fileName); // seed from a file
+			void Seed_FromString(std::string const& seed); // seed from a strings
 			
 			void WriteState(std::string const& fileName); // write state to seed file
-			virtual void WriteState(std::ostream& stream); // write state to a stream
-			
-			// If a derived class changes the format of the Seed stream
-			// (e.g. because it adds pieces to the internal state),
-			// only the virtual istream/ostream methods need redefinition. 
-			// The non-virtual methods are DRY -- they use the 
-			// virtual methods to do the actual seeding.
-			// Note, however, that if the virtual methods are redefined, 
-			// the non-virtual members must be  explicitly exposed by 
-			// the derived class in order for ADL (argument dependent lookup)
-			// to find them (see the "using" statements in pqRand_engine).
+			std::string GetState(); // return a string containing the state
 	};
 	
 	/////////////////////////////////////////////////////////////////////
@@ -217,8 +196,8 @@ namespace pqr
 			// Jump forward by 2**512 calls to the generator
 			// WARNING: This seems like much deeper magic than the generator itself,
 			// so I cannot guarantee that this actually works
-			// (e.g. there is no dieharder test for the size of generator jumps)
-			// but we can show that Jump() is commutative 
+			// (e.g. there is no dieharder test for the size of generator jumps).
+			// We can, however, show that Jump() is commutative 
 			// ((operator()(), Jump(); operator()()) = (Jump(); operator()(), operator()()))
 			void Jump();
 						
@@ -228,7 +207,7 @@ namespace pqr
 			// so that there is no overlap in their sequences.			
 			void Jump(size_t nTimes);
 			
-			// Declare these functions as friends
+			// Declare stream operators as friends, so they can access the state
 			
 			// Output the state of the generator to a stream, mimicking the 
 			//	stream format of std::mt19937_64 ...
@@ -253,23 +232,24 @@ namespace pqr
 	/////////////////////////////////////////////////////////////////////
 			
 	// mt19937 has good statistics, but its state is too large for massive multi-parallelism
-	// Nonetheless, it is fully compatible with this package.
+	// Nonetheless, it is fully compatible with pqRand
+	// (though not necessarily with pqRandExample.cpp, which uses Jump()).
 	typedef xorshift1024_star PRNG_t;
-	//~ typedef std::mt19937_64 PRNG_t; 
+	//~ typedef std::mt19937_64 PRNG_t;
 	
 	// The authors of pqRand have carefully chosen a PRNG with a 
 	// sufficiently large state (but not too large), 
 	// excellent uniformity properties, rigorously tested by others and 
 	// vetted by the authors using the dieharder battery of tests.
 	// The motivation of the pqRand package essentially requires that
-	// freedom in chosing a PRNG be removed from the user, since such freedom would 
-	// permit them to unwittingly destroy the benefits of pqRand.
-	// Nonetheless, it is still possible to override this decision by 
-	// redefining PRNG_t, but the substituted class must use the same API:
-	// static fields storing the word_size and state_size, a default ctor, 
-	// operator()() to return the next uint64_t, and friend operators >> and << 
-	// to input/output the generator's internal state [for seeding],
-	// with these operators using the same stream format as std::mt19937_64.
+	// simple freedom to chose a PRNG be removed from the user, 
+	// since such freedom would permit them to unwittingly destroy the 
+	// benefits of pqRand. Nonetheless, it is still possible to 
+	// override this decision by redefining PRNG_t, IFF the substituted class 
+	// uses the same API: static fields storing the word_size and state_size, 
+	// a default ctor, operator()() to return the next uint64_t, 
+	// and friend operators >> and << to input/output the generator's internal state
+	// (with these operators using the same stream format as std::mt19937_64).
 	// This means that std::mt19937_64 (the model for the xorshift102_star API)
 	// will work as a drop-in replacement (simply switch the typedef above)
 	
@@ -293,14 +273,16 @@ namespace pqr
 		private:
 			// Scale the mantissa into the correct interval
 			real_t static constexpr scaleToU_Quasiuniform = 
-				// If conversion to real_t forces rounding, then adding 1 can't change the value
+				// If conversion to real_t forces rounding, adding 1 can't change the value
 				1./(real_t(std::numeric_limits<uint64_t>::max()) + 1.);
+			
 			real_t static constexpr scaleToHalfU_Quasiuniform = 
 				0.5 * scaleToU_Quasiuniform;
 				
 			real_t static constexpr scaleToU_Superuniform = 
 				// epsilon = 2**-(P-1), we want 2**-P
 				0.5 * std::numeric_limits<real_t>::epsilon();
+			
 			real_t static constexpr scaleToHalfU_Superuniform = 
 				0.5 * scaleToU_Superuniform;
 					
@@ -321,8 +303,7 @@ namespace pqr
 			// so we can use the last bad bit as the sticky bit
 			uint64_t static constexpr numBitsOfEntropyRequired = 
 				numBitsMantissa + 1 + ((badBits > 0) ? (badBits - 1): 1);
-			// When the random uint is less than minEntropy, we need more entropy.
-			// minEntropy need only skip (badBits - 1), 
+			// When the random uint is less than minEntropy, we need more entropy. 
 			uint64_t static constexpr minEntropy = 
 				(uint64_t(1) << (numBitsOfEntropyRequired - 1));
 						
@@ -336,23 +317,14 @@ namespace pqr
 			// with 2**53 being half as probable as 2**53-1
 			real_t RandomMantissa_Superuniform();
 			
-		public:
-			// Tell the base class not to seed, because we need to call our 
-			// newly redefined virtual Seed() for the intiial seed.
-			pqRand_engine():uPRNG_64_Seeder(false) {Seed();}
-			pqRand_engine(std::string const& fileName):uPRNG_64_Seeder(false)  {Seed(fileName);}
-			pqRand_engine(std::istream& stream):uPRNG_64_Seeder(false)  {Seed(stream);}	 
-			
 			// Redefine the base class virtuals, because we need to 
 			// store/refresh the state of the bitCache when we write/seed
-			// Also expose the base class functions of the same name, 
-			// otherwise they will be hidden during ADL.
-			virtual void Seed(std::istream& stream);
-			using uPRNG_64_Seeder<PRNG_t>::Seed;
+			virtual void Seed_FromStream(std::istream& stream);
+			virtual void WriteState_ToStream(std::ostream& stream);
 			
-			virtual void WriteState(std::ostream& stream);
-			using uPRNG_64_Seeder<PRNG_t>::WriteState;
-					
+		public:
+			pqRand_engine():uPRNG_64_Seeder() {/* Nothing to do */}
+								
 			bool RandBool(); // An ideal coin flip
 			void ApplyRandomSign(real_t& victim); // Give victim a random sign (+/-)
 			
@@ -381,150 +353,6 @@ namespace pqr
 			{
 				return scaleToHalfU_Superuniform * RandomMantissa_Superuniform();
 			}
-	};
-	
-	/////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////////
-		
-	// With the worker classes defined, we can finally use the
-	// quantile flip-flop to define some distributions.
-	// Luckily, we've already done all the hard work!
-	
-	// A simple struct to store a pair of objects, used by the 
-	// normal distributions, since Marsaglia polar generates two number per call
-	struct two
-	{
-		real_t x;
-		real_t y;
-		
-		two(real_t const x_in, real_t const y_in):
-			x(x_in), y(y_in) {}
-		
-		two() {} // No default initialization, be careful
-	};
-	
-	/////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////////
-	
-	// Sample from the standard normal distribution using the Marsaglia polar method 
-	// (this implementation is modeled after GNU's std::normal_distribution,
-	// but with the added precision of the quantile flip-flop and U_Q).
-	class standard_normal
-	{
-		private:
-			real_t cache; // Marsaglia polar samples two, cache one if we only request one
-			bool valueCached; // if(valueCached == true), cache has the next value
-			
-		public:
-			standard_normal():
-				valueCached(false) {}
-			
-			real_t operator()(pqRand_engine& gen); // Return a single value
-			virtual two GenTwo(pqRand_engine& gen); // Return a pair of values
-			// GenTwo is virtual because we can re-use the caching functionality
-			// for normal and log_normal by simply redefining GenTwo
-	};
-	
-	/////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////////
-	
-	// Bootstrap normal via standard_normal ... x = mu + sigma * x_standard
-	class normal : public standard_normal
-	{
-		protected:
-			real_t const mu_;
-			real_t const sigma_;
-			
-		public:
-			normal(real_t const mu_in, real_t const sigma_in):
-				standard_normal(), mu_(mu_in), sigma_(sigma_in) {}
-			
-			// Overwrite GenTwo, to add sigma and mu
-			virtual two GenTwo(pqRand_engine& gen);
-			
-			inline real_t mu() {return mu_;}
-			inline real_t sigma() {return sigma_;}
-	};
-	
-	/////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////////
-	
-	// Bootstrap log_normal from normal ... x = e**mu * e**(sigma*x_standard)
-	class log_normal : public normal
-	{
-		private:
-			real_t const muScale; // Exponentiate mu once, multiply times all returned values
-			// This is done to prevent assumed addition cancellation in 
-			// exp(mu + sigma * x), but is the cancellation actually avoided?
-			
-		public:
-			log_normal(real_t const mu_in, real_t const sigma_in):
-				normal(mu_in, sigma_in),
-				muScale(std::exp(mu_)) {}
-				
-			virtual two GenTwo(pqRand_engine& gen);
-	};
-	
-	/////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////////
-	
-	// Weibull has an invertible CDF: x = lambda*(-log(1-u))**(1/k)
-	// Use a quantile flip-flop and U_Q
-	class weibull
-	{
-		private:
-			real_t const lambda_;
-			real_t const k_;
-			real_t const kRecip;
-			
-		public:
-			weibull(real_t const lambda_in, real_t const k_in):
-				lambda_(lambda_in), k_(k_in), kRecip(1./k_) {}
-				
-			real_t operator()(pqRand_engine& gen);
-			
-			inline real_t lambda() {return lambda_;}
-			inline real_t k() {return k_;}
-	};
-	
-	/////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////////
-	
-	// Pareto has an invertible CDF: x = x_m * (1 - u)**(-1/alpha)
-	// Doesn't need a flip-flop if we remove floating-point cancellation and use U_Q
-	class pareto
-	{
-		private:
-			real_t const xm_;
-			real_t const alpha_;
-			real_t const negRecipAlpha;
-			
-		public:
-			pareto(real_t const xm_in, real_t const alpha_in):
-				xm_(xm_in), alpha_(alpha_in), negRecipAlpha(-1./alpha_) {}
-				
-			real_t operator()(pqRand_engine& gen);
-			
-			inline real_t xm() {return xm_;}
-			inline real_t alpha() {return alpha_;}
-	};
-	
-	/////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////////
-
-	// exponential has an invertible CDF: x = -mu * log(1 - u)
-	class exponential
-	{
-		private:
-			real_t const mu_;
-			
-		public:
-			exponential(real_t const mu_in):
-				mu_(mu_in) {}
-				
-			real_t operator()(pqRand_engine& gen);
-			
-			inline real_t mu() {return mu_;}
 	};	
 };
 

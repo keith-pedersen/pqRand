@@ -1,7 +1,9 @@
 #include "pqRand.hpp"
+#include <string>
 #include <fstream>
 #include <stdexcept>
 #include <assert.h>
+#include <sstream>
 
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
@@ -21,13 +23,13 @@ void pqr::uPRNG_64_Seeder<gen64_t>::Seed()
 		}					
 		ss << gen64_t::state_size; // Terminate with state_size
 	}
-	Seed(ss); // Bootstrap Seed(stream)
+	this->Seed_FromStream(ss);
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 template<class gen64_t>
-void pqr::uPRNG_64_Seeder<gen64_t>::Seed(std::string const& fileName)
+void pqr::uPRNG_64_Seeder<gen64_t>::Seed_FromFile(std::string const& fileName)
 {
 	std::ifstream file(fileName.c_str(), std::ios::in);
 	
@@ -37,14 +39,23 @@ void pqr::uPRNG_64_Seeder<gen64_t>::Seed(std::string const& fileName)
 			+ fileName + "> ... file not found!");
 	}
 	
-	Seed(file); // Bootstrap Seed(stream)
+	this->Seed_FromStream(file);
 	file.close();
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 template<class gen64_t>
-void pqr::uPRNG_64_Seeder<gen64_t>::Seed(std::istream& stream)
+void pqr::uPRNG_64_Seeder<gen64_t>::Seed_FromString(std::string const& seed)
+{
+	std::stringstream stream(seed);
+	this->Seed_FromStream(stream);
+}
+
+////////////////////////////////////////////////////////////////////////
+
+template<class gen64_t>
+void pqr::uPRNG_64_Seeder<gen64_t>::Seed_FromStream(std::istream& stream)
 {
 	stream >> *this; // uPRNG_64_Seeder (as a wrapper) has no state to seed
 }
@@ -63,14 +74,24 @@ void pqr::uPRNG_64_Seeder<gen64_t>::WriteState(std::string const& fileName)
 			+ fileName + "> ... file cannot be created!");
 	}
 	
-	WriteState(file); // Bootstrap WriteState(stream)
+	this->WriteState_ToStream(file);
 	file.close();
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 template<class gen64_t>
-void pqr::uPRNG_64_Seeder<gen64_t>::WriteState(std::ostream& stream)
+std::string pqr::uPRNG_64_Seeder<gen64_t>::GetState()
+{
+	std::stringstream string;
+	this->WriteState_ToStream(string);
+	return string.str();
+}
+
+////////////////////////////////////////////////////////////////////////
+
+template<class gen64_t>
+void pqr::uPRNG_64_Seeder<gen64_t>::WriteState_ToStream(std::ostream& stream)
 {
 	stream << *this; // uPRNG_64_Seeder (as a wrapper) has no state to write
 }
@@ -221,15 +242,15 @@ typename pqr::real_t pqr::pqRand_engine::RandomMantissa_Quasiuniform()
 						
 			// Insert new bits into the gap filled by the shift left
 			// Usually quite wasteful, but generally quite rare
-			randUint |= ((*this)() >> (64 - shiftLeft));
+			randUint or_eq ((*this)() >> (64 - shiftLeft));
 		}
 		
 		// Set the sticky bit, to defeat round-to-even,
-		// then scale by the shiftLeft, to maintain the coarse location
-		return real_t(randUint | 1) * downScale;
+		// then downScale, to maintain the coarse location
+		return real_t(randUint bitor 1) * downScale;
 	}
 	else
-		return real_t(randUint | 1);
+		return real_t(randUint bitor 1);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -241,7 +262,7 @@ typename pqr::real_t pqr::pqRand_engine::RandomMantissa_Superuniform()
 	// Yes, this is a goto, but they are not always bad.
 	// This jump spans only a small number of lines, so it's easy to read.
 	generate:
-		randUint = ((*this)() & bitMask_Superuniform);
+		randUint = ((*this)() bitand bitMask_Superuniform);
 		if(randUint == 0)
 		{
 			// Map 0 to the max mantissa, but only half the time
@@ -263,10 +284,10 @@ typename pqr::real_t pqr::pqRand_engine::RandomMantissa_Superuniform()
 
 ////////////////////////////////////////////////////////////////////////
 
-void pqr::pqRand_engine::Seed(std::istream& stream)
+void pqr::pqRand_engine::Seed_FromStream(std::istream& stream)
 {
-	// Let the PRNG seed itself, advancing the stream
-	stream >> *this;
+	// Seed the base class
+	uPRNG_64_Seeder<PRNG_t>::Seed_FromStream(stream);
 		
 	// The internal state of pqRand_engine contains the bitCache,
 	// which should be appended to the seed stream after PRNG details
@@ -293,10 +314,9 @@ void pqr::pqRand_engine::Seed(std::istream& stream)
 
 ////////////////////////////////////////////////////////////////////////
 
-void pqr::pqRand_engine::WriteState(std::ostream& stream)
+void pqr::pqRand_engine::WriteState_ToStream(std::ostream& stream)
 {
-	// Write out the state of the generator
-	stream << *this;
+	uPRNG_64_Seeder<PRNG_t>::WriteState_ToStream(stream);
 	
 	// Now write out the state of the bitCache and the cacheMask
 	stream  << " " <<  bitCache << " " << cacheMask;
@@ -312,7 +332,7 @@ bool pqr::pqRand_engine::RandBool()
 		cacheMask = (uint64_t(1) << 63);
 	}
 	
-	bool const decision = bool(cacheMask & bitCache);
+	bool const decision = bool(cacheMask bitand bitCache);
 	cacheMask >>= 1;
 	return decision;
 }
@@ -323,129 +343,4 @@ void pqr::pqRand_engine::ApplyRandomSign(real_t& victim)
 {
 	bool const decision = RandBool();
 	victim = std::copysign(victim, decision ? 1. : -1.);
-}
-
-////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////
-
-typename pqr::real_t pqr::standard_normal::operator()(pqRand_engine& gen)
-{
-	if(valueCached)
-	{
-		valueCached = false;
-		return cache;
-	}
-	else
-	{
-		valueCached = true;
-		two const pair = GenTwo(gen);
-		cache = pair.x;
-		return pair.y;
-	}
-}
-
-////////////////////////////////////////////////////////////////////////
-
-typename pqr::two pqr::standard_normal::GenTwo(pqRand_engine& gen)
-{
-	two pair;
-	real_t u;
-	
-	// The Marsaglia polar method. Note that we're not doing 1 - U
-	// to get a cheap random sign; this destroys the precision of U
-	do
-	{
-		pair.x = gen.U_Q();
-		pair.y = gen.U_Q();
-	
-		// Draw x and y from U, and reject when we don't land in the circle
-		u = pair.x*pair.x + pair.y*pair.y;
-		
-		// Reject 2/3 of the region that rounds to 1
-		// (we want the epsilon/2 to the left of 1, but not the epsilon the right of 1.
-		//  There is a small region near (1, 0), (0, 1), etc. where the R region 
-		//  doesn't exist, but it is vanishingly small).
-		if((u == 1.) and (gen.U_Q()*3. < 2.))
-			u = 2.; // Easy way to reject
-	}
-	while(u > 1.);
-
-	// Give x and y a random sign via the pqRand_engine (uses its bitCache)
-	gen.ApplyRandomSign(pair.x);
-	gen.ApplyRandomSign(pair.y);
-	
-	// Implement the quantile flip-flop and scale x and y
-	u = (gen.RandBool() ? 
-		std::sqrt(-2.*std::log(0.5*u)/u) : 
-		std::sqrt(2.*std::log1p(u/(2. - u))/u));		
-	
-	pair.x *= u;
-	pair.y *= u;
-	
-	return pair;
-}
-
-////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////
-
-// Normal takes numbers from standard_normal and adjusts them to sigma and mu
-typename pqr::two pqr::normal::GenTwo(pqRand_engine& gen)
-{
-	two pair = pqr::standard_normal::GenTwo(gen);
-	
-	pair.x = mu_ + sigma_ * pair.x;
-	pair.y = mu_ + sigma_ * pair.y;
-	
-	return pair;
-}
-
-////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////
-
-
-// Log_normal also takes from standard_normal, then exponentiates
-typename pqr::two pqr::log_normal::GenTwo(pqRand_engine& gen)
-{
-	// Draw from standard normal, apply mu as a multiplicative scale
-	two pair = pqr::standard_normal::GenTwo(gen);
-	
-	pair.x = muScale * std::exp(sigma_ * pair.x);
-	pair.y = muScale * std::exp(sigma_ * pair.y);
-	
-	return pair;
-}
-
-////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////
-
-// When we implement the quantile flip-flop, we must draw from HalfU
-typename pqr::real_t pqr::weibull::operator()(pqRand_engine& gen)
-{
-	real_t const hu = gen.HalfU_Q();
-	
-	if(gen.RandBool())
-		return lambda_ * std::pow(-std::log(hu), kRecip);
-	else
-		return lambda_ * std::pow(std::log1p(hu/(1.-hu)), kRecip);
-}
-
-////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////
-
-typename pqr::real_t pqr::pareto::operator()(pqRand_engine& gen)
-{
-	return xm_ * std::pow(gen.U_Q(), negRecipAlpha);
-}
-
-////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////
-
-typename pqr::real_t pqr::exponential::operator()(pqRand_engine& gen)
-{
-	real_t const hu = gen.HalfU_Q();
-	
-	if(gen.RandBool())
-		return -mu_ * std::log(hu);
-	else
-		return mu_ * std::log1p(hu/(1.-hu));
 }

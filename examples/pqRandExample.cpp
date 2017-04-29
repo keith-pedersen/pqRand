@@ -1,4 +1,5 @@
 #include "pqRand.hpp"
+#include "pqrDistributions.hpp"
 #include <stdexcept>
 #include <sstream>
 #include <iostream>
@@ -13,41 +14,43 @@ int main()
 	// It does the random integer generation, converts integers to U_Q, 
 	// and does the random coin flips needed by the quantile flip-flop.
 	// All pqr::distributions require a pqRand_engine to be supplied by 
-	// reference when drawing from them. This is a nearly identical API to 
-	// the std::distributions of C++11.
+	// reference when drawing from them. This follows the API of the
+	// std::abcd_distribution of C++11 (e.g. std::normal_distribution).
 	
-	// The pqRand_engine forces an initial seed AS LARGE as the generators state
+	// The pqRand_engine DOES NOT force an initial seed.
+	// But when it does seed, it ensures that the seed is 
+	// AS LARGE as the generators state
 	// (e.g. a 32-bit seed doesn't fill up 1024 bits of state).
-	// If no seed is supplied, it uses std::random_device, 
-	// (which uses /dev/urandom on Linux) to get actual random entropy.
-	// This is a standardized way to get a good source of initial entropy;
-	// if a source of true entropy is unavailable, the implementation is 
+	// The default (and recommended) seed is std::random_device, 
+	// which is supposed to supply true random entropy (/dev/urandom on Linux).
+	// This is a standardized way to get a good initial state of your PRNG.
+	// If a source of true entropy is unavailable, the implementation is 
 	// supposed to implement a decent PRNG for you.
-	// A seed from a file or an std::istream can also be supplied, 
+	// A seed from a file or an std::string can also be supplied, 
 	// provided they are in the right format (see pqRand.hpp).
 	// This allows the user to supply a custom seed.
+	// However, the main reason to use the file/string interface is to 
+	// allow previous seeds from random_device to be stored and reused.
 	
 	// Let's look at a few ways to start up a pqRand_engine
 	
 	{	
-		// No args ... seed gen1 using std::random_device,
+		// Seed with no args ... seed using std::random_device,
 		pqRand_engine gen1;
+		gen1.Seed(); 
 		
-		// Store gen1's seeded initial state to a file, for re-use;
+		// Store gen1's seeded initial state to a file, for auditing/reuse.
 		gen1.WriteState("test.seed");
 		
-		// Seed another generator from the stored seed
-		pqRand_engine gen2("test.seed");
+		// Seed another generator from a stored seed
+		pqRand_engine gen2;
+		gen2.Seed_FromFile("test.seed");
 		
-		// We can also store a seed in any std::ostream. 
-		// A stringstream is a less permanent place to store a seed
-		std::stringstream seed;
-		gen2.WriteState(seed);
-
-		// And we can seed yet another generator from gen2;
-		pqRand_engine gen3(seed);
+		// We don't have to go through a file; temporary seed storage in string.
+		pqRand_engine gen3;
+		gen3.Seed_FromString(gen2.GetState()); 
 		
-		// We can also directly copy generators
+		// The state of generators is also copyable
 		pqRand_engine gen4 = gen3;
 		
 		printf("\n Seed test\n");
@@ -72,18 +75,18 @@ int main()
 	// This is why the author of xorshift1024* created the jump function, 
 	// which advances the generator by 2^512 calls 
 	// (obviously without calling that many times).
-	// Here is an example of creating 8 generators,
-	// each separated by a single jump.
+	// Here is an example of creating 4 generators, each separated by a single jump.
 	
 	{
 		std::vector<pqRand_engine> engineList;
 		
-		engineList.emplace_back("test.seed");
+		engineList.emplace_back();
+		engineList.back().Seed_FromFile("test.seed");
 		
 		for(size_t i = 0; i < 4; ++i)
 		{
-			engineList.emplace_back(engineList.back());
-			engineList.back().Jump();
+			engineList.emplace_back(engineList.back()); // Next gen is a copy
+			engineList.back().Jump(); // Jump the copy forward (rinse and repeat)
 		}
 		
 		printf("\n Jump test\n");
@@ -114,15 +117,18 @@ int main()
 	printf("    pqRand_engine gives access to uint64_t, U_Q, HalfU_Q, and random bool (as well as U_S)\n");
 	
 	pqRand_engine gen;
+	gen.Seed();
 	// The pqRand_engine::operator()() gives us direct access to 
 	// the uint64_t calculated by mt19937_64
-	// To get (0., 1.) from pqRand_engine, we use the function U_Q(). 
+	// To get (0., 1.] from pqRand_engine, we use the function U_Q(). 
 	// HalfU_Q() gives a number in (0, 0.5] (for use in certain flip-flops).
 	printf("gen():          %lu\n", gen());
 	printf("gen.U_Q():      %.17e\n", gen.U_Q());
 	printf("gen.HalfU_Q():  %.17e\n", gen.HalfU_Q());
-	printf("gen.RandBool(): %d  %d  %d  %d  %d  %d\n", 
-		gen.RandBool(), gen.RandBool(), gen.RandBool(), gen.RandBool(), gen.RandBool(), gen.RandBool());
+	printf("gen.RandBool():");
+	for(size_t i = 0; i < 15; ++i)
+		printf("  %d", gen.RandBool());
+	printf("\n");
 	// There is also a function to apply a random sign to a double passed by refernce (ApplyRandomSign())
 	
 	printf("\n\n Distributions\n");
@@ -134,6 +140,7 @@ int main()
 	// which may lead to some issues of convention.
 	standard_normal stand; 				// mu = 0, sigma = 1, always
 	normal norm(-1.5, 3.1); 			// mu = -1.5, sigma = 3.1
+	exponential exp(2.);
 	log_normal logNorm(2.71, 0.66);  // mu = 2.71, sigma = 0.66
 	weibull weib(4.56, 1.23); 			// lambda = 4.56, k = 1.23
 	pareto par(3.33, 4.); 				// x_m = 3.33, alpha = 10.
@@ -141,9 +148,9 @@ int main()
 	// I have a histogram class which I use to bin these, 
 	// but I figure you probably have your own preferred way of looking at them
 	printf("\n");
-	printf(" std_norm      normal      logNormal     weibull      pareto\n");
+	printf(" std_norm      normal     exponential     logNormal     weibull      pareto\n");
 	for(int i = 0; i < 10; ++i)
-		printf("% .3e   % .3e   % .3e   % .3e   % .3e\n", 
-		stand(gen), norm(gen), logNorm(gen), weib(gen), par(gen));
+		printf("% .3e   % .3e   % .3e   % .3e   % .3e   % .3e\n", 
+		stand(gen), norm(gen), exp(gen), logNorm(gen), weib(gen), par(gen));
 	printf("\n\n");
 }

@@ -1,0 +1,72 @@
+ .o88o. .o88o. |  _ \    __ _   _ __     __| |
+ 8    8 8    8 | |_) |  / _` | | '_ \   / _` |
+ 8    8 8    8 |  _ <  | (_| | | | | | | (_| |
+ 88oo8' `8oo88 |_| \_\  \__,_| |_| |_|  \__,_|
+ 8           8 
+ 8           8 
+
+pqRand: The precise quantile flip-flop random package
+	version 0.2 (Apr 2017)
+By Keith Pedersen (Keith.David.Pedersen @ gmail.com)
+	https://github.com/keith-pedersen/pqRand
+	https://arxiv.org/abs/1704.07949
+
+Special thanks to Zack Sullivan, Andrew Webster and Sebastiano Vigna.
+
+This package is designed to improve sampling from the following distributions
+========================================================================
+	* normal
+	* log-normal
+	* exponential
+	* weibull
+	* pareto
+	
+WARNING
+========================================================================
+	This package is a work in progress. As of 29 Apr 2017, 
+	there is still no stable release of version 0.2.
+	Upon stable release, a development branch will be forked, 
+	and version 0.2 will be tagged.
+
+ATTENTION
+========================================================================
+	This package uses C++11. Hopefully by now (2017), 
+	it is supported at your site. My apologies if it is not, 
+	but there are SO many reasons to use c++11.
+	
+MAKING
+========================================================================
+	This package is designed for GNU/LINUX machines, via a Makefile.
+	"make all" should create all examples and a shared library
+
+	Use the %.x rule as a template to build pqRand into your executable (via libpqr.so)
+	set PQR_DIR to the directory where pqRand lives, then
+	"make yourExecutable.x". Add needed libraries as necessary.
+	Note that LD_LIBRARY_PATH must also point to libpqr.so
+
+	See examples/pqRandExample for examples of using the package. 
+	pqRand.hpp is another good resource, as it is fairly well documented.
+
+SEEDING
+========================================================================
+	pqRand_engine requires 1024 bits of seed. The default seed (Seed())
+	uses std::random_device (/dev/urandom on most linux devices).
+	You can supply your own seed (as a file or std::string), 
+	but it must be in the right format.
+
+	The format of the seed file/stream mimics std::mt19937:
+	A single line, with each word of seed (64 bits) space separated, 
+	terminating with the seed_size itself
+		s_1 s_2 s_3 ... s_(state_size) state_size
+	Example for PRNG with state_size == 3
+		8602057372317241997 13337802638347508439 10520579822156476364 3
+	Note that the seed MUST fill the entire state of the PRNG
+	( (# of words) == seed_size),  otherwise an exception is thrown.
+
+	NOTE: pqRand_engine contains additional state information.
+	Arbitrary states of pqRand_engine can be stored using WriteState,
+	and replenished with Seed_FromFile()
+
+DISTRIBUTIONS
+========================================================================
+	Check out pqRandExample.cpp to see how to access distributions.
