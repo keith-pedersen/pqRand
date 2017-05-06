@@ -17,14 +17,14 @@ int main()
 	// reference when drawing from them. This follows the API of the
 	// std::abcd_distribution of C++11 (e.g. std::normal_distribution).
 	
-	// The pqRand_engine DOES NOT force an initial seed.
-	// But when it does seed, it ensures that the seed is 
-	// AS LARGE as the generators state
+	// The pqRand_engine automatically does an initial seed,
+	// unless it is told not to (by passing the ctor a bool, usually false).
+	// It uses a seed AS LARGE as its generators state
 	// (e.g. a 32-bit seed doesn't fill up 1024 bits of state).
-	// The default (and recommended) seed is std::random_device, 
+	// The automatic seed uses std::random_device, 
 	// which is supposed to supply true random entropy (/dev/urandom on Linux).
 	// This is a standardized way to get a good initial state of your PRNG.
-	// If a source of true entropy is unavailable, the implementation is 
+	// If a source of true entropy is unavailable, random_device is 
 	// supposed to implement a decent PRNG for you.
 	// A seed from a file or an std::string can also be supplied, 
 	// provided they are in the right format (see pqRand.hpp).
@@ -35,22 +35,24 @@ int main()
 	// Let's look at a few ways to start up a pqRand_engine
 	
 	{	
-		// Seed with no args ... seed using std::random_device,
+		// Construct with no args ... automatic seed using std::random_device,
 		pqRand_engine gen1;
-		gen1.Seed(); 
 		
 		// Store gen1's seeded initial state to a file, for auditing/reuse.
 		gen1.WriteState("test.seed");
 		
-		// Seed another generator from a stored seed
-		pqRand_engine gen2;
+		// Seed another generator from a stored seed,
+		// pass a bool during construction to defer seeding
+		// (if you forget to pass the bool, it won't affect the
+		// output of the generator, but will simpy waste time).
+		pqRand_engine gen2(false);
 		gen2.Seed_FromFile("test.seed");
 		
-		// We don't have to go through a file; temporary seed storage in string.
-		pqRand_engine gen3;
+		// We don't have to go through a file; store a seed in a string.
+		pqRand_engine gen3(false);
 		gen3.Seed_FromString(gen2.GetState()); 
 		
-		// The state of generators is also copyable
+		// The state of generators is also directly copyable/assignable
 		pqRand_engine gen4 = gen3;
 		
 		printf("\n Seed test\n");
@@ -80,7 +82,7 @@ int main()
 	{
 		std::vector<pqRand_engine> engineList;
 		
-		engineList.emplace_back();
+		engineList.emplace_back(false);
 		engineList.back().Seed_FromFile("test.seed");
 		
 		for(size_t i = 0; i < 4; ++i)
@@ -117,7 +119,6 @@ int main()
 	printf("    pqRand_engine gives access to uint64_t, U_Q, HalfU_Q, and random bool (as well as U_S)\n");
 	
 	pqRand_engine gen;
-	gen.Seed();
 	// The pqRand_engine::operator()() gives us direct access to 
 	// the uint64_t calculated by mt19937_64
 	// To get (0., 1.] from pqRand_engine, we use the function U_Q(). 

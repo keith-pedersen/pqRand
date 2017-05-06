@@ -33,12 +33,13 @@ FILENAMES = pqRand pqrDistributions
 OBJS = $(addsuffix .o, $(addprefix $(SOURCE)/, $(FILENAMES)))
 
 all : libpqr.so $(EXAMPLES)/pqRandExample.x $(EXAMPLES)/random_device_tester.x \
-	$(EXAMPLES)/xorshift1024star_tester.x $(EXAMPLES)/xorshift1024star_last3bits_tester.x 
+	$(EXAMPLES)/xorshift1024star_tester.x $(EXAMPLES)/xorshift1024star_last3bits_tester.x \
+	$(EXAMPLES)/IsotropicVectors.x
 
 libpqr.so: $(OBJS)
 	$(CXX) $(CXXFLAGS) -shared $(OBJS) $(LIBFLAGS) -o $@
 
-%.x : %.cpp
+%.x : %.cpp $(PQR_DIR)/libpqr.so
 	$(CXX) $(CXXFLAGS) $(INC_FLAGS_EXTERN) $(LIB_FLAGS_EXTERN) $*.cpp -o $@
 	
 %.o : %.cpp 

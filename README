@@ -23,16 +23,16 @@ This package is designed to improve sampling from the following distributions
 	
 WARNING
 ========================================================================
-	This package is a work in progress. As of 29 Apr 2017, 
-	there is still no stable release of version 0.2.
+	This package is newly released and under active development. 
+	As of 5 May 2017, there is still no stable release of version 0.2.
 	Upon stable release, a development branch will be forked, 
 	and version 0.2 will be tagged.
 
 ATTENTION
 ========================================================================
 	This package uses C++11. Hopefully by now (2017), 
-	it is supported at your site. My apologies if it is not, 
-	but there are SO many reasons to use c++11.
+	C++11 is supported at your site. My apologies if it is not, 
+	but there are SO many reasons to use it.
 	
 MAKING
 ========================================================================
@@ -42,15 +42,15 @@ MAKING
 	Use the %.x rule as a template to build pqRand into your executable (via libpqr.so)
 	set PQR_DIR to the directory where pqRand lives, then
 	"make yourExecutable.x". Add needed libraries as necessary.
-	Note that LD_LIBRARY_PATH must also point to libpqr.so
+	Note: LD_LIBRARY_PATH must also point to libpqr.so
 
 	See examples/pqRandExample for examples of using the package. 
 	pqRand.hpp is another good resource, as it is fairly well documented.
 
 SEEDING
 ========================================================================
-	pqRand_engine requires 1024 bits of seed. The default seed (Seed())
-	uses std::random_device (/dev/urandom on most linux devices).
+	pqRand_engine requires 1024 bits of seed. By default (no arg ctor),
+	it is seeded from std::random_device (/dev/urandom on most linux devices).
 	You can supply your own seed (as a file or std::string), 
 	but it must be in the right format.
 

@@ -19,7 +19,7 @@ void pqr::uPRNG_64_Seeder<gen64_t>::Seed()
 		for(size_t i = 0; i < gen64_t::state_size; ++i)
 		{
 			// Unfortunately, random_device outputs 32 bits. Make a 64-bit uint.
-			ss << ((uint64_t(randDev()) << 32) | uint64_t(randDev())) << " ";
+			ss << ((uint64_t(randDev()) << 32) bitor uint64_t(randDev())) << " ";
 		}					
 		ss << gen64_t::state_size; // Terminate with state_size
 	}
@@ -65,7 +65,7 @@ void pqr::uPRNG_64_Seeder<gen64_t>::Seed_FromStream(std::istream& stream)
 template<class gen64_t>
 void pqr::uPRNG_64_Seeder<gen64_t>::WriteState(std::string const& fileName)
 {
-	// CAUTION: overwrite existing without warning (ios::trunc)
+	// CAUTION: overwrite existing file without warning (ios::trunc)
 	std::ofstream file(fileName.c_str(), std::ios::out | std::ios::trunc);
 	
 	if(not file.is_open())
@@ -200,7 +200,7 @@ std::istream& pqr::operator >> (std::istream& stream, xorshift1024_star& gen)
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 
-// Need to instantiate the template class for the object file
+// Need to instantiate the template class for the object file (shared library)
 template class pqr::uPRNG_64_Seeder<pqr::PRNG_t>;
 
 ////////////////////////////////////////////////////////////////////////
@@ -238,11 +238,11 @@ typename pqr::real_t pqr::pqRand_engine::RandomMantissa_Quasiuniform()
 			}
 			
 			assert(shiftLeft < numBitsOfEntropyRequired);
-			downScale *= std::pow(2., -shiftLeft);
+			downScale *= real_t(std::exp2(-shiftLeft));
 						
 			// Insert new bits into the gap filled by the shift left
 			// Usually quite wasteful, but generally quite rare
-			randUint or_eq ((*this)() >> (64 - shiftLeft));
+			randUint or_eq ((*this)() >> (numBitsPRNG - shiftLeft));
 		}
 		
 		// Set the sticky bit, to defeat round-to-even,
@@ -262,7 +262,8 @@ typename pqr::real_t pqr::pqRand_engine::RandomMantissa_Superuniform()
 	// Yes, this is a goto, but they are not always bad.
 	// This jump spans only a small number of lines, so it's easy to read.
 	generate:
-		randUint = ((*this)() bitand bitMask_Superuniform);
+		// Better to shift right than use a bit-mask, due to bad bits
+		randUint = ((*this)() >> bitShiftRight_Superuniform); 
 		if(randUint == 0)
 		{
 			// Map 0 to the max mantissa, but only half the time
@@ -284,6 +285,17 @@ typename pqr::real_t pqr::pqRand_engine::RandomMantissa_Superuniform()
 
 ////////////////////////////////////////////////////////////////////////
 
+typename pqr::real_t pqr::pqRand_engine::RandomMantissa_Superuniform_canonical()
+{
+	uint64_t randUint;
+	
+	while((randUint = ((*this)() >> bitShiftRight_Superuniform)) == 0);
+	
+	return real_t(randUint);
+}
+
+////////////////////////////////////////////////////////////////////////
+
 void pqr::pqRand_engine::Seed_FromStream(std::istream& stream)
 {
 	// Seed the base class
@@ -296,7 +308,8 @@ void pqr::pqRand_engine::Seed_FromStream(std::istream& stream)
 	{
 		bitCache = word;
 		
-		// The state of bitCache can be missing, but the cacheMask cannot
+		// The state of bitCache can be missing. But if the bitCache is there, 
+		// the cacheMask cannot be missing
 		if(not (stream >> word))
 			throw std::runtime_error("pqRand_engine::Seed: bitCache stored in seed, but not cacheMask");
 		else
@@ -329,7 +342,7 @@ bool pqr::pqRand_engine::RandBool()
 	if(cacheMask == replenishBitCache)
 	{
 		bitCache = (*this)();
-		cacheMask = (uint64_t(1) << 63);
+		cacheMask = (uint64_t(1) << (numBitsPRNG - 1));
 	}
 	
 	bool const decision = bool(cacheMask bitand bitCache);
@@ -342,5 +355,5 @@ bool pqr::pqRand_engine::RandBool()
 void pqr::pqRand_engine::ApplyRandomSign(real_t& victim)
 {
 	bool const decision = RandBool();
-	victim = std::copysign(victim, decision ? 1. : -1.);
+	victim = std::copysign(victim, decision ? real_t(1.) : real_t(-1.));
 }

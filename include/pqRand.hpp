@@ -27,7 +27,7 @@
 // which can be drawn using a quantile function of an underlying distribution). 
 // The main methods implemented here are the "quasiuniform sample" of 
 // the semi-inclusive unit interval. For quality control, 
-// the user is forced to use the supplied PRNG to generate uniform, 
+// the user is "forced" to use the supplied PRNG to generate uniform, 
 // unsigned integers.
 //
 // Development record
@@ -99,11 +99,11 @@
 namespace pqr
 {
 	// uPRNG_64_Seeder is a template class for seeding a PRNG of uint64_t.
-	// DANGER: IT DOES NOT FORCE AN INITIAL SEED OF THE PRNG;
-	// you must make an explicit call to one of the seeding functions.
-	// These seeding functions fill THE ENTIRE state of the PRNG
+	// By default, it automatically forces an initial seed of the PRNG.
+	// Seeding can also be deferred till after the ctor, upon request.
+	// The seeding functions fills THE ENTIRE state of the PRNG
 	// (i.e. you can't seed 20 kB of the Mersenne twister with a 32 bit number).
-	// The default Seed() seeds by repeatedly calling std::random_device
+	// The default Seed() repeatedly calling std::random_device
 	// (which internally uses /dev/urandom on many linux distros).
 	// After a default seeding, one can write the generator's state to a file
 	// (or a std::string) to allow future re-seeding from a known state.
@@ -111,9 +111,9 @@ namespace pqr
 	// One can also supply a custom seed (filled in some arbitrary way)
 	// by supplying a fileName (Seed_FromFile()) or a seed string(Seed_FromString())
 	// in the correct format (see the comments above Seed/WriteSeed).
-	// WARNING: The ONLY check made on the actual seed words themselves is
-	// that they can actually be parsed as uint64_t,
-	// so take care  NOT to supply a bunch of zeroes.
+	// WARNING: The ONLY check made on the seed words themselves is
+	// that they can be successfully parsed as uint64_t,
+	// so take care NOT to supply a bunch of zeroes.
 	template<class gen64_t>
 	class uPRNG_64_Seeder : public gen64_t
 	{
@@ -128,8 +128,24 @@ namespace pqr
 			virtual void WriteState_ToStream(std::ostream& stream);
 					
 		public:
-			uPRNG_64_Seeder():gen64_t() {/*nothing to do*/}
-			
+			// Two options when constructing
+			//	   1. Pass no arguments
+			//       ==> Automatic seed (call Seed(), using std::random_device)
+			//    2. Pass a dummy bool (usually false, but either will do)
+			//       ==> Defer seeding generator, user will seed later
+			// This scheme allows the best of both worlds
+			//    * Automatically use high-quality seed in most cases (lest you forget).
+			//    * Allow seeding from stored states, when explicitly requested
+			//      (call Seed_FromFile() or Seed_FromString() after ctor).
+			//      NOTE: Access to these from inside the ctor is difficult.
+			//      They use the same arguments, so which do you want?
+			//      Also, possible workarounds complicate a Cython interface.
+			//        (a) Use char const* for File and std::string for String (with explicit ctor).
+			//        (b) Use a strongly typed enum (enum class).
+			//        (c) Use an int enum (terrible interface, bad idea).
+			uPRNG_64_Seeder():gen64_t() {Seed();}
+			explicit uPRNG_64_Seeder(bool):gen64_t() {/* Defer seed for user.*/}
+						
 			// The format of the seed file/string mimics std::mt19937:
 			// A single line, with each word of seed space separated, 
 			// terminating with the seed_size itself
@@ -142,7 +158,10 @@ namespace pqr
 			void Seed(); // seed from random_device
 			void Seed_FromFile(std::string const& fileName); // seed from a file
 			void Seed_FromString(std::string const& seed); // seed from a strings
-			
+			// Seed_FromString used to be Seed(std::istream), but this was problematic:
+			// 1. Complicates the Cython interface.
+			// 2. An istream must be reset to be used twice ... a pain in the ass.
+						
 			void WriteState(std::string const& fileName); // write state to seed file
 			std::string GetState(); // return a string containing the state
 	};
@@ -180,7 +199,7 @@ namespace pqr
 			uint64_t static const JUMP[state_size];
 			
 			// Use std::array to allow implicit assignment (operator =)
-			// of this class, to quickly copy states of the generator,
+			// of this class, to quickly copy states of the generator
 			// while remaining compatible with C-style array syntax
 			std::array<uint64_t, state_size> state; 
 			uint64_t p;
@@ -251,7 +270,7 @@ namespace pqr
 	// and friend operators >> and << to input/output the generator's internal state
 	// (with these operators using the same stream format as std::mt19937_64).
 	// This means that std::mt19937_64 (the model for the xorshift102_star API)
-	// will work as a drop-in replacement (simply switch the typedef above)
+	// will work as a drop-in replacement (simply swap the typedef above)
 	
 	// This typedef is for internal testing; there is no reason to use float/binary32
 	typedef double real_t;
@@ -274,17 +293,17 @@ namespace pqr
 			// Scale the mantissa into the correct interval
 			real_t static constexpr scaleToU_Quasiuniform = 
 				// If conversion to real_t forces rounding, adding 1 can't change the value
-				1./(real_t(std::numeric_limits<uint64_t>::max()) + 1.);
+				real_t(1.)/(real_t(std::numeric_limits<uint64_t>::max()) + real_t(1.));
 			
 			real_t static constexpr scaleToHalfU_Quasiuniform = 
-				0.5 * scaleToU_Quasiuniform;
+				real_t(0.5) * scaleToU_Quasiuniform;
 				
 			real_t static constexpr scaleToU_Superuniform = 
 				// epsilon = 2**-(P-1), we want 2**-P
-				0.5 * std::numeric_limits<real_t>::epsilon();
+				real_t(0.5) * std::numeric_limits<real_t>::epsilon();
 			
 			real_t static constexpr scaleToHalfU_Superuniform = 
-				0.5 * scaleToU_Superuniform;
+				real_t(0.5) * scaleToU_Superuniform;
 					
 			// The last three bits of xorshift1024_star are not as good to use, per S. Vigna
 			uint64_t static constexpr badBits = 3;
@@ -292,10 +311,10 @@ namespace pqr
 			// NOTE: if badBits == 0, replenishBitCache == 0 (a shift left of -1).
 			// This may output a warning, but should still be valid.
 			
+			uint64_t static constexpr numBitsPRNG = std::numeric_limits<uint64_t>::digits;
 			uint64_t static constexpr numBitsMantissa = std::numeric_limits<real_t>::digits;
-			uint64_t static constexpr bitMask_Superuniform = 
-				(uint64_t(1) << numBitsMantissa) - 1;
-			uint64_t static constexpr maxMantissa_Superuniform = bitMask_Superuniform + 1;
+			uint64_t static constexpr bitShiftRight_Superuniform = numBitsPRNG - numBitsMantissa;
+			uint64_t static constexpr maxMantissa_Superuniform = (uint64_t(1) << numBitsMantissa);
 			
 			// We need to fill the mantissa, with 2 bits for rounding:
 			// a buffer bit and a sticky bit. The buffer bit must use 
@@ -316,6 +335,9 @@ namespace pqr
 			// Draw a random, superuniform mantissa from (0, 2**53],
 			// with 2**53 being half as probable as 2**53-1
 			real_t RandomMantissa_Superuniform();
+			// Draw a random, superuniform mantissa from (0, 2**53),
+			// in the canonical manner
+			real_t RandomMantissa_Superuniform_canonical();
 			
 			// Redefine the base class virtuals, because we need to 
 			// store/refresh the state of the bitCache when we write/seed
@@ -323,7 +345,14 @@ namespace pqr
 			virtual void WriteState_ToStream(std::ostream& stream);
 			
 		public:
-			pqRand_engine():uPRNG_64_Seeder() {/* Nothing to do */}
+			pqRand_engine():
+				// Defer automatic seed from base class because we need to use 
+				// virtual Seed_FromStream to properly seed, which the
+				// base-class can't access from inside its ctor.
+				uPRNG_64_Seeder(false)
+			{Seed();}
+			
+			explicit pqRand_engine(bool):uPRNG_64_Seeder(false) {/* Defer seed for user.*/}
 								
 			bool RandBool(); // An ideal coin flip
 			void ApplyRandomSign(real_t& victim); // Give victim a random sign (+/-)
@@ -352,6 +381,11 @@ namespace pqr
 			inline real_t HalfU_S()
 			{
 				return scaleToHalfU_Superuniform * RandomMantissa_Superuniform();
+			}
+			
+			inline real_t U_S_canonical() 
+			{
+				return scaleToU_Superuniform * RandomMantissa_Superuniform_canonical();
 			}
 	};	
 };

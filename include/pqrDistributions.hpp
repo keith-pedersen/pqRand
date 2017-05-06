@@ -95,7 +95,7 @@ namespace pqr
 			
 		public:
 			weibull(real_t const lambda_in, real_t const k_in):
-				lambda_(lambda_in), k_(k_in), kRecip(1./k_) {}
+				lambda_(lambda_in), k_(k_in), kRecip(real_t(1.)/k_) {}
 				
 			real_t operator()(pqRand_engine& gen);
 			
@@ -117,7 +117,7 @@ namespace pqr
 			
 		public:
 			pareto(real_t const xm_in, real_t const alpha_in):
-				xm_(xm_in), alpha_(alpha_in), negRecipAlpha(-1./alpha_) {}
+				xm_(xm_in), alpha_(alpha_in), negRecipAlpha(real_t(-1.)/alpha_) {}
 				
 			real_t operator()(pqRand_engine& gen);
 			
@@ -141,6 +141,16 @@ namespace pqr
 			real_t operator()(pqRand_engine& gen);
 			
 			inline real_t mu() {return mu_;}
+	};
+	
+	// Included for testing/validation purposes
+	class standard_normal_lowPrecision : public standard_normal
+	{
+		public:
+			standard_normal_lowPrecision():
+				standard_normal() {}
+			
+			virtual two GenTwo(pqRand_engine& gen);
 	};
 }
 

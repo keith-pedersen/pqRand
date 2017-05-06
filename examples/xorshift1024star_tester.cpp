@@ -7,7 +7,6 @@ using namespace pqr;
 int main()
 {
 	uPRNG_64_Seeder<xorshift1024_star> gen;
-	gen.Seed();
 	
 	// 	sudo yum install dieharder
 	// Continously output random numbers to std::out, for use like ... 

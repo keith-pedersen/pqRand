@@ -37,10 +37,10 @@ typename pqr::two pqr::standard_normal::GenTwo(pqRand_engine& gen)
 		// (we want the epsilon/2 to the left of 1, but not the epsilon the right of 1.
 		//  There is a small region near (1, 0), (0, 1), etc. where the R region 
 		//  doesn't exist, but it is vanishingly small).
-		if((u == 1.) and (gen.U_Q()*3. < 2.))
-			u = 2.; // Easy way to reject
+		if((u == real_t(1.)) and (gen.U_Q()*real_t(3.) < real_t(2.)))
+			u = real_t(2.); // Easy way to reject
 	}
-	while(u > 1.);
+	while(u > real_t(1.));
 
 	// Give x and y a random sign via the pqRand_engine (uses its bitCache)
 	gen.ApplyRandomSign(pair.x);
@@ -48,8 +48,8 @@ typename pqr::two pqr::standard_normal::GenTwo(pqRand_engine& gen)
 	
 	// Implement the quantile flip-flop and scale x and y
 	u = (gen.RandBool() ? 
-		std::sqrt(-2.*std::log(0.5*u)/u) : 
-		std::sqrt(2.*std::log1p(u/(2. - u))/u));		
+		std::sqrt(real_t(-2.)*std::log(real_t(0.5)*u)/u) : 
+		std::sqrt(real_t(2.)*std::log1p(u/(real_t(2.) - u))/u));		
 	
 	pair.x *= u;
 	pair.y *= u;
@@ -98,7 +98,7 @@ typename pqr::real_t pqr::weibull::operator()(pqRand_engine& gen)
 	if(gen.RandBool())
 		return lambda_ * std::pow(-std::log(hu), kRecip);
 	else
-		return lambda_ * std::pow(std::log1p(hu/(1.-hu)), kRecip);
+		return lambda_ * std::pow(std::log1p(hu/(real_t(1.)-hu)), kRecip);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -119,5 +119,32 @@ typename pqr::real_t pqr::exponential::operator()(pqRand_engine& gen)
 	if(gen.RandBool())
 		return -mu_ * std::log(hu);
 	else
-		return mu_ * std::log1p(hu/(1.-hu));
+		return mu_ * std::log1p(hu/(real_t(1.) - hu));
 }
+
+////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
+
+typename pqr::two pqr::standard_normal_lowPrecision::GenTwo(pqRand_engine& gen)
+{
+	two pair;
+	real_t u;
+	
+	do
+	{
+		pair.x = real_t(1.) - real_t(2.) * gen.U_S_canonical();
+		pair.y = real_t(1.) - real_t(2.) * gen.U_S_canonical();
+	
+		// Draw x and y from U, and reject when we don't land in the circle
+		u = pair.x*pair.x + pair.y*pair.y;
+	}
+	while(u >= real_t(1.));
+
+	u = std::sqrt(real_t(-2.)*std::log(u)/u);
+	
+	pair.x *= u;
+	pair.y *= u;
+	
+	return pair;
+}
+
