@@ -1,8 +1,6 @@
-#include "pqRand.hpp"
+#include <random>
 #include <fstream>
 #include <iostream>
-
-using namespace pqr;
 
 int main()
 {

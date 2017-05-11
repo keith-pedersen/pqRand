@@ -5,8 +5,8 @@
  8           8 
  8           8 
 
-pqRand: The precise quantile flip-flop random package
-	version 0.2 (Apr 2017)
+pqRand: The precise quantile random package
+	version 0.3 (May 2017)
 By Keith Pedersen (Keith.David.Pedersen @ gmail.com)
 	https://github.com/keith-pedersen/pqRand
 	https://arxiv.org/abs/1704.07949
@@ -24,9 +24,9 @@ This package is designed to improve sampling from the following distributions
 WARNING
 ========================================================================
 	This package is newly released and under active development. 
-	As of 5 May 2017, there is still no stable release of version 0.2.
+	As of 11 May 2017, there is still no stable release of version 0.3.
 	Upon stable release, a development branch will be forked, 
-	and version 0.2 will be tagged.
+	and version 0.3 will be tagged.
 
 ATTENTION
 ========================================================================
@@ -37,7 +37,7 @@ ATTENTION
 MAKING
 ========================================================================
 	This package is designed for GNU/LINUX machines, via a Makefile.
-	"make all" should create all examples and a shared library
+	"make all" should create all examples and a shared library.
 
 	Use the %.x rule as a template to build pqRand into your executable (via libpqr.so)
 	set PQR_DIR to the directory where pqRand lives, then
@@ -46,10 +46,22 @@ MAKING
 
 	See examples/pqRandExample for examples of using the package. 
 	pqRand.hpp is another good resource, as it is fairly well documented.
+	
+CYTHON
+========================================================================
+	Provided you have installed both Python and Cython, 
+	it should be possible to easily compile a Python library for pqRand.
+	Simply run:
+		$ python setup_pYqRand.py build_ext --inplace
+	Then you can (provided pYqRand.so is in your directory)
+		>>> import pYqRand	
+	Note: This has only been tested with CNU/LINUX (using gcc).
+	The '--std=c++11' compiler flag is added to enable C++11
+	(so change this flag to the equivalent one if your compiler doesn't use it).
 
 SEEDING
 ========================================================================
-	pqRand_engine requires 1024 bits of seed. By default (no arg ctor),
+	pqRand::engine requires 1024 bits of seed. By default (no arg ctor or true),
 	it is seeded from std::random_device (/dev/urandom on most linux devices).
 	You can supply your own seed (as a file or std::string), 
 	but it must be in the right format.
@@ -63,7 +75,7 @@ SEEDING
 	Note that the seed MUST fill the entire state of the PRNG
 	( (# of words) == seed_size),  otherwise an exception is thrown.
 
-	NOTE: pqRand_engine contains additional state information.
+	NOTE: pqRand::engine contains additional state information.
 	Arbitrary states of pqRand_engine can be stored using WriteState,
 	and replenished with Seed_FromFile()
 

@@ -1,4 +1,4 @@
-#include "pqRand.hpp"
+#include "../include/pqRand.hpp"
 #include <string>
 #include <fstream>
 #include <stdexcept>
@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////////////////
 
 template<class gen64_t>
-void pqr::uPRNG_64_Seeder<gen64_t>::Seed()
+void pqRand::uPRNG_64_Seeder<gen64_t>::Seed()
 {
 	std::stringstream ss;
 	{
@@ -29,7 +29,7 @@ void pqr::uPRNG_64_Seeder<gen64_t>::Seed()
 ////////////////////////////////////////////////////////////////////////
 
 template<class gen64_t>
-void pqr::uPRNG_64_Seeder<gen64_t>::Seed_FromFile(std::string const& fileName)
+void pqRand::uPRNG_64_Seeder<gen64_t>::Seed_FromFile(std::string const& fileName)
 {
 	std::ifstream file(fileName.c_str(), std::ios::in);
 	
@@ -46,7 +46,7 @@ void pqr::uPRNG_64_Seeder<gen64_t>::Seed_FromFile(std::string const& fileName)
 ////////////////////////////////////////////////////////////////////////
 
 template<class gen64_t>
-void pqr::uPRNG_64_Seeder<gen64_t>::Seed_FromString(std::string const& seed)
+void pqRand::uPRNG_64_Seeder<gen64_t>::Seed_FromString(std::string const& seed)
 {
 	std::stringstream stream(seed);
 	this->Seed_FromStream(stream);
@@ -55,7 +55,7 @@ void pqr::uPRNG_64_Seeder<gen64_t>::Seed_FromString(std::string const& seed)
 ////////////////////////////////////////////////////////////////////////
 
 template<class gen64_t>
-void pqr::uPRNG_64_Seeder<gen64_t>::Seed_FromStream(std::istream& stream)
+void pqRand::uPRNG_64_Seeder<gen64_t>::Seed_FromStream(std::istream& stream)
 {
 	stream >> *this; // uPRNG_64_Seeder (as a wrapper) has no state to seed
 }
@@ -63,7 +63,7 @@ void pqr::uPRNG_64_Seeder<gen64_t>::Seed_FromStream(std::istream& stream)
 ////////////////////////////////////////////////////////////////////////
 
 template<class gen64_t>
-void pqr::uPRNG_64_Seeder<gen64_t>::WriteState(std::string const& fileName)
+void pqRand::uPRNG_64_Seeder<gen64_t>::WriteState(std::string const& fileName)
 {
 	// CAUTION: overwrite existing file without warning (ios::trunc)
 	std::ofstream file(fileName.c_str(), std::ios::out | std::ios::trunc);
@@ -81,7 +81,7 @@ void pqr::uPRNG_64_Seeder<gen64_t>::WriteState(std::string const& fileName)
 ////////////////////////////////////////////////////////////////////////
 
 template<class gen64_t>
-std::string pqr::uPRNG_64_Seeder<gen64_t>::GetState()
+std::string pqRand::uPRNG_64_Seeder<gen64_t>::GetState()
 {
 	std::stringstream string;
 	this->WriteState_ToStream(string);
@@ -91,7 +91,7 @@ std::string pqr::uPRNG_64_Seeder<gen64_t>::GetState()
 ////////////////////////////////////////////////////////////////////////
 
 template<class gen64_t>
-void pqr::uPRNG_64_Seeder<gen64_t>::WriteState_ToStream(std::ostream& stream)
+void pqRand::uPRNG_64_Seeder<gen64_t>::WriteState_ToStream(std::ostream& stream)
 {
 	stream << *this; // uPRNG_64_Seeder (as a wrapper) has no state to write
 }
@@ -100,13 +100,13 @@ void pqr::uPRNG_64_Seeder<gen64_t>::WriteState_ToStream(std::ostream& stream)
 ////////////////////////////////////////////////////////////////////////
 
 // BEGIN deep magic, do not touch!
-uint64_t const pqr::xorshift1024_star::JUMP[pqr::xorshift1024_star::state_size] =  
+uint64_t const pqRand::xorshift1024_star::JUMP[pqRand::xorshift1024_star::state_size] =  
 { 0x84242f96eca9c41d, 0xa3c65b8776f96855, 0x5b34a39f070b5837, 0x4489affce4f31a1e,
 	0x2ffeeb0a48316f40, 0xdc2d9891fe68c022, 0x3659132bb12fea70, 0xaac17d8efa43cab8,
 	0xc4cb815590989b13, 0x5ee975283d71c93b, 0x691548c86c1bd540, 0x7910c41d10a1e6a5, 
 	0x0b5fc64563b3e2a8, 0x047f7684e9fc949d, 0xb99181f2d8f685ca, 0x284600e3f30e38c3};
 
-uint64_t pqr::xorshift1024_star::operator()() 
+uint64_t pqRand::xorshift1024_star::operator()() 
 {
 	uint64_t s1;
 	{
@@ -119,7 +119,7 @@ uint64_t pqr::xorshift1024_star::operator()()
 	return s1 * UINT64_C(1181783497276652981);
 }
 
-void pqr::xorshift1024_star::Jump()
+void pqRand::xorshift1024_star::Jump()
 {
 	uint64_t t[16] = { 0 };
 	for(size_t i = 0; i < (sizeof(JUMP) / sizeof(*JUMP)); i++)
@@ -142,7 +142,7 @@ void pqr::xorshift1024_star::Jump()
 
 ////////////////////////////////////////////////////////////////////////
 
-void pqr::xorshift1024_star::Jump(size_t nTimes)
+void pqRand::xorshift1024_star::Jump(size_t nTimes)
 {
 	for(size_t n = 0; n < nTimes; ++n)
 		Jump();
@@ -150,7 +150,7 @@ void pqr::xorshift1024_star::Jump(size_t nTimes)
 
 ////////////////////////////////////////////////////////////////////////
 
-std::ostream& pqr::operator << (std::ostream& stream, xorshift1024_star const& gen)
+std::ostream& pqRand::operator << (std::ostream& stream, xorshift1024_star const& gen)
 {
 	for(size_t i = 0; i < xorshift1024_star::state_size; ++i)
 		stream << gen.state[i] << " ";
@@ -168,28 +168,28 @@ std::ostream& pqr::operator << (std::ostream& stream, xorshift1024_star const& g
 // Seed the generator from the stream. Two formats expected (N = state_size)
 // w_1 w_2 ... w_N N    --> p not specified, set to zero
 // w_1 w_2 ... w_N N p  --> p specified
-std::istream& pqr::operator >> (std::istream& stream, xorshift1024_star& gen)
+std::istream& pqRand::operator >> (std::istream& stream, xorshift1024_star& gen)
 {
 	uint64_t word;
 	
 	for(size_t i = 0; i < xorshift1024_star::state_size; ++i)
 	{	
 		if(not (stream >> word))
-			throw std::runtime_error("pqr::xorshift1024_star: seed stream malformed -- not enough words to fill state.");
+			throw std::runtime_error("pqRand::xorshift1024_star: seed stream malformed -- not enough words to fill state.");
 		
 		gen.state[i] = word;
 	}
 	
 	if(not (stream >> word))
-		throw std::runtime_error("pqr::xorshift1024_star: seed stream malformed -- state size not supplied.");
+		throw std::runtime_error("pqRand::xorshift1024_star: seed stream malformed -- state size not supplied.");
 	else if(word not_eq xorshift1024_star::state_size)
-		throw std::runtime_error("pqr::xorshift1024_star: seed stream malformed -- wrong state size.");
+		throw std::runtime_error("pqRand::xorshift1024_star: seed stream malformed -- wrong state size.");
 	
 	// Read p, which exists in [0, 16). If p is not stored, then use p = 0
 	if(stream >> word)
 	{
 		if(word > xorshift1024_star::state_size)
-			throw std::runtime_error("pqr::xorshift1024_star: seed stream malformed -- p is larger than state_size");
+			throw std::runtime_error("pqRand::xorshift1024_star: seed stream malformed -- p is larger than state_size");
 		gen.p = word;
 	}
 	else gen.p = 0;
@@ -201,11 +201,11 @@ std::istream& pqr::operator >> (std::istream& stream, xorshift1024_star& gen)
 ////////////////////////////////////////////////////////////////////////
 
 // Need to instantiate the template class for the object file (shared library)
-template class pqr::uPRNG_64_Seeder<pqr::PRNG_t>;
+template class pqRand::uPRNG_64_Seeder<pqRand::PRNG_t>;
 
 ////////////////////////////////////////////////////////////////////////
 
-typename pqr::real_t pqr::pqRand_engine::RandomMantissa_Quasiuniform()
+typename pqRand::real_t pqRand::engine::RandomMantissa_Quasiuniform()
 {
 	uint64_t randUint = (*this)();
 	
@@ -255,7 +255,7 @@ typename pqr::real_t pqr::pqRand_engine::RandomMantissa_Quasiuniform()
 
 ////////////////////////////////////////////////////////////////////////
 
-typename pqr::real_t pqr::pqRand_engine::RandomMantissa_Superuniform()
+typename pqRand::real_t pqRand::engine::RandomMantissa_Superuniform()
 {
 	uint64_t randUint;
 	
@@ -285,7 +285,7 @@ typename pqr::real_t pqr::pqRand_engine::RandomMantissa_Superuniform()
 
 ////////////////////////////////////////////////////////////////////////
 
-typename pqr::real_t pqr::pqRand_engine::RandomMantissa_Superuniform_canonical()
+typename pqRand::real_t pqRand::engine::RandomMantissa_Superuniform_canonical()
 {
 	uint64_t randUint;
 	
@@ -296,7 +296,7 @@ typename pqr::real_t pqr::pqRand_engine::RandomMantissa_Superuniform_canonical()
 
 ////////////////////////////////////////////////////////////////////////
 
-void pqr::pqRand_engine::Seed_FromStream(std::istream& stream)
+void pqRand::engine::Seed_FromStream(std::istream& stream)
 {
 	// Seed the base class
 	uPRNG_64_Seeder<PRNG_t>::Seed_FromStream(stream);
@@ -319,15 +319,12 @@ void pqr::pqRand_engine::Seed_FromStream(std::istream& stream)
 		// We assume that seeds will not be shared among different builds!
 	}
 	else
-	{
-		// If state of the bitCache is missing, simply replenish during next RandBool()
-		cacheMask = replenishBitCache;
-	}
+		DefaultInitializeBitCache();
 }
 
 ////////////////////////////////////////////////////////////////////////
 
-void pqr::pqRand_engine::WriteState_ToStream(std::ostream& stream)
+void pqRand::engine::WriteState_ToStream(std::ostream& stream)
 {
 	uPRNG_64_Seeder<PRNG_t>::WriteState_ToStream(stream);
 	
@@ -337,7 +334,15 @@ void pqr::pqRand_engine::WriteState_ToStream(std::ostream& stream)
 
 ////////////////////////////////////////////////////////////////////////
 
-bool pqr::pqRand_engine::RandBool()
+void pqRand::engine::DefaultInitializeBitCache()
+{
+	// Defer initialization until next call to RandBool()
+	cacheMask = replenishBitCache;
+}
+
+////////////////////////////////////////////////////////////////////////
+
+bool pqRand::engine::RandBool()
 {
 	if(cacheMask == replenishBitCache)
 	{
@@ -352,7 +357,7 @@ bool pqr::pqRand_engine::RandBool()
 
 ////////////////////////////////////////////////////////////////////////
 
-void pqr::pqRand_engine::ApplyRandomSign(real_t& victim)
+void pqRand::engine::ApplyRandomSign(real_t& victim)
 {
 	bool const decision = RandBool();
 	victim = std::copysign(victim, decision ? real_t(1.) : real_t(-1.));

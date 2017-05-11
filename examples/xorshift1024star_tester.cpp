@@ -2,11 +2,9 @@
 #include <fstream>
 #include <iostream>
 
-using namespace pqr;
-
 int main()
 {
-	uPRNG_64_Seeder<xorshift1024_star> gen;
+	pqRand::engine gen;
 	
 	// 	sudo yum install dieharder
 	// Continously output random numbers to std::out, for use like ... 

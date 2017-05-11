@@ -5,8 +5,8 @@
 // 8           8 
 // 8           8 
 //
-// pqRand: The precise quantile flip-flop random package
-//   version 0.2 (Apr 2017)
+// pqRand: The precise quantile random package
+//   version 0.3 (May 2017)
 // By Keith Pedersen (Keith.David.Pedersen @ gmail.com)
 //   https://github.com/keith-pedersen/pqRand
 //   https://arxiv.org/abs/1704.07949
@@ -36,6 +36,8 @@
 //		known as rTailor
 // version 0.2 ===> 25 Apr 17 
 //		changed name to pqRand, pushed paper to arXiv, pushed code to GitHub
+// version 0.3 ===> 11 May 17 
+//		finalizing API (namespace pqr->pqRand), created cython implementation
 // =====================================================================
 //
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -78,15 +80,12 @@
 // END <copyright notice>
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 //
-// Coming in version 0.3:
-//   * python API via Cython
-//
 // Features to consider:
 //   * If a regular sample of U produces numbers with weight == 1., 
 //     a sample from U that samples from the tail (u -> 0)
 //     given a supplied weight << 1.
 //
-// Bugs to fix:
+// Known bugs:
 
 #ifndef PQ_RAND
 #define PQ_RAND
@@ -96,19 +95,19 @@
 #include <array>
 #include <random> // random_device / mt19937_64
 
-namespace pqr
+namespace pqRand
 {
 	// uPRNG_64_Seeder is a template class for seeding a PRNG of uint64_t.
 	// By default, it automatically forces an initial seed of the PRNG.
 	// Seeding can also be deferred till after the ctor, upon request.
 	// The seeding functions fills THE ENTIRE state of the PRNG
 	// (i.e. you can't seed 20 kB of the Mersenne twister with a 32 bit number).
-	// The default Seed() repeatedly calling std::random_device
-	// (which internally uses /dev/urandom on many linux distros).
+	// The default Seed() repeatedly calls std::random_device
+	// (which uses /dev/urandom on many linux distros).
 	// After a default seeding, one can write the generator's state to a file
 	// (or a std::string) to allow future re-seeding from a known state.
 	//
-	// One can also supply a custom seed (filled in some arbitrary way)
+	// One can also supply a custom seed (filled anyway you like)
 	// by supplying a fileName (Seed_FromFile()) or a seed string(Seed_FromString())
 	// in the correct format (see the comments above Seed/WriteSeed).
 	// WARNING: The ONLY check made on the seed words themselves is
@@ -128,26 +127,23 @@ namespace pqr
 			virtual void WriteState_ToStream(std::ostream& stream);
 					
 		public:
-			// Two options when constructing
-			//	   1. Pass no arguments
-			//       ==> Automatic seed (call Seed(), using std::random_device)
-			//    2. Pass a dummy bool (usually false, but either will do)
-			//       ==> Defer seeding generator, user will seed later
+			// The ctor takes a bool instructing whether to do the default seed
 			// This scheme allows the best of both worlds
 			//    * Automatically use high-quality seed in most cases (lest you forget).
 			//    * Allow seeding from stored states, when explicitly requested
 			//      (call Seed_FromFile() or Seed_FromString() after ctor).
 			//      NOTE: Access to these from inside the ctor is difficult.
 			//      They use the same arguments, so which do you want?
-			//      Also, possible workarounds complicate a Cython interface.
-			//        (a) Use char const* for File and std::string for String (with explicit ctor).
-			//        (b) Use a strongly typed enum (enum class).
-			//        (c) Use an int enum (terrible interface, bad idea).
-			uPRNG_64_Seeder():gen64_t() {Seed();}
-			explicit uPRNG_64_Seeder(bool):gen64_t() {/* Defer seed for user.*/}
-						
+			//      Plus, Cython can't overload, so we need a uniform ctor
+			explicit uPRNG_64_Seeder(bool const doDefaultSeed = true):
+				gen64_t()
+			{
+				if(doDefaultSeed) Seed();
+				// else defer seed to user
+			}
+			
 			// The format of the seed file/string mimics std::mt19937:
-			// A single line, with each word of seed space separated, 
+			// A single line, with each word of seed space-separated, 
 			// terminating with the seed_size itself
 			//   s_1 s_2 s_3 ... s_(state_size) state_size
 			// Example for PRNG with state_size == 3
@@ -185,7 +181,7 @@ namespace pqr
 	// (concatenating the last-3 from three sequential calls, x = 21321321)
 	// 	./xorshift2014star_last3bits_tester.x | dieharder -g 200 -a
 	// they also passed. So perhaps they're not as bad as claimed.
-	// But for now, we conservatively ignore the last 3 bits in pqRand_engine
+	// But for now, we conservatively ignore the last 3 bits in pqRand::engine
 	//
 	// Per Vigna: "The state must be seeded so that it is not everywhere zero."
 	class xorshift1024_star
@@ -278,7 +274,7 @@ namespace pqr
 	/////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////
 			
-	// pqRand_engine wraps the chosen PRNG in an API for the quantile flip-flop,
+	// pqRand::engine wraps the chosen PRNG in an API for the quantile flip-flop,
 	// providing access to:
 	//   * A quasiuniform sample of U(0, 1]
 	//   * A quasiuniform sample of U(0, 1/2]
@@ -287,7 +283,7 @@ namespace pqr
 	//   * A random bool that doesn't waste random bits
 	//   * A method to efficiently apply a random sign to a floating-point
 	// Future changes to the API are not anticipated, but may still be possible
-	class pqRand_engine : public uPRNG_64_Seeder<PRNG_t>
+	class engine : public uPRNG_64_Seeder<PRNG_t>
 	{
 		private:
 			// Scale the mantissa into the correct interval
@@ -344,15 +340,20 @@ namespace pqr
 			virtual void Seed_FromStream(std::istream& stream);
 			virtual void WriteState_ToStream(std::ostream& stream);
 			
+			void DefaultInitializeBitCache();
+			
 		public:
-			pqRand_engine():
+			engine(bool const doDefaultSeed = true):
+				uPRNG_64_Seeder(doDefaultSeed)
 				// Defer automatic seed from base class because we need to use 
 				// virtual Seed_FromStream to properly seed, which the
 				// base-class can't access from inside its ctor.
-				uPRNG_64_Seeder(false)
-			{Seed();}
-			
-			explicit pqRand_engine(bool):uPRNG_64_Seeder(false) {/* Defer seed for user.*/}
+			{
+				if(doDefaultSeed)	
+					Seed();
+				else // Defer seeding till later, but place the bitCache in a valid state
+					DefaultInitializeBitCache();
+			}
 								
 			bool RandBool(); // An ideal coin flip
 			void ApplyRandomSign(real_t& victim); // Give victim a random sign (+/-)

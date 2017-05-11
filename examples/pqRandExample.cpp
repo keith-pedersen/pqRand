@@ -1,24 +1,24 @@
 #include "pqRand.hpp"
-#include "pqrDistributions.hpp"
+#include "distributions.hpp"
 #include <stdexcept>
 #include <sstream>
 #include <iostream>
 
-using namespace pqr;
+using namespace pqRand;
 
 int main()
 {	
 	// This package uses C++11.
 	
-	// The pqRand_engine is the main module needed by every distribution.
+	// The pqRand::engine is the main module needed by every distribution.
 	// It does the random integer generation, converts integers to U_Q, 
 	// and does the random coin flips needed by the quantile flip-flop.
-	// All pqr::distributions require a pqRand_engine to be supplied by 
+	// All pqr::distributions require a pqRand::engine to be supplied by 
 	// reference when drawing from them. This follows the API of the
 	// std::abcd_distribution of C++11 (e.g. std::normal_distribution).
 	
-	// The pqRand_engine automatically does an initial seed,
-	// unless it is told not to (by passing the ctor a bool, usually false).
+	// The pqRand::engine automatically does an initial seed,
+	// unless it is told not to (by passing false to the ctor).
 	// It uses a seed AS LARGE as its generators state
 	// (e.g. a 32-bit seed doesn't fill up 1024 bits of state).
 	// The automatic seed uses std::random_device, 
@@ -32,11 +32,11 @@ int main()
 	// However, the main reason to use the file/string interface is to 
 	// allow previous seeds from random_device to be stored and reused.
 	
-	// Let's look at a few ways to start up a pqRand_engine
+	// Let's look at a few ways to start up a pqRand::engine
 	
 	{	
 		// Construct with no args ... automatic seed using std::random_device,
-		pqRand_engine gen1;
+		engine gen1;
 		
 		// Store gen1's seeded initial state to a file, for auditing/reuse.
 		gen1.WriteState("test.seed");
@@ -45,15 +45,15 @@ int main()
 		// pass a bool during construction to defer seeding
 		// (if you forget to pass the bool, it won't affect the
 		// output of the generator, but will simpy waste time).
-		pqRand_engine gen2(false);
+		engine gen2(false);
 		gen2.Seed_FromFile("test.seed");
 		
 		// We don't have to go through a file; store a seed in a string.
-		pqRand_engine gen3(false);
+		engine gen3(false);
 		gen3.Seed_FromString(gen2.GetState()); 
 		
 		// The state of generators is also directly copyable/assignable
-		pqRand_engine gen4 = gen3;
+		engine gen4 = gen3;
 		
 		printf("\n Seed test\n");
 		printf("--------------------------------------------------------------------------------\n");
@@ -80,7 +80,7 @@ int main()
 	// Here is an example of creating 4 generators, each separated by a single jump.
 	
 	{
-		std::vector<pqRand_engine> engineList;
+		std::vector<engine> engineList;
 		
 		engineList.emplace_back(false);
 		engineList.back().Seed_FromFile("test.seed");
@@ -116,12 +116,12 @@ int main()
 	
 	printf("\n\n Utilities\n");
 	printf("--------------------------------------------------------------------------------\n");
-	printf("    pqRand_engine gives access to uint64_t, U_Q, HalfU_Q, and random bool (as well as U_S)\n");
+	printf("    pqRand::engine gives access to uint64_t, U_Q, HalfU_Q, and random bool (as well as U_S)\n");
 	
-	pqRand_engine gen;
-	// The pqRand_engine::operator()() gives us direct access to 
+	engine gen;
+	// The pqRand::engine::operator()() gives us direct access to 
 	// the uint64_t calculated by mt19937_64
-	// To get (0., 1.] from pqRand_engine, we use the function U_Q(). 
+	// To get (0., 1.] from pqRand::engine, we use the function U_Q(). 
 	// HalfU_Q() gives a number in (0, 0.5] (for use in certain flip-flops).
 	printf("gen():          %lu\n", gen());
 	printf("gen.U_Q():      %.17e\n", gen.U_Q());

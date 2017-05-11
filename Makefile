@@ -29,7 +29,7 @@ LIB_FLAGS_EXTERN = $(LIB_FLAGS) -L $(PQR_DIR) -lpqr
 
 
 
-FILENAMES = pqRand pqrDistributions
+FILENAMES = pqRand distributions
 OBJS = $(addsuffix .o, $(addprefix $(SOURCE)/, $(FILENAMES)))
 
 all : libpqr.so $(EXAMPLES)/pqRandExample.x $(EXAMPLES)/random_device_tester.x \

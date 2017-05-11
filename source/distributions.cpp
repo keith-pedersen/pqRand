@@ -1,6 +1,6 @@
-#include "pqrDistributions.hpp"
+#include "../include/distributions.hpp"
 
-typename pqr::real_t pqr::standard_normal::operator()(pqRand_engine& gen)
+typename pqRand::real_t pqRand::standard_normal::operator()(pqRand::engine& gen)
 {
 	if(valueCached)
 	{
@@ -18,7 +18,7 @@ typename pqr::real_t pqr::standard_normal::operator()(pqRand_engine& gen)
 
 ////////////////////////////////////////////////////////////////////////
 
-typename pqr::two pqr::standard_normal::GenTwo(pqRand_engine& gen)
+typename pqRand::two pqRand::standard_normal::GenTwo(pqRand::engine& gen)
 {
 	two pair;
 	real_t u;
@@ -42,7 +42,7 @@ typename pqr::two pqr::standard_normal::GenTwo(pqRand_engine& gen)
 	}
 	while(u > real_t(1.));
 
-	// Give x and y a random sign via the pqRand_engine (uses its bitCache)
+	// Give x and y a random sign via the pqRand::engine (uses its bitCache)
 	gen.ApplyRandomSign(pair.x);
 	gen.ApplyRandomSign(pair.y);
 	
@@ -61,9 +61,9 @@ typename pqr::two pqr::standard_normal::GenTwo(pqRand_engine& gen)
 ////////////////////////////////////////////////////////////////////////
 
 // Normal takes numbers from standard_normal and adjusts them to sigma and mu
-typename pqr::two pqr::normal::GenTwo(pqRand_engine& gen)
+typename pqRand::two pqRand::normal::GenTwo(pqRand::engine& gen)
 {
-	two pair = pqr::standard_normal::GenTwo(gen);
+	two pair = pqRand::standard_normal::GenTwo(gen);
 	
 	pair.x = mu_ + sigma_ * pair.x;
 	pair.y = mu_ + sigma_ * pair.y;
@@ -76,10 +76,10 @@ typename pqr::two pqr::normal::GenTwo(pqRand_engine& gen)
 
 
 // Log_normal also takes from standard_normal, then exponentiates
-typename pqr::two pqr::log_normal::GenTwo(pqRand_engine& gen)
+typename pqRand::two pqRand::log_normal::GenTwo(pqRand::engine& gen)
 {
 	// Draw from standard normal, apply mu as a multiplicative scale
-	two pair = pqr::standard_normal::GenTwo(gen);
+	two pair = pqRand::standard_normal::GenTwo(gen);
 	
 	pair.x = muScale * std::exp(sigma_ * pair.x);
 	pair.y = muScale * std::exp(sigma_ * pair.y);
@@ -91,7 +91,7 @@ typename pqr::two pqr::log_normal::GenTwo(pqRand_engine& gen)
 ////////////////////////////////////////////////////////////////////////
 
 // When we implement the quantile flip-flop, we must draw from HalfU
-typename pqr::real_t pqr::weibull::operator()(pqRand_engine& gen)
+typename pqRand::real_t pqRand::weibull::operator()(pqRand::engine& gen)
 {
 	real_t const hu = gen.HalfU_Q();
 	
@@ -104,7 +104,7 @@ typename pqr::real_t pqr::weibull::operator()(pqRand_engine& gen)
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 
-typename pqr::real_t pqr::pareto::operator()(pqRand_engine& gen)
+typename pqRand::real_t pqRand::pareto::operator()(pqRand::engine& gen)
 {
 	return xm_ * std::pow(gen.U_Q(), negRecipAlpha);
 }
@@ -112,7 +112,7 @@ typename pqr::real_t pqr::pareto::operator()(pqRand_engine& gen)
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 
-typename pqr::real_t pqr::exponential::operator()(pqRand_engine& gen)
+typename pqRand::real_t pqRand::exponential::operator()(pqRand::engine& gen)
 {
 	real_t const hu = gen.HalfU_Q();
 	
@@ -125,7 +125,7 @@ typename pqr::real_t pqr::exponential::operator()(pqRand_engine& gen)
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 
-typename pqr::two pqr::standard_normal_lowPrecision::GenTwo(pqRand_engine& gen)
+typename pqRand::two pqRand::standard_normal_lowPrecision::GenTwo(pqRand::engine& gen)
 {
 	two pair;
 	real_t u;

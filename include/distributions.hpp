@@ -1,10 +1,10 @@
-#ifndef PRQ_DISTRIBUTIONS
-#define PRQ_DISTRIBUTIONS
+#ifndef DISTRIBUTIONS
+#define DISTRIBUTIONS
 
 #include "pqRand.hpp"
 #include <cmath> // exp
 
-namespace pqr
+namespace pqRand
 {
 	// A simple struct to store a pair of objects, used by the 
 	// normal distributions, since Marsaglia polar generates two number per call
@@ -35,8 +35,8 @@ namespace pqr
 			standard_normal():
 				valueCached(false) {}
 			
-			real_t operator()(pqRand_engine& gen); // Return a single value
-			virtual two GenTwo(pqRand_engine& gen); // Return a pair of values
+			real_t operator()(pqRand::engine& gen); // Return a single value
+			virtual two GenTwo(pqRand::engine& gen); // Return a pair of values
 			// GenTwo is virtual because we can re-use the caching functionality
 			// for normal and log_normal by simply redefining GenTwo
 	};
@@ -56,7 +56,7 @@ namespace pqr
 				standard_normal(), mu_(mu_in), sigma_(sigma_in) {}
 			
 			// Overwrite GenTwo, to add sigma and mu
-			virtual two GenTwo(pqRand_engine& gen);
+			virtual two GenTwo(pqRand::engine& gen);
 			
 			inline real_t mu() {return mu_;}
 			inline real_t sigma() {return sigma_;}
@@ -78,7 +78,7 @@ namespace pqr
 				normal(mu_in, sigma_in),
 				muScale(std::exp(mu_)) {}
 				
-			virtual two GenTwo(pqRand_engine& gen);
+			virtual two GenTwo(pqRand::engine& gen);
 	};
 	
 	/////////////////////////////////////////////////////////////////////
@@ -97,7 +97,7 @@ namespace pqr
 			weibull(real_t const lambda_in, real_t const k_in):
 				lambda_(lambda_in), k_(k_in), kRecip(real_t(1.)/k_) {}
 				
-			real_t operator()(pqRand_engine& gen);
+			real_t operator()(pqRand::engine& gen);
 			
 			inline real_t lambda() {return lambda_;}
 			inline real_t k() {return k_;}
@@ -119,7 +119,7 @@ namespace pqr
 			pareto(real_t const xm_in, real_t const alpha_in):
 				xm_(xm_in), alpha_(alpha_in), negRecipAlpha(real_t(-1.)/alpha_) {}
 				
-			real_t operator()(pqRand_engine& gen);
+			real_t operator()(pqRand::engine& gen);
 			
 			inline real_t xm() {return xm_;}
 			inline real_t alpha() {return alpha_;}
@@ -138,7 +138,7 @@ namespace pqr
 			exponential(real_t const mu_in):
 				mu_(mu_in) {}
 				
-			real_t operator()(pqRand_engine& gen);
+			real_t operator()(pqRand::engine& gen);
 			
 			inline real_t mu() {return mu_;}
 	};
@@ -150,7 +150,7 @@ namespace pqr
 			standard_normal_lowPrecision():
 				standard_normal() {}
 			
-			virtual two GenTwo(pqRand_engine& gen);
+			virtual two GenTwo(pqRand::engine& gen);
 	};
 }
 
