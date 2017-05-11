@@ -4,8 +4,8 @@ sys.path.append("../")
 
 import pYqRand
 
-# To draw random numbers, we need a pqRand.engine to store the PRNG
-# We pass a bool to the constructor of pqRand.engine to inform it
+# To draw random numbers, we need a pYqRand.engine to store the PRNG
+# We pass a bool to the constructor of pYqRand.engine to inform it
 # whether or not to do an initial, automatic seeding from 
 # std::random_device (/dev/urandom on most GNU/LINUX).
 # The default argument is True, so if we pass no arguments, 
@@ -55,6 +55,10 @@ import matplotlib.pyplot as plt
 
 # Create a standard normal distribution (mu = 0, sigma = 1)
 dist = pYqRand.standard_normal()
+
+# We draw from a distribution by feeding it a pYqRand.engine as an argument
+# This is the same API as C++ std::normal_distribution
+print "One variate from a standard_normal: " + str(dist(gen4))
 
 n = 10**4 # how large a sample size
 pointArea = .01 # size of the plot point
