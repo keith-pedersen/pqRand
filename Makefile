@@ -32,7 +32,7 @@ LIB_FLAGS_EXTERN = $(LIB_FLAGS) -L $(PQR_DIR) -lpqr
 FILENAMES = pqRand distributions
 OBJS = $(addsuffix .o, $(addprefix $(SOURCE)/, $(FILENAMES)))
 
-all : libpqr.so $(EXAMPLES)/pqRandExample.x $(EXAMPLES)/random_device_tester.x \
+all : libpqr.so $(EXAMPLES)/pqRand_Example.x $(EXAMPLES)/random_device_tester.x \
 	$(EXAMPLES)/xorshift1024star_tester.x $(EXAMPLES)/xorshift1024star_last3bits_tester.x \
 	$(EXAMPLES)/IsotropicVectors.x
 

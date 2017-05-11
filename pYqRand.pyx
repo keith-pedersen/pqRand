@@ -2,9 +2,15 @@
 # distutils: sources = ['source/pqRand.cpp', 'source/distributions.cpp']
 # distutils: extra_compile_args = ['--std=c++11']
 
-# This is a Cython wrapper for the pqRand package
+# This is a Cython wrapper for the pqRand C++ package
 # It's annoying to have to write all these wrappers,
-# but it's better than nothing
+# but it's better than nothing.
+
+# Differences versus C++ package
+# 	1. We cannot copy the state of an engine using assigment (operator=),
+# 		because in Python this creates a reference, not a copy.
+# 		To replace this functionality, we introduce the function Seed_FromEngine().
+#  2. engine.ApplyRandomSign(val) cannot alter val, so we return it instead
 
 from libcpp cimport bool # access bool as bool
 from libcpp.string cimport string # access std::string as string
@@ -12,11 +18,22 @@ from libcpp.string cimport string # access std::string as string
 # Thus we need a way to dereference the pointer
 from cython.operator cimport dereference as deref
 
-########################################################################		
+########################################################################
+# First we must declare the c-functions we intend to call
 
+########################################################################
+# import pqRand.hpp
+
+# To allow the objects to have the same name in Cython and C++,
+# we import as **_c, giving the full name in quotes
 cdef extern from "include/pqRand.hpp" namespace "pqRand":
 	cdef cppclass engine_c "pqRand::engine":
 		engine_c(bool) except +
+		
+		# Cython doesn't support access to operator=, 
+		# so we simply rename the functionality
+		engine_c& assign "pqRand::engine::operator=" (engine_c& const)
+		
 		unsigned long operator()()
 		void Jump(unsigned long nTimes)
 		
@@ -38,6 +55,7 @@ cdef extern from "include/pqRand.hpp" namespace "pqRand":
 		double U_S_canonical()
 		
 ########################################################################		
+# import distributions.hpp
 		
 cdef extern from "include/distributions.hpp" namespace "pqRand":
 	cdef cppclass standard_normal_c "pqRand::standard_normal":
@@ -71,6 +89,12 @@ cdef extern from "include/distributions.hpp" namespace "pqRand":
 		double operator()(engine_c& gen)	
 
 ########################################################################		
+# Now we make the Cython wrapper class of the C++ object
+
+# Cython default initializes the C++ object using the nullary ctor
+# Howerver, engine() causes the default seeding, which we do not always want
+# To ellude the auto-nullary behavior, we must define __cinit__ and __dealloc__, 
+# which in this case requires storing a pointer to the C++ object
 
 cdef class engine:
 	cdef engine_c* c_engine
@@ -81,12 +105,14 @@ cdef class engine:
 	def __dealloc__(self):
 		del self.c_engine
 	
+	# operator() in C++
 	def __call__(self):
 		return deref(self.c_engine)()
-		
-	def Jump(self, unsigned int nTimes):
+	
+	# No overloading in Python, use default argument to mimic C++ behavior
+	def Jump(self, unsigned int nTimes = 1):
 		deref(self.c_engine).Jump(nTimes)
-		
+	
 	def Seed(self):
 		deref(self.c_engine).Seed()
 		
@@ -96,6 +122,10 @@ cdef class engine:
 	def Seed_FromString(self, str seed):
 		deref(self.c_engine).Seed_FromString(seed)
 	
+	# Mimic C++ direct copy of engine state, a = b	
+	def Seed_FromEngine(self, engine original):
+		deref(self.c_engine).assign(deref(original.c_engine))
+	
 	def WriteState(self, str fileName):
 		deref(self.c_engine).WriteState(fileName)
 		
@@ -104,7 +134,8 @@ cdef class engine:
 			
 	def RandBool(self):
 		return deref(self.c_engine).RandBool()
-		
+	
+	# Can't pass double by reference, so we return the altered victim
 	def ApplyRandomSign(self, double victim):
 		deref(self.c_engine).ApplyRandomSign(victim)
 		return victim
@@ -123,6 +154,42 @@ cdef class engine:
 		
 	def U_S_canonical(self):
 		return deref(self.c_engine).U_S_canonical()
+	
+	# Introduce helper funtions to create parallel states of the generator.
+	
+	# The worker function used by the three "public" functions
+	# Make the first index generator equal to the passed generator, 
+	# then Jump() once for each additional additional index
+	@staticmethod
+	def __ParallelList_FromEngine(unsigned int nEngines, engine first):
+		engList = [engine(False) for _ in range(nEngines)]
+		engList[0].Seed_FromEngine(first)
+		for i in range(1, nEngines):
+			engList[i].Seed_FromEngine(engList[i-1])
+			engList[i].Jump()
+		return engList
+	
+	# Generate nEngines in orthogonal state by seeding the first generator,
+	# then jumping the rest of the generators.
+	# The first version uses a default seed; store the state of the 
+	# first generator to replicate the list.
+	
+	@staticmethod
+	def ParallelList(unsigned int nEngines):
+		first = engine()
+		return engine.__ParallelList_FromEngine(nEngines, first)
+	
+	@staticmethod
+	def ParallelList_FromFile(unsigned int nEngines, str fileName):
+		first = engine(False)
+		first.Seed_FromFile(fileName)
+		return engine.__ParallelList_FromEngine(nEngines, first)
+		
+	@staticmethod
+	def ParallelList_FromString(unsigned int nEngines, str seed):
+		first = engine(False)
+		first.Seed_FromString(seed)
+		return engine.__ParallelList_FromEngine(nEngines, first)	
 		
 ########################################################################
 

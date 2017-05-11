@@ -125,7 +125,7 @@ namespace pqRand
 			// as these are the worker functions for the Seed/State functions.
 			virtual void Seed_FromStream(std::istream& stream);
 			virtual void WriteState_ToStream(std::ostream& stream);
-					
+								
 		public:
 			// The ctor takes a bool instructing whether to do the default seed
 			// This scheme allows the best of both worlds

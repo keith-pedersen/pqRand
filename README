@@ -24,9 +24,9 @@ This package is designed to improve sampling from the following distributions
 WARNING
 ========================================================================
 	This package is newly released and under active development. 
-	As of 11 May 2017, there is still no stable release of version 0.3.
+	As of 11 May 2017, there is still no stable release of version 0.3.x
 	Upon stable release, a development branch will be forked, 
-	and version 0.3 will be tagged.
+	and version 0.3.x will be tagged.
 
 ATTENTION
 ========================================================================
@@ -34,30 +34,40 @@ ATTENTION
 	C++11 is supported at your site. My apologies if it is not, 
 	but there are SO many reasons to use it.
 	
-MAKING
+COMING SOON
+========================================================================
+	Documentation pdf (instead of interspersed in source files and examples).
+	See examples/pqRand_Example.cpp or examples/pYqRand_Example.py 
+	for examples of using the package.pqRand.hpp is another good resource, ]
+	as it is fairly well documented.
+	
+C++
 ========================================================================
 	This package is designed for GNU/LINUX machines, via a Makefile.
 	"make all" should create all examples and a shared library.
 
-	Use the %.x rule as a template to build pqRand into your executable (via libpqr.so)
-	set PQR_DIR to the directory where pqRand lives, then
-	"make yourExecutable.x". Add needed libraries as necessary.
+	Use the %.x rule as a template to build pqRand into your executable (via libpqr.so).
+	Set PQR_DIR to the directory where pqRand lives, then	"make yourExecutable.x". 
+	Add needed libraries as necessary.
 	Note: LD_LIBRARY_PATH must also point to libpqr.so
-
-	See examples/pqRandExample for examples of using the package. 
-	pqRand.hpp is another good resource, as it is fairly well documented.
 	
 CYTHON
 ========================================================================
 	Provided you have installed both Python and Cython, 
-	it should be possible to easily compile a Python library for pqRand.
+	it should be possible to easily compile pYqRand, the Python implementation.
 	Simply run:
 		$ python setup_pYqRand.py build_ext --inplace
-	Then you can (provided pYqRand.so is in your directory)
-		>>> import pYqRand	
-	Note: This has only been tested with CNU/LINUX (using gcc).
-	The '--std=c++11' compiler flag is added to enable C++11
-	(so change this flag to the equivalent one if your compiler doesn't use it).
+	Then you can (provided pYqRand.so is in your directory, or you append sys.path)
+		>>> import pYqRand
+	
+	The Cython interface is the same as the C++ interface.
+	The major difference is that we must introduce Seed_FromEngine().
+	to replace C++ assigment (operator=), since Python does not copy on assignment.
+	See pYqRand_Example.py for a tutorial (and refer to pYqRand.pyx for additional resources).
+	
+	Note: Cython has only been tested on my CNU/LINUX (CentOS 7, so gcc).
+	The '--std=c++11' compiler flag is added to enable C++11 (line 3 of pYqRand.pyx,
+	so change this flag to the equivalent one if your compiler doesn't use it).
 
 SEEDING
 ========================================================================
@@ -65,6 +75,8 @@ SEEDING
 	it is seeded from std::random_device (/dev/urandom on most linux devices).
 	You can supply your own seed (as a file or std::string), 
 	but it must be in the right format.
+	The recommended seed for auditing is to use automatic seed, 
+	then store the seed to a file (~1/3 kB).
 
 	The format of the seed file/string mimics std::mt19937:
 	A single line, with each word of seed (64 bits) space separated, 
