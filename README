@@ -6,7 +6,7 @@
  8           8 
 
 pqRand: The precise quantile random package
-	version 0.3 (May 2017)
+	version 0.4.0 (beta); May 2017
 By Keith Pedersen (Keith.David.Pedersen @ gmail.com)
 	https://github.com/keith-pedersen/pqRand
 	https://arxiv.org/abs/1704.07949
@@ -21,75 +21,78 @@ This package is designed to improve sampling from the following distributions
 	* weibull
 	* pareto
 	
-WARNING
+ATTENTION.
 ========================================================================
-	This package is newly released and under active development. 
-	As of 11 May 2017, there is still no stable release of version 0.3.x
-	Upon stable release, a development branch will be forked, 
-	and version 0.3.x will be tagged.
-
-ATTENTION
-========================================================================
-	This package uses C++11. Hopefully by now (2017), 
+	This package is in beta. Please see the disclaimer in the COPYRIGHT_NOTICE.
+	If you find a bug, PLEASE contact me with as much information as you can. 
+	I am also open to new features (like new distributions, or new ways to use them) 
+	and suggestions for the API.
+	
+	Additionally, this package uses C++11. Hopefully by now (2017), 
 	C++11 is supported at your site. My apologies if it is not, 
 	but there are SO many reasons to use it.
 	
-COMING SOON
+INSTALLATION
 ========================================================================
-	Documentation pdf (instead of interspersed in source files and examples).
-	See examples/pqRand_Example.cpp or examples/pYqRand_Example.py 
-	for examples of using the package.pqRand.hpp is another good resource, ]
-	as it is fairly well documented.
+	To (locally) make the C++ library, the C++ examples, and the Python library, run:
+		./install
+	If you make changes to the code, or need to do change the Doxyfile to 
+	fix the documentation, run: 
+		./update
+	"update" runs "install", then regenerates the documentation.
+	
+USAGE
+========================================================================
+	Page through the documentation ("doc/documentation.html"), 
+	then check out "examples/pqRand_Example.cpp" or "examples/pYqRand_Example.py"
+	to learn how to use the package. Currently, only the C++ code has
+	pretty documentation, but the Python API is 99% identical to C++.
+	I've also tried to document all source code that isn't immediately obvious.
+	
+	This package is designed for GNU/Linux machines.
+	Running the "install" script should build libraries for C++ and python, 
+	and examples for C++. My apologies if it doesn't work on your system, 
+	but I've only developed on GNU/Linux, so I don't know how to support 
+	Windows or Mac.
 	
 C++
 ========================================================================
-	This package is designed for GNU/LINUX machines, via a Makefile.
-	"make all" should create all examples and a shared library.
+	"make all" should create all examples and the shared library.
 
-	Use the %.x rule as a template to build pqRand into your executable (via libpqr.so).
-	Set PQR_DIR to the directory where pqRand lives, then	"make yourExecutable.x". 
-	Add needed libraries as necessary.
-	Note: LD_LIBRARY_PATH must also point to libpqr.so
+	Use the %.x rule as a template to build pqRand into your executable (via libpqr.so)
+	Set PQR_DIR to the directory where pqRand lives, then	"make yourProgram.x" 
+	(where your source code is called "yourProgram.cpp").
+	Add needed libraries and object files as necessary.
+	Note: LD_LIBRARY_PATH must also point to libpqr.so, or you'll get an error at runtime.
 	
 CYTHON
 ========================================================================
 	Provided you have installed both Python and Cython, 
 	it should be possible to easily compile pYqRand, the Python implementation.
-	Simply run:
+	Simply run the install script, or:
 		$ python setup_pYqRand.py build_ext --inplace
-	Then you can (provided pYqRand.so is in your directory, or you append sys.path)
+	Then you can import into Python
+	(provided pYqRand.so is in your local directory, 
+	or you can append to sys.path, as in pYqRand_Example.py)
 		>>> import pYqRand
 	
 	The Cython interface is the same as the C++ interface.
 	The major difference is that we must introduce Seed_FromEngine().
 	to replace C++ assigment (operator=), since Python does not copy on assignment.
-	See pYqRand_Example.py for a tutorial (and refer to pYqRand.pyx for additional resources).
+	See pYqRand_Example.py for a tutorial (and refer to pYqRand.pyx for additional differences).
 	
-	Note: Cython has only been tested on my CNU/LINUX (CentOS 7, so gcc).
+	Note: Cython has only been tested on my CNU/Linux (CentOS 7; gcc 4.8.5).
 	The '--std=c++11' compiler flag is added to enable C++11 (line 3 of pYqRand.pyx,
 	so change this flag to the equivalent one if your compiler doesn't use it).
 
 SEEDING
 ========================================================================
-	pqRand::engine requires 1024 bits of seed. By default (no arg ctor or true),
-	it is seeded from std::random_device (/dev/urandom on most linux devices).
-	You can supply your own seed (as a file or std::string), 
-	but it must be in the right format.
-	The recommended seed for auditing is to use automatic seed, 
-	then store the seed to a file (~1/3 kB).
-
-	The format of the seed file/string mimics std::mt19937:
-	A single line, with each word of seed (64 bits) space separated, 
-	terminating with the seed_size itself
-		s_1 s_2 s_3 ... s_(state_size) state_size
-	Example for PRNG with state_size == 3
-		8602057372317241997 13337802638347508439 10520579822156476364 3
-	Note that the seed MUST fill the entire state of the PRNG
-	( (# of words) == seed_size),  otherwise an exception is thrown.
-
-	NOTE: pqRand::engine contains additional state information.
-	Arbitrary states of pqRand_engine can be stored using WriteState,
-	and replenished with Seed_FromFile()
+	pqRand::engine requires 1024 bits of seed. Its default constructor
+	auto-seeds from std::random_device (/dev/urandom on most linux devices).
+	You can also supply your own seed (as a file or std::string), 
+	but it must be in the right format (see the documentation for pqRand::Seed).
+	The recommended method to store seeds for auditing is:
+	(i) auto-seed then (ii) store the seed to a file (~1/3 kB).
 
 DISTRIBUTIONS
 ========================================================================

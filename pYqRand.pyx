@@ -10,7 +10,8 @@
 # 	1. We cannot copy the state of an engine using assigment (operator=),
 # 		because in Python this creates a reference, not a copy.
 # 		To replace this functionality, we introduce the function Seed_FromEngine().
-#  2. engine.ApplyRandomSign(val) cannot alter val, so we return it instead
+#  2. engine.ApplyRandomSign(val) cannot alter val, so we return the altered val instead.
+#  3. Added ParallelList functions --- test to see if this is useful in Python before moving to C++
 
 from libcpp cimport bool # access bool as bool
 from libcpp.string cimport string # access std::string as string
@@ -25,7 +26,7 @@ from cython.operator cimport dereference as deref
 # import pqRand.hpp
 
 # To allow the objects to have the same name in Cython and C++,
-# we import as **_c, giving the full name in quotes
+# we import as **_c, giving the full C++ name in quotes
 cdef extern from "include/pqRand.hpp" namespace "pqRand":
 	cdef cppclass engine_c "pqRand::engine":
 		engine_c(bool) except +
@@ -67,33 +68,42 @@ cdef extern from "include/distributions.hpp" namespace "pqRand":
 		normal_c(double const, double const) except +
 
 		double operator()(engine_c& gen)
+		double Mu()
+		double Sigma()
 		
 	cdef cppclass log_normal_c "pqRand::log_normal":
 		log_normal_c(double const, double const) except +
+		double Mu()
+		double Sigma()
 
 		double operator()(engine_c& gen)
 		
 	cdef cppclass weibull_c "pqRand::weibull":
 		weibull_c(double const, double const) except +
 
-		double operator()(engine_c& gen)	
+		double operator()(engine_c& gen)
+		double Lambda()
+		double k()
 		
 	cdef cppclass pareto_c "pqRand::pareto":
 		pareto_c(double const, double const) except +
 
 		double operator()(engine_c& gen)
+		double xM()
+		double Alpha()
 	
 	cdef cppclass exponential_c "pqRand::exponential":
 		exponential_c(double const) except +
 
-		double operator()(engine_c& gen)	
+		double operator()(engine_c& gen)
+		double Lambda()
 
 ########################################################################		
 # Now we make the Cython wrapper class of the C++ object
 
-# Cython default initializes the C++ object using the nullary ctor
-# Howerver, engine() causes the default seeding, which we do not always want
-# To ellude the auto-nullary behavior, we must define __cinit__ and __dealloc__, 
+# Cython default initializes the C++ object using the default ctor
+# Howerver, engine() causes the default seeding, which we do not always want.
+# To ellude the auto-default behavior, we must define __cinit__ and __dealloc__, 
 # which in this case requires storing a pointer to the C++ object
 
 cdef class engine:
@@ -105,7 +115,7 @@ cdef class engine:
 	def __dealloc__(self):
 		del self.c_engine
 	
-	# operator() in C++
+	# operator()() in C++
 	def __call__(self):
 		return deref(self.c_engine)()
 	
@@ -122,7 +132,8 @@ cdef class engine:
 	def Seed_FromString(self, str seed):
 		deref(self.c_engine).Seed_FromString(seed)
 	
-	# Mimic C++ direct copy of engine state, a = b	
+	# Mimic C++ direct copy of engine state, a = b
+	# The calling generator assumes the state of the argument generator.
 	def Seed_FromEngine(self, engine original):
 		deref(self.c_engine).assign(deref(original.c_engine))
 	
@@ -157,7 +168,9 @@ cdef class engine:
 	
 	# Introduce helper funtions to create parallel states of the generator.
 	
-	# The worker function used by the three "public" functions
+	# The worker function used by the three "public" functions.
+	# Generate nEngines in orthogonal state by seeding the first generator,
+	# then jumping the rest of the generators.	
 	# Make the first index generator equal to the passed generator, 
 	# then Jump() once for each additional additional index
 	@staticmethod
@@ -169,14 +182,9 @@ cdef class engine:
 			engList[i].Jump()
 		return engList
 	
-	# Generate nEngines in orthogonal state by seeding the first generator,
-	# then jumping the rest of the generators.
-	# The first version uses a default seed; store the state of the 
-	# first generator to replicate the list.
-	
 	@staticmethod
 	def ParallelList(unsigned int nEngines):
-		first = engine()
+		first = engine() # auto-seed
 		return engine.__ParallelList_FromEngine(nEngines, first)
 	
 	@staticmethod
@@ -219,6 +227,12 @@ cdef class normal:
 	def __call__(self, engine gen):
 		return deref(self.dist)(deref(gen.c_engine))
 		
+	def Mu(self):
+		return deref(self.dist).Mu()
+		
+	def Sigma(self):
+		return deref(self.dist).Sigma()
+		
 ########################################################################
 		
 cdef class log_normal:
@@ -232,6 +246,12 @@ cdef class log_normal:
 	
 	def __call__(self, engine gen):
 		return deref(self.dist)(deref(gen.c_engine))
+		
+	def Mu(self):
+		return deref(self.dist).Mu()
+		
+	def Sigma(self):
+		return deref(self.dist).Sigma()		
 
 ########################################################################
 		
@@ -247,6 +267,12 @@ cdef class weibull:
 	def __call__(self, engine gen):
 		return deref(self.dist)(deref(gen.c_engine))
 
+	def Lambda(self):
+		return deref(self.dist).Lambda()
+		
+	def k(self):
+		return deref(self.dist).k()
+
 ########################################################################
 		
 cdef class pareto:
@@ -257,20 +283,29 @@ cdef class pareto:
 		
 	def __dealloc__(self):
 		del self.dist
-	
+
 	def __call__(self, engine gen):
 		return deref(self.dist)(deref(gen.c_engine))
-		
+
+	def xM(self):
+		return deref(self.dist).xM()
+
+	def Alpha(self):
+		return deref(self.dist).Alpha()
+
 ########################################################################
 		
 cdef class exponential:
 	cdef exponential_c* dist
 	
-	def __cinit__(self, double mu):
-		self.dist = new exponential_c(mu)
+	def __cinit__(self, double Lambda):
+		self.dist = new exponential_c(Lambda)
 		
 	def __dealloc__(self):
 		del self.dist
 	
 	def __call__(self, engine gen):
 		return deref(self.dist)(deref(gen.c_engine))
+		
+	def Lambda(self):
+		return deref(self.dist).Lambda()

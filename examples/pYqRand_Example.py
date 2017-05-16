@@ -18,18 +18,18 @@ gen1.WriteState("test.seed");
 
 ########################################################################
 
-# We can now seed another engine from the stored seed.
+# We can now seed another gen2 from gen1's stored seed.
 # We pass False during construction, to elude the initial seed,
 # then manually call Seed_FromFile().
 gen2 = pYqRand.engine(False) # If we forget to pass False, it only wastes time, it's not detrimental
 gen2.Seed_FromFile("test.seed");
 
-# We can test that the engines are equal by comparing their state strings
+# We can test that the engines are equal by comparing their state-strings
 print "\ngen2 == gen1, using gen1's seed file? \t\t" + str(gen2.GetState() == gen1.GetState())
 
 ########################################################################
 
-# We can also seed another engine directly from a state string, instead of a file
+# We can also seed another engine directly from a state-string, instead of a file
 gen2state = gen2.GetState()
 
 gen3 = pYqRand.engine(False)

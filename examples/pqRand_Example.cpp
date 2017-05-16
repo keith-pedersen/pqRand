@@ -15,7 +15,7 @@ int main()
 	// and does the random coin flips needed by the quantile flip-flop.
 	// All pqr::distributions require a pqRand::engine to be supplied by 
 	// reference when drawing from them. This follows the API of the
-	// std::abcd_distribution of C++11 (e.g. std::normal_distribution).
+	// std::****_distribution of C++11 (e.g. std::normal_distribution).
 	
 	// The pqRand::engine automatically does an initial seed,
 	// unless it is told not to (by passing false to the ctor).
@@ -35,15 +35,15 @@ int main()
 	// Let's look at a few ways to start up a pqRand::engine
 	
 	{	
-		// Construct with no args ... automatic seed using std::random_device,
+		// Construct with no args ... auto-seed using std::random_device,
 		engine gen1;
 		
 		// Store gen1's seeded initial state to a file, for auditing/reuse.
 		gen1.WriteState("test.seed");
 		
 		// Seed another generator from a stored seed,
-		// pass a bool during construction to defer seeding
-		// (if you forget to pass the bool, it won't affect the
+		// pass false during construction to defer seeding
+		// (if you forget to pass false, it won't affect the
 		// output of the generator, but will simpy waste time).
 		engine gen2(false);
 		gen2.Seed_FromFile("test.seed");
@@ -141,7 +141,7 @@ int main()
 	// which may lead to some issues of convention.
 	standard_normal stand; 				// mu = 0, sigma = 1, always
 	normal norm(-1.5, 3.1); 			// mu = -1.5, sigma = 3.1
-	exponential exp(2.);
+	exponential exp(2.);             // lambda = 2.
 	log_normal logNorm(2.71, 0.66);  // mu = 2.71, sigma = 0.66
 	weibull weib(4.56, 1.23); 			// lambda = 4.56, k = 1.23
 	pareto par(3.33, 4.); 				// x_m = 3.33, alpha = 10.

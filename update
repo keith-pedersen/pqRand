@@ -1,0 +1,6 @@
+#!/bin/bash
+# This batch rebuilds everything, including the documentation
+# You will need to install doxygen:
+# 		sudo yum install doxygen 
+./install
+doxygen doc/Doxyfile

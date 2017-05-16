@@ -1,0 +1,6 @@
+#!/bin/bash
+# This batch builds the C++ library, all C++ examples, and the Python library.
+# You will need to install Cython
+#		sudo yum install Cython
+python setup_pYqRand.py build_ext --inplace
+make all

@@ -1,0 +1,33 @@
+pqRand: The precise quantile random package
+	Copyright(c) 2017 Keith Pedersen
+	https://github.com/keith-pedersen/pqRand
+
+Based upon work presented in:
+	"Conditioning your quantile function", 
+	https://arxiv.org/abs/1704.07949
+	
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+ * Redistribution of source code must retain the entirety of this
+   <Copyright_Notice>. Please cite the paper in the documentation and/or 
+   other materials provided with the distribution.
+ * Redistribution of methods in binary form (even in part) must 
+   reproduce the entire <Copyright_Notice> in the documentation and/or 
+   other materials provided with the distribution.
+ * Neither the name of the copyright owner nor the names of its
+   contributors may be used to endorse or promote products derived from
+   this software without specific prior written permission.
+
+THIS SOFTWARE (pqRand) IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. ALTHOUGH THE AUTHORS MADE
+EVERY EFFORT TO ENSURE THE FITNESS OF THIS CODE FOR ITS STATED PURPOSE, 
+IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR 
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, 
+OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.

@@ -8,34 +8,34 @@
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 
-template<class gen64_t>
-void pqRand::uPRNG_64_Seeder<gen64_t>::Seed()
+template<class prng64_t>
+void pqRand::uPRNG_64_Seeder<prng64_t>::Seed()
 {
 	std::stringstream ss;
 	{
 		std::random_device randDev;
 		
 		// One word for every seed, space-separated
-		for(size_t i = 0; i < gen64_t::state_size; ++i)
+		for(size_t i = 0; i < prng64_t::state_size; ++i)
 		{
 			// Unfortunately, random_device outputs 32 bits. Make a 64-bit uint.
 			ss << ((uint64_t(randDev()) << 32) bitor uint64_t(randDev())) << " ";
 		}					
-		ss << gen64_t::state_size; // Terminate with state_size
+		ss << prng64_t::state_size; // Terminate with state_size
 	}
 	this->Seed_FromStream(ss);
 }
 
 ////////////////////////////////////////////////////////////////////////
 
-template<class gen64_t>
-void pqRand::uPRNG_64_Seeder<gen64_t>::Seed_FromFile(std::string const& fileName)
+template<class prng64_t>
+void pqRand::uPRNG_64_Seeder<prng64_t>::Seed_FromFile(std::string const& fileName)
 {
 	std::ifstream file(fileName.c_str(), std::ios::in);
 	
 	if(not file.is_open())
 	{
-		throw std::runtime_error("rpq::uPRNG_64_Seeder::Seed ... <"
+		throw std::runtime_error("pqRand::uPRNG_64_Seeder::Seed ... <"
 			+ fileName + "> ... file not found!");
 	}
 	
@@ -45,8 +45,8 @@ void pqRand::uPRNG_64_Seeder<gen64_t>::Seed_FromFile(std::string const& fileName
 
 ////////////////////////////////////////////////////////////////////////
 
-template<class gen64_t>
-void pqRand::uPRNG_64_Seeder<gen64_t>::Seed_FromString(std::string const& seed)
+template<class prng64_t>
+void pqRand::uPRNG_64_Seeder<prng64_t>::Seed_FromString(std::string const& seed)
 {
 	std::stringstream stream(seed);
 	this->Seed_FromStream(stream);
@@ -54,23 +54,23 @@ void pqRand::uPRNG_64_Seeder<gen64_t>::Seed_FromString(std::string const& seed)
 
 ////////////////////////////////////////////////////////////////////////
 
-template<class gen64_t>
-void pqRand::uPRNG_64_Seeder<gen64_t>::Seed_FromStream(std::istream& stream)
+template<class prng64_t>
+void pqRand::uPRNG_64_Seeder<prng64_t>::Seed_FromStream(std::istream& stream)
 {
 	stream >> *this; // uPRNG_64_Seeder (as a wrapper) has no state to seed
 }
 
 ////////////////////////////////////////////////////////////////////////
 
-template<class gen64_t>
-void pqRand::uPRNG_64_Seeder<gen64_t>::WriteState(std::string const& fileName)
+template<class prng64_t>
+void pqRand::uPRNG_64_Seeder<prng64_t>::WriteState(std::string const& fileName)
 {
 	// CAUTION: overwrite existing file without warning (ios::trunc)
 	std::ofstream file(fileName.c_str(), std::ios::out | std::ios::trunc);
 	
 	if(not file.is_open())
 	{
-		throw std::runtime_error("rpq::uPRNG_64_Seeder::WriteState ... <"
+		throw std::runtime_error("pqRand::uPRNG_64_Seeder::WriteState ... <"
 			+ fileName + "> ... file cannot be created!");
 	}
 	
@@ -80,8 +80,8 @@ void pqRand::uPRNG_64_Seeder<gen64_t>::WriteState(std::string const& fileName)
 
 ////////////////////////////////////////////////////////////////////////
 
-template<class gen64_t>
-std::string pqRand::uPRNG_64_Seeder<gen64_t>::GetState()
+template<class prng64_t>
+std::string pqRand::uPRNG_64_Seeder<prng64_t>::GetState()
 {
 	std::stringstream string;
 	this->WriteState_ToStream(string);
@@ -90,8 +90,8 @@ std::string pqRand::uPRNG_64_Seeder<gen64_t>::GetState()
 
 ////////////////////////////////////////////////////////////////////////
 
-template<class gen64_t>
-void pqRand::uPRNG_64_Seeder<gen64_t>::WriteState_ToStream(std::ostream& stream)
+template<class prng64_t>
+void pqRand::uPRNG_64_Seeder<prng64_t>::WriteState_ToStream(std::ostream& stream)
 {
 	stream << *this; // uPRNG_64_Seeder (as a wrapper) has no state to write
 }
@@ -166,8 +166,8 @@ std::ostream& pqRand::operator << (std::ostream& stream, xorshift1024_star const
 ////////////////////////////////////////////////////////////////////////
 
 // Seed the generator from the stream. Two formats expected (N = state_size)
-// w_1 w_2 ... w_N N    --> p not specified, set to zero
-// w_1 w_2 ... w_N N p  --> p specified
+// s_1 s_2 ... s_N N    --> p not specified, set to zero
+// s_1 s_2 ... s_N N p  --> p specified
 std::istream& pqRand::operator >> (std::istream& stream, xorshift1024_star& gen)
 {
 	uint64_t word;
@@ -188,7 +188,7 @@ std::istream& pqRand::operator >> (std::istream& stream, xorshift1024_star& gen)
 	// Read p, which exists in [0, 16). If p is not stored, then use p = 0
 	if(stream >> word)
 	{
-		if(word > xorshift1024_star::state_size)
+		if(word >= xorshift1024_star::state_size)
 			throw std::runtime_error("pqRand::xorshift1024_star: seed stream malformed -- p is larger than state_size");
 		gen.p = word;
 	}
@@ -200,7 +200,7 @@ std::istream& pqRand::operator >> (std::istream& stream, xorshift1024_star& gen)
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 
-// Need to instantiate the template class for the object file (shared library)
+// Need to instantiate the template class for the object file or shared library
 template class pqRand::uPRNG_64_Seeder<pqRand::PRNG_t>;
 
 ////////////////////////////////////////////////////////////////////////
@@ -311,7 +311,7 @@ void pqRand::engine::Seed_FromStream(std::istream& stream)
 		// The state of bitCache can be missing. But if the bitCache is there, 
 		// the cacheMask cannot be missing
 		if(not (stream >> word))
-			throw std::runtime_error("pqRand_engine::Seed: bitCache stored in seed, but not cacheMask");
+			throw std::runtime_error("pqRand::engine::Seed: bitCache stored in seed, but not cacheMask");
 		else
 			cacheMask = word;
 			
@@ -344,10 +344,12 @@ void pqRand::engine::DefaultInitializeBitCache()
 
 bool pqRand::engine::RandBool()
 {
+	// The cacheMask starts at the leftmost bit and moves right
 	if(cacheMask == replenishBitCache)
 	{
-		bitCache = (*this)();
-		cacheMask = (uint64_t(1) << (numBitsPRNG - 1));
+		// When the cacheMask has moved too far right ... 
+		bitCache = (*this)(); // Get a new set of random bits
+		cacheMask = (uint64_t(1) << (numBitsPRNG - 1)); // Reset the cacheMask
 	}
 	
 	bool const decision = bool(cacheMask bitand bitCache);

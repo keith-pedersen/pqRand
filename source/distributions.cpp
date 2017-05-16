@@ -11,8 +11,8 @@ typename pqRand::real_t pqRand::standard_normal::operator()(pqRand::engine& gen)
 	{
 		valueCached = true;
 		two const pair = GenTwo(gen);
-		cache = pair.x;
-		return pair.y;
+		cache = pair.y;
+		return pair.x;
 	}
 }
 
@@ -23,8 +23,10 @@ typename pqRand::two pqRand::standard_normal::GenTwo(pqRand::engine& gen)
 	two pair;
 	real_t u;
 	
-	// The Marsaglia polar method. Note that we're not doing 1 - U
-	// to get a cheap random sign; this destroys the precision of U
+	// The Marsaglia polar method, modeled after GNU's std::normal_distribution,
+	// but with the added precision of the quantile flip-flop U_Q.
+	// As such, we're not doing 1 - U to get a cheap random sign; 
+	// this destroys the precision of quasiuniform U
 	do
 	{
 		pair.x = gen.U_Q();
@@ -34,11 +36,11 @@ typename pqRand::two pqRand::standard_normal::GenTwo(pqRand::engine& gen)
 		u = pair.x*pair.x + pair.y*pair.y;
 		
 		// Reject 2/3 of the region that rounds to 1
-		// (we want the epsilon/2 to the left of 1, but not the epsilon the right of 1.
-		//  There is a small region near (1, 0), (0, 1), etc. where the R region 
-		//  doesn't exist, but it is vanishingly small).
-		if((u == real_t(1.)) and (gen.U_Q()*real_t(3.) < real_t(2.)))
-			u = real_t(2.); // Easy way to reject
+		// (we want the epsilon/2 to the left of 1, but not the epsilon the right of 1).
+		// There is a small region near (1, 0), (0, 1), etc. where the right region 
+		// doesn't exist, but it is vanishingly small).
+		if((u == real_t(1.)) and (gen.U_S_canonical()*real_t(3.) < real_t(2.)))
+			u = 2.; // Easy way to reject
 	}
 	while(u > real_t(1.));
 
@@ -98,7 +100,7 @@ typename pqRand::real_t pqRand::weibull::operator()(pqRand::engine& gen)
 	if(gen.RandBool())
 		return lambda_ * std::pow(-std::log(hu), kRecip);
 	else
-		return lambda_ * std::pow(std::log1p(hu/(real_t(1.)-hu)), kRecip);
+		return lambda_ * std::pow(std::log1p(hu/(real_t(1.) - hu)), kRecip);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -117,9 +119,9 @@ typename pqRand::real_t pqRand::exponential::operator()(pqRand::engine& gen)
 	real_t const hu = gen.HalfU_Q();
 	
 	if(gen.RandBool())
-		return -mu_ * std::log(hu);
+		return -std::log(hu)/lambda_;
 	else
-		return mu_ * std::log1p(hu/(real_t(1.) - hu));
+		return std::log1p(hu/(real_t(1.) - hu))/lambda_;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -147,4 +149,3 @@ typename pqRand::two pqRand::standard_normal_lowPrecision::GenTwo(pqRand::engine
 	
 	return pair;
 }
-

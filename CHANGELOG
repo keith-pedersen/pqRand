@@ -1,0 +1,45 @@
+This is the change log for the pqRand package
+=============================================
+      _              _           
+     | |__     ___  | |_    __ _ 
+     | '_ \   / _ \ | __|  / _` |
+     | |_) | |  __/ | |_  | (_| |
+     |_.__/   \___|  \__|  \__,_|
+////////////////////////////////////////////////////////////////////////
+
+version 0.4.0 ===> 15 May 2017
+========================================================================
+	First beta release. Added Doxygen documentation, 
+	changed exponential distribution to use rate parameter lambda 
+	(instead of mean time mu in, line with convention),
+	but then changed all distribution parameter getter functions because
+	"lambda" is a reserved word in Python (F8X! $H17 @55),
+	created COPYWRITE_NOTICE and CHANGELOG. 
+	Note: Some features are still in alpha (e.g. ParallelList).
+	
+              _           _             
+       __ _  | |  _ __   | |__     __ _ 
+      / _` | | | | '_ \  | '_ \   / _` |
+     | (_| | | | | |_) | | | | | | (_| |
+      \__,_| |_| | .__/  |_| |_|  \__,_|
+                 |_|                    
+////////////////////////////////////////////////////////////////////////                 
+changes will be very broadly described, since they are often sweeping
+
+
+version 0.3 --- 11 May 2017 
+========================================================================
+	Changed API for easier transition to Python, namespace pqr->pqRand, 
+	created Cython implementation, introduced ParallelList functionality
+	in Cython only for alpha testing.
+
+
+version 0.2 --- 25 Apr 2017 
+========================================================================
+	Changed name to pqRand, fixed U_Q to round correctly, 
+	pushed paper to arXiv, pushed code to GitHub.
+
+
+version 0.1 --- 06 Mar 2017 
+========================================================================
+	Introduced as rTailor, VERY alpha.

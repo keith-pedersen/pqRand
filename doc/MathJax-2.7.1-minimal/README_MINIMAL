@@ -1,0 +1,18 @@
+This stripped down version of MathJax is the minimal version that works on my 
+GNU/Linux machine. I created it because it's about 200 times smaller than the 
+full install, so it's much easier to distribute.
+However, I'm almost positive it relies on being able to lookup
+certain fonts on your system. If the math in the documentation does not render properly
+(i.e. the brief descriptions for all the distributions look like garbage),
+there are a couple of things you can do.
+
+1. Edit "doc/Doxyfile" so that
+		MATHJAX_RELPATH = https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/
+   then run "update" to rebuild the documentation. 
+   NOTE: Shortly before publishing, MathJax.org stopped hosting its own cdn, 
+   this is the one they suggested, but there's no guarentee it will work.
+   
+2. If you don't have doxygen (so you can't rebuild documentation), download MathJax from
+		docs.mathjax.org/en/latest/installation.html
+   Unzip in the doc/ folder and make the softlink "MathJax-minimal" 
+   point to the local installation.
