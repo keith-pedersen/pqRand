@@ -49,3 +49,4 @@ libpqr.so: $(OBJS)
 clean:
 	rm -f $(SOURCE)/*.o
 	rm -f $(EXAMPLES_X)
+	rm -f libpqr.so
