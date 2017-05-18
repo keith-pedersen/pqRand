@@ -27,14 +27,13 @@ INC_FLAGS_EXTERN = -I $(PQR_INC)
 LIB_FLAGS = $(PQR_DEPENDENCIES)
 LIB_FLAGS_EXTERN = $(LIB_FLAGS) -L $(PQR_DIR) -lpqr
 
-
+EXAMPLES_CPP = $(wildcard examples/*.cpp)
+EXAMPLES_X = $(patsubst %.cpp, %.x, $(EXAMPLES_CPP))
 
 FILENAMES = pqRand distributions
 OBJS = $(addsuffix .o, $(addprefix $(SOURCE)/, $(FILENAMES)))
 
-all : libpqr.so $(EXAMPLES)/pqRand_Example.x $(EXAMPLES)/random_device_tester.x \
-	$(EXAMPLES)/xorshift1024star_tester.x $(EXAMPLES)/xorshift1024star_last3bits_tester.x \
-	$(EXAMPLES)/IsotropicVectors.x
+all : libpqr.so $(EXAMPLES_X)
 
 libpqr.so: $(OBJS)
 	$(CXX) $(CXXFLAGS) -shared $(OBJS) $(LIBFLAGS) -o $@
@@ -49,4 +48,4 @@ libpqr.so: $(OBJS)
 
 clean:
 	rm -f $(SOURCE)/*.o
-	rm -f $(EXAMPLES)/*.x
+	rm -f $(EXAMPLES_X)
