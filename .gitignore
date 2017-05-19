@@ -1,4 +1,13 @@
+pYqRand.cpp
+build/
 *.o
 *.so
 *.x
-build/
+*.seed
+*.histo1D
+*.dat
+*.tgz
+*.zip
+*.bak
+*.log
+compiler.errors

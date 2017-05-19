@@ -6,7 +6,9 @@
  8           8 
 
 pqRand: The precise quantile random package
-	version 0.4.0 (beta); May 2017
+	version 0.4.1 (beta); May 2017
+	Copyright(c) 2017 (see COPYRIGHT_NOTICE)
+
 By Keith Pedersen (Keith.David.Pedersen @ gmail.com)
 	https://github.com/keith-pedersen/pqRand
 	https://arxiv.org/abs/1704.07949

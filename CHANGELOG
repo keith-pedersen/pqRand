@@ -7,6 +7,11 @@ This is the change log for the pqRand package
      |_.__/   \___|  \__|  \__,_|
 ////////////////////////////////////////////////////////////////////////
 
+version 0.4.1 ===> 18 May 2017
+========================================================================
+	Fix some portability issues with Makefile and documentation
+	(thanks to Nathaniel Beaver).
+
 version 0.4.0 ===> 15 May 2017
 ========================================================================
 	First beta release. Added Doxygen documentation, 

@@ -27,7 +27,7 @@
 
     \endverbatim
  * 
- *  @version 0.4.0 (beta); May 2017
+ *  @version 0.4.1 (beta); May 2017
  *  @author  Keith Pedersen (Keith.David.Pedersen@gmail.com) \n
  *  
  *  @copyright 2017 (see COPYRIGHT_NOTICE)
@@ -39,11 +39,11 @@
  *  --------------------------------------------------------------------
  *  
  *  This package is designed to improve sampling the following distributions:
- *     - normal
- *     - log-normal
- *     - exponential
- *     - weibull
- *     - pareto
+ *     - \ref pqRand::normal "normal"
+ *     - \ref pqRand::log_normal "log-normal"
+ *     - \ref pqRand::exponential "exponential"
+ *     - \ref pqRand::weibull "weibull"
+ *     - \ref pqRand::pareto "pareto"
  *    
  *  @anchor theory
  *  The principle theory behind pqRand is presented in the paper
