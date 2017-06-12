@@ -51,7 +51,7 @@ typename pqRand::two pqRand::standard_normal::GenTwo(pqRand::engine& gen)
 	// Implement the quantile flip-flop and scale x and y
 	u = (gen.RandBool() ? 
 		std::sqrt(real_t(-2.)*std::log(real_t(0.5)*u)/u) : 
-		std::sqrt(real_t(2.)*std::log1p(u/(real_t(2.) - u))/u));		
+		std::sqrt(real_t(-2.)*std::log1p(real_t(-0.5)*u)/u));		
 	
 	pair.x *= u;
 	pair.y *= u;
@@ -100,7 +100,7 @@ typename pqRand::real_t pqRand::weibull::operator()(pqRand::engine& gen)
 	if(gen.RandBool())
 		return lambda_ * std::pow(-std::log(hu), kRecip);
 	else
-		return lambda_ * std::pow(std::log1p(hu/(real_t(1.) - hu)), kRecip);
+		return lambda_ * std::pow(-std::log1p(-hu), kRecip);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -121,12 +121,13 @@ typename pqRand::real_t pqRand::exponential::operator()(pqRand::engine& gen)
 	if(gen.RandBool())
 		return -std::log(hu)/lambda_;
 	else
-		return std::log1p(hu/(real_t(1.) - hu))/lambda_;
+		return -std::log1p(-hu)/lambda_;
 }
 
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 
+// This version will draw 0 occasionally (when either x or y is 0, but never both).
 typename pqRand::two pqRand::standard_normal_lowPrecision::GenTwo(pqRand::engine& gen)
 {
 	two pair;
@@ -140,7 +141,7 @@ typename pqRand::two pqRand::standard_normal_lowPrecision::GenTwo(pqRand::engine
 		// Draw x and y from U, and reject when we don't land in the circle
 		u = pair.x*pair.x + pair.y*pair.y;
 	}
-	while(u >= real_t(1.));
+	while(u >= real_t(1.) or (u == 0.));
 
 	u = std::sqrt(real_t(-2.)*std::log(u)/u);
 	

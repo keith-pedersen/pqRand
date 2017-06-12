@@ -7,6 +7,12 @@ This is the change log for the pqRand package
      |_.__/   \___|  \__|  \__,_|
 ////////////////////////////////////////////////////////////////////////
 
+version 0.4.2 ===> 12 Jun 2017
+========================================================================
+	log1p(x/(1-x)) is not more stable than -log1p(-x); 
+	both are equally numerically unstable as x => -1.
+	Fix distributions which used this trick (standard_normal, exponential, weibull).
+
 version 0.4.1 ===> 18 May 2017
 ========================================================================
 	Fix some portability issues with Makefile and documentation

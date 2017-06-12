@@ -27,7 +27,7 @@
 
     \endverbatim
  * 
- *  @version 0.4.1 (beta); May 2017
+ *  @version 0.4.2 (beta); June 2017
  *  @author  Keith Pedersen (Keith.David.Pedersen@gmail.com) \n
  *  
  *  @copyright 2017 (see COPYRIGHT_NOTICE)
