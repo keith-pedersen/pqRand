@@ -131,13 +131,13 @@ namespace pqRand //! @brief The namespace of the pqRand package
 	 *  (though not necessarily with pqRand_Example.cpp, which uses Jump()).
 	 *  To switch to std::mt19937_64, simply change this typedef
 	*/ 
-	// typedef xorshift1024_star PRNG_t;
+	typedef xorshift1024_star PRNG_t;
 	// typedef std::mt19937_64 PRNG_t;
-	typedef std::mt19937 PRNG_t; // valid if real_t == float
+	// typedef std::mt19937 PRNG_t; // valid if real_t == float
 	
 	//! @brief Defined to allow internal testing with float/binary32.
-	// typedef double real_t;
-	typedef float real_t;
+	typedef double real_t;
+	// typedef float real_t;
 	
 	/*! @brief A wrapper for a PRNG (32 or 64 bit), providing a seeding interface (used by \ref engine).
 	 * 
