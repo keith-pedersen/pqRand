@@ -27,7 +27,7 @@
 
     \endverbatim
  * 
- *  @version 0.4.2 (beta); June 2017
+ *  @version 0.4.3 (beta); June 2017
  *  @author  Keith Pedersen (Keith.David.Pedersen@gmail.com) \n
  *  
  *  @copyright 2017 (see COPYRIGHT_NOTICE)
@@ -104,16 +104,47 @@
 #include <limits> // numeric_limits
 #include <string>
 #include <array>
-#include <random> // random_device, mt19937_64
+#include <random> // random_device, mt19937
 
 namespace pqRand //! @brief The namespace of the pqRand package
 {
-	/*! @brief A wrapper for a 64-bit PRNG, providing a seeding interface (used by \ref engine).
+	/*! @brief The PRNG used by pqRand::engine
+	 * 
+	 *  The authors of pqRand have carefully chosen xorshift1024_star,
+	 *  a PRNG with a sufficiently large state (but not too large), 
+	 *  excellent uniformity properties, rigorously tested by others and 
+	 *  vetted by the authors using the dieharder battery of tests.
+	 *  
+	 *  The motivation of the pqRand package essentially requires that
+	 *  simple freedom to chose a PRNG be removed from the user, 
+	 *  since such freedom would permit them to unwittingly destroy the 
+	 *  benefits of pqRand. Nonetheless, it is still possible to 
+	 *  override this decision by redefining PRNG_t, IFF the substituted class 
+	 *  uses satisfies the \ref prng_requirements "\c prng_t requirements" 
+	 *  of seeded_uPRNG.
+	 * 
+	 *  As such, \c std::mt19937_64 (the model for the xorshift102_star API)
+	 *  will work as a drop-in replacement. But while 
+	 *  \c std::mt19937_64 has good statistics, 
+	 *  its state is too large for massive multi-parallelism.
+	 *  Nonetheless, it is fully compatible with pqRand
+	 *  (though not necessarily with pqRand_Example.cpp, which uses Jump()).
+	 *  To switch to std::mt19937_64, simply change this typedef
+	*/ 
+	// typedef xorshift1024_star PRNG_t;
+	// typedef std::mt19937_64 PRNG_t;
+	typedef std::mt19937 PRNG_t; // valid if real_t == float
+	
+	//! @brief Defined to allow internal testing with float/binary32.
+	// typedef double real_t;
+	typedef float real_t;
+	
+	/*! @brief A wrapper for a PRNG (32 or 64 bit), providing a seeding interface (used by \ref engine).
 	 * 
 	 *  @author Keith Pedersen (Keith.David.Pedersen@gmail.com)
 	 * 
 	 *  The seeding functions fill the \em entire state of the PRNG
-	 *  (because you can't properly seed a PRNG with 128 bytes of state using a 4-byte integer).
+	 *  (because you can't properly seed a PRNG with 128 bytes of state using a 4-byte int).
 	 *  The recommended method is using Seed() to "auto-seed" the PRNG.
 	 * 
 	 *  The state of the PRNG can be converted to an ASCII "state-string" by GetState().
@@ -123,11 +154,11 @@ namespace pqRand //! @brief The namespace of the pqRand package
 	 *  provided that it is in the correct format (see Seed()).
 	 * 
 	 *  \warning Seed_FromFile() and Seed_FromString() do not check the format of
-	 *  state-strings before forwarding them to \c prng64_t.
+	 *  state-strings before forwarding them to \c prng_t.
 	 *  
 	 *  \anchor SeedWrite_Virtual
 	 *  Seed_FromStream() and WriteState_ToStream() are
-	 *  simple wrappers to \c prng64_t 's \c operator<< and \c operator>>.
+	 *  simple wrappers to \c prng_t 's \c operator<< and \c operator>>.
 	 *  They are the actual worker functions called by the public Seed/State functions, 
 	 *  and are \b virtual so that a derived PRNG class may add 
 	 *  more information to its internal state (beyond the state of the underlying PRNG)
@@ -136,33 +167,37 @@ namespace pqRand //! @brief The namespace of the pqRand package
 	 *  \internal There are some extra tabs in here to get the list-formatting right in Doxygen. 
 	 *            They seem to be needed for the bullets that contain the code examples. \endinternal
 	 *  @anchor prng_requirements
-	 *  @param prng64_t    
-	 *  A PRNG class supplying \c uint64_t. It must:
+	 *  @param prng_t    
+	 *  A PRNG class supplying \c result_type. It must:
 	 *  	- have a default constructor 
 	 *    	- possess the following static fields
 	 * 	\code
-	       static const word_size = 64; // Number of bits per PRNG word
+	       static const word_size; // Number of bits per PRNG word
 	       static const state_size; // Number of words of seed entropy required.
+	       typedef result_type; // The unsigned integer type returned by the generator
 			\endcode
 	 *    	- implement the following functions to 
 	 *      input/output the state of the generator in ASCII format
 	 *  \code
-	       friend operator>>(std::istream&, prng64_t&);
-	       friend operator<<(std::ostream&, prng64_t&);	       
+	       friend operator>>(std::istream&, prng_t&);
+	       friend operator<<(std::ostream&, prng_t&);	       
 	    \endcode
 	 *		- support the "minimal" format used by Seed().
 	*/
-	template<class prng64_t>
-	class uPRNG_64_Seeder : public prng64_t
+	template<class prng_t>
+	class seeded_uPRNG : public prng_t
 	{
-		using prng64_t::word_size;
-		using prng64_t::state_size;
+		public: 
+			using prng_t::word_size;
+			using prng_t::state_size;
+			using typename prng_t::result_type;		
 		
-		static_assert(prng64_t::word_size == 64, "uPRNG_64_Seeder requires a 64-bit generator");
+			static_assert(((word_size == 32) or (word_size == 64)), "pqRand::seeded_uPRNG requires either a 32-bit or 64-bit prng_t");
+			static_assert((std::numeric_limits<result_type>::digits >= word_size), "pqRand::seeded_uPRNG: prng_t::result_type must be able to accomadate a full word");
 		
 		protected:
 			/*! @brief Set the state of the PRNG from a state-string stored in a stream, 
-			 *  using \c prng64_t's \c operator>>.
+			 *  using \c prng_t's \c operator>>.
 			 * 
 			 *  See \ref SeedWrite_Virtual "the detailed class description".
 			 * 
@@ -171,7 +206,7 @@ namespace pqRand //! @brief The namespace of the pqRand package
 			*/
 			virtual void Seed_FromStream(std::istream& stream);
 			
-			/*! @brief Write the state-string of the PRNG to \a stream, using \c prng64_t's \c operator<<.
+			/*! @brief Write the state-string of the PRNG to \a stream, using \c prng_t's \c operator<<.
 			 * 
 			 *  See \ref SeedWrite_Virtual "the detailed class description".
 			 * 
@@ -193,8 +228,8 @@ namespace pqRand //! @brief The namespace of the pqRand package
 			 *  Perform an autoSeed (\c true) by calling Seed()
 			 *  or defer seeding till later (\c false).
 			*/
-			explicit uPRNG_64_Seeder(bool const autoSeed = true):
-				prng64_t()
+			explicit seeded_uPRNG(bool const autoSeed = true):
+				prng_t()
 			{
 				if(autoSeed) Seed(); // else defer seed to user
 			}
@@ -214,7 +249,7 @@ namespace pqRand //! @brief The namespace of the pqRand package
 			 * 
 			 *  Seed() constructs its state-string using the "minimal" format 
 			 *  described in xorshift1024_star::operator<<. Thus, 
-			 *  for \ref prng64_t = xorshift1024_star, 
+			 *  for \ref prng_t = xorshift1024_star, 
 			 *  the state variable \a p is not supplied,
 			 *  activating the default \a p behavior of xorshift1024_star::operator>>.
 			*/ 
@@ -235,10 +270,10 @@ namespace pqRand //! @brief The namespace of the pqRand package
 			 * 
 			 *  @note To create a user-defined seed, mimic the state-string format of Seed().
 			 * 
-			 *  @param seed 
+			 *  @param seedString
 			 *  The state-string.
 			*/
-			void Seed_FromString(std::string const& seed);
+			void Seed_FromString(std::string const& seedString);
 						
 			/*! @brief Write the state-string of the PRNG to an ASCII file
 			 *  (e.g. for future reseeding by Seed_FromFile()).
@@ -298,6 +333,7 @@ namespace pqRand //! @brief The namespace of the pqRand package
 		public:
 			size_t static constexpr word_size = 64; //!< Number of \em bits per PRNG \em word
 			size_t static constexpr state_size = 16; //!< Number of \em words of seed entropy required.
+			typedef uint64_t result_type;
 		
 		 private:
 			// Lots of deep magic in this class, not much to comment for SV's code			
@@ -414,7 +450,7 @@ namespace pqRand //! @brief The namespace of the pqRand package
 			 *  assuming the state-string format of operator<<().
 			 *  
 			 *  If \a p is missing from the state-string, 
-			 *  a default value of \a p = 0 is used (see uPRNG_64_Seeder::Seed()).
+			 *  a default value of \a p = 0 is used (see seeded_uPRNG::Seed()).
 			 *  
 			 *  @warning Throws an exception if the stream runs out before the state is full,
 			 *  or if the stream does not follow the expected format.
@@ -439,39 +475,7 @@ namespace pqRand //! @brief The namespace of the pqRand package
 	// (previously declared as friends, but not as actual functions).
 	std::ostream& operator << (std::ostream& stream, xorshift1024_star const& gen);
 	std::istream& operator >> (std::istream& stream, xorshift1024_star& gen);	
-	
-	/////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////////
-			
-	/*! @brief The PRNG used by pqRand::engine
-	 * 
-	 *  The authors of pqRand have carefully chosen xorshift1024_star,
-	 *  a PRNG with a sufficiently large state (but not too large), 
-	 *  excellent uniformity properties, rigorously tested by others and 
-	 *  vetted by the authors using the dieharder battery of tests.
-	 *  
-	 *  The motivation of the pqRand package essentially requires that
-	 *  simple freedom to chose a PRNG be removed from the user, 
-	 *  since such freedom would permit them to unwittingly destroy the 
-	 *  benefits of pqRand. Nonetheless, it is still possible to 
-	 *  override this decision by redefining PRNG_t, IFF the substituted class 
-	 *  uses satisfies the \ref prng_requirements "\c prng64_t requirements" 
-	 *  of uPRNG_64_Seeder.
-	 * 
-	 *  As such, \c std::mt19937_64 (the model for the xorshift102_star API)
-	 *  will work as a drop-in replacement. But while 
-	 *  \c std::mt19937_64 has good statistics, 
-	 *  its state is too large for massive multi-parallelism.
-	 *  Nonetheless, it is fully compatible with pqRand
-	 *  (though not necessarily with pqRand_Example.cpp, which uses Jump()).
-	 *  To switch to std::mt19937_64, simply change this typedef
-	*/ 
-	typedef xorshift1024_star PRNG_t;
-	//~ typedef std::mt19937_64 PRNG_t;
-	
-	//! @brief Defined to allow internal testing with float/binary32.
-	typedef double real_t;
-	
+		
 	/////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////
 			
@@ -483,17 +487,29 @@ namespace pqRand //! @brief The namespace of the pqRand package
 	 *  For the most part, these tools are used internally by prRand's distributions.
 	 * 
 	 *  Arbitrary states of pqRand_engine can be stored using WriteState() 
-	 *  and re-seeded using Seed_FromFile(). See uPRNG_64_Seeder for more details.			 
+	 *  and re-seeded using Seed_FromFile(). See seeded_uPRNG for more details.			 
 	 * 
 	 *  \note Future changes to the API are not anticipated, but may still be possible
 	*/ 
-	class engine : public uPRNG_64_Seeder<PRNG_t>
+	class engine : public seeded_uPRNG<PRNG_t>
 	{
-		private:
+		public: 
+			using seeded_uPRNG<PRNG_t>::word_size;
+			using seeded_uPRNG<PRNG_t>::state_size;
+			using seeded_uPRNG<PRNG_t>::result_type;
+			
+		protected:
+			result_type static constexpr numBitsPRNG = word_size;
+			result_type static constexpr numBitsMantissa = std::numeric_limits<real_t>::digits;
+			
+			static_assert((numBitsPRNG > numBitsMantissa), "prRand::PRNG_t must supply more bits than the mantissa of pqRand::rand_t can hold");
+			
+			result_type static constexpr bitShiftRight_Superuniform = numBitsPRNG - numBitsMantissa;
+			result_type static constexpr maxMantissa_Superuniform = (result_type(1) << numBitsMantissa);
+		
 			// Scale the mantissa into the correct interval
 			real_t static constexpr scaleToU_Quasiuniform = 
-				// If conversion to real_t forces rounding, adding 1 can't change the value
-				real_t(1.)/(real_t(std::numeric_limits<uint64_t>::max()) + real_t(1.));
+				real_t(std::exp2(-int(word_size))); // convert to int to allow negative
 			
 			real_t static constexpr scaleToHalfU_Quasiuniform = 
 				real_t(0.5) * scaleToU_Quasiuniform;
@@ -506,38 +522,33 @@ namespace pqRand //! @brief The namespace of the pqRand package
 				real_t(0.5) * scaleToU_Superuniform;
 					
 			// The last three bits of xorshift1024_star are not as good to use, per S. Vigna
-			uint64_t static constexpr badBits = 3;
-			uint64_t static constexpr replenishBitCache = (uint64_t(1) << (badBits - 1));
+			result_type static constexpr badBits = 3;
+			result_type static constexpr replenishBitCache = (result_type(1) << (badBits - 1));
 			// NOTE: if badBits == 0, replenishBitCache == 0 (a shift left of -1).
 			// This may output a warning, but should still be valid.
-			
-			uint64_t static constexpr numBitsPRNG = std::numeric_limits<uint64_t>::digits;
-			uint64_t static constexpr numBitsMantissa = std::numeric_limits<real_t>::digits;
-			uint64_t static constexpr bitShiftRight_Superuniform = numBitsPRNG - numBitsMantissa;
-			uint64_t static constexpr maxMantissa_Superuniform = (uint64_t(1) << numBitsMantissa);
-			
+						
 			// We need to fill the mantissa, with 2 bits for rounding:
 			// a buffer bit and a sticky bit. The buffer bit must use 
 			// a good bit of entropy, but the sticky bit is always set to 1, 
 			// so we can use the last bad bit as the sticky bit
-			uint64_t static constexpr numBitsOfEntropyRequired = 
+			result_type static constexpr numBitsOfEntropyRequired = 
 				numBitsMantissa + 1 + ((badBits > 0) ? (badBits - 1): 1);
-			// When the random uint64_t is less than minEntropy, we need more entropy.
-			uint64_t static constexpr minEntropy = 
-				(uint64_t(1) << (numBitsOfEntropyRequired - 1));
+			// When the random number is less than minEntropy, we need more entropy.
+			result_type static constexpr minEntropy = 
+				(result_type(1) << (numBitsOfEntropyRequired - 1));
 						
-			uint64_t bitCache; //! A cache of random bits for RandBool
-			uint64_t cacheMask; // Selects one bit from bitCache, for RandBool
+			result_type bitCache; //! A cache of random bits for RandBool
+			result_type cacheMask; // Selects one bit from bitCache, for RandBool
 		
 			// Draw a random, quasiuniform mantissa from (0, 2**53],
 			// with 2**53 being half as probable as 2**53-1
 			real_t RandomMantissa_Quasiuniform();
-			// Draw a random, superuniform mantissa from (0, 2**53],
-			// with 2**53 being half as probable as 2**53-1
-			real_t RandomMantissa_Superuniform();
+			//~ // Draw a random, superuniform mantissa from (0, 2**53],
+			//~ // with 2**53 being half as probable as 2**53-1
+			//~ real_t RandomMantissa_Superuniform();
 			// Draw a random, superuniform mantissa from (0, 2**53),
 			// in the canonical manner (equi-probable sample space)
-			real_t RandomMantissa_Superuniform_canonical();
+			real_t RandomMantissa_Superuniform();
 			
 			// Redefine the base class virtuals, because we need to 
 			// store/refresh the state of the bitCache when we write/seed
@@ -575,7 +586,7 @@ namespace pqRand //! @brief The namespace of the pqRand package
 			 *  or defer seeding till later (\c false).
 			*/
 			engine(bool const autoSeed = true):
-				uPRNG_64_Seeder(autoSeed)
+				seeded_uPRNG(autoSeed)
 				// Defer automatic seed from base class because we need to use 
 				// virtual Seed_FromStream to properly seed, which the
 				// base-class can't access from inside its ctor.
@@ -619,38 +630,38 @@ namespace pqRand //! @brief The namespace of the pqRand package
 				return scaleToHalfU_Quasiuniform * RandomMantissa_Quasiuniform();
 			}
 			
-			/*! @brief Draw from superuniform \f$ U(0, 1] \f$.
-			 * 
-			 *  Partition \f$ U(0, 1] \f$ in increments of machine \f$ \epsilon \f$
-			 *  and draw uniformly from this sample-space.
-			 *  
-			 *  \note 1 is half as probable as its next-door neighbor
-			*/
-			inline real_t U_S() 
-			{
-				return scaleToU_Superuniform * RandomMantissa_Superuniform();
-			}
+			//~ /*! @brief Draw from superuniform \f$ U(0, 1] \f$.
+			 //~ * 
+			 //~ *  Partition \f$ U(0, 1] \f$ in increments of machine \f$ \epsilon \f$
+			 //~ *  and draw uniformly from this sample-space.
+			 //~ *  
+			 //~ *  \note 1 is half as probable as its next-door neighbor
+			//~ */
+			//~ inline real_t U_S() 
+			//~ {
+				//~ return scaleToU_Superuniform * RandomMantissa_Superuniform();
+			//~ }
 			
-			/*! @brief Draw from superuniform \f$ U(0, 0.5] \f$.
-			 * 
-			 *  Partition \f$ U(0, 0.5] \f$ in increments of \f$ \epsilon/2 \f$
-			 *  and draw uniformly from this sample-space.
-			 *  
-			 *  \note 0.5 is half as probable as its next-door neighbor
-			*/
-			inline real_t HalfU_S()
-			{
-				return scaleToHalfU_Superuniform * RandomMantissa_Superuniform();
-			}
+			//~ /*! @brief Draw from superuniform \f$ U(0, 0.5] \f$.
+			 //~ * 
+			 //~ *  Partition \f$ U(0, 0.5] \f$ in increments of \f$ \epsilon/2 \f$
+			 //~ *  and draw uniformly from this sample-space.
+			 //~ *  
+			 //~ *  \note 0.5 is half as probable as its next-door neighbor
+			//~ */
+			//~ inline real_t HalfU_S()
+			//~ {
+				//~ return scaleToHalfU_Superuniform * RandomMantissa_Superuniform();
+			//~ }
 			
 			/*! @brief Draw from superuniform \f$ U(0, 1)\f$ (in the canonical manner).
 			 * 
 			 *  Partition \f$ U(0, 1) \f$ in increments of machine \f$ \epsilon \f$
 			 *  and draw uniformly from this sample-space.
 			*/
-			inline real_t U_S_canonical() 
+			inline real_t U_S() 
 			{
-				return scaleToU_Superuniform * RandomMantissa_Superuniform_canonical();
+				return scaleToU_Superuniform * RandomMantissa_Superuniform();
 			}
 	};	
 };

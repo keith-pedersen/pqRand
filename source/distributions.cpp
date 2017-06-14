@@ -39,7 +39,7 @@ typename pqRand::two pqRand::standard_normal::GenTwo(pqRand::engine& gen)
 		// (we want the epsilon/2 to the left of 1, but not the epsilon the right of 1).
 		// There is a small region near (1, 0), (0, 1), etc. where the right region 
 		// doesn't exist, but it is vanishingly small).
-		if((u == real_t(1.)) and (gen.U_S_canonical()*real_t(3.) < real_t(2.)))
+		if((u == real_t(1.)) and (gen.U_S()*real_t(3.) < real_t(2.)))
 			u = 2.; // Easy way to reject
 	}
 	while(u > real_t(1.));
@@ -135,8 +135,8 @@ typename pqRand::two pqRand::standard_normal_lowPrecision::GenTwo(pqRand::engine
 	
 	do
 	{
-		pair.x = real_t(1.) - real_t(2.) * gen.U_S_canonical();
-		pair.y = real_t(1.) - real_t(2.) * gen.U_S_canonical();
+		pair.x = real_t(1.) - real_t(2.) * gen.U_S();
+		pair.y = real_t(1.) - real_t(2.) * gen.U_S();
 	
 		// Draw x and y from U, and reject when we don't land in the circle
 		u = pair.x*pair.x + pair.y*pair.y;

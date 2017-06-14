@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">pqRand
-   &#160;<span id="projectnumber">0.4.1 (beta)</span>
+   &#160;<span id="projectnumber">0.4.3 (beta)</span>
    </div>
    <div id="projectbrief">The precise quantile random package</div>
   </td>
@@ -95,6 +95,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#friends">Friends</a> &#124;
@@ -108,17 +109,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
  <a href="classpq_rand_1_1xorshift1024__star.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="pq_rand_8hpp_source.html">pqRand.hpp</a>&gt;</code></p>
-<div class="dynheader">
-Inheritance diagram for pqRand::xorshift1024_star:</div>
-<div class="dyncontent">
- <div class="center">
-  <img src="classpq_rand_1_1xorshift1024__star.png" usemap="#pqRand::xorshift1024_star_map" alt=""/>
-  <map id="pqRand::xorshift1024_star_map" name="pqRand::xorshift1024_star_map">
-<area href="classpq_rand_1_1u_p_r_n_g__64___seeder.html" alt="pqRand::uPRNG_64_Seeder&lt; PRNG_t &gt;" shape="rect" coords="0,56,238,80"/>
-<area href="classpq_rand_1_1engine.html" title="The random number engine used by all distributions in pqRand. " alt="pqRand::engine" shape="rect" coords="0,112,238,136"/>
-</map>
- </div></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a8e06711f2c826f2ebc929a2dc713e034"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8e06711f2c826f2ebc929a2dc713e034"></a>
+typedef uint64_t&#160;</td><td class="memItemRight" valign="bottom"><b>result_type</b></td></tr>
+<tr class="separator:a8e06711f2c826f2ebc929a2dc713e034"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a85da4e1d356fe24a22c5f1d0d62cb4d3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1xorshift1024__star.html#a85da4e1d356fe24a22c5f1d0d62cb4d3">xorshift1024_star</a> ()</td></tr>
@@ -316,7 +313,7 @@ Keith Pedersen (<a href="#" onclick="location.href='mai'+'lto:'+'Kei'+'th'+'.Da'
 </div><div class="memdoc">
 
 <p>Seed the state of the generator from a stream, assuming the state-string format of <a class="el" href="classpq_rand_1_1xorshift1024__star.html#aec9cae13dda1ba005cf60bd0f6e96d66" title="Output the complete state-string of the generator to a stream. ">operator&lt;&lt;()</a>. </p>
-<p>If <em>p</em> is missing from the state-string, a default value of <em>p</em> = 0 is used (see <a class="el" href="classpq_rand_1_1u_p_r_n_g__64___seeder.html#a2cf7c6101ccce7dd19640b08c035ca32" title="Auto-seed the generator using std::random_device. ">uPRNG_64_Seeder::Seed()</a>).</p>
+<p>If <em>p</em> is missing from the state-string, a default value of <em>p</em> = 0 is used (see <a class="el" href="classpq_rand_1_1seeded__u_p_r_n_g.html#af8573c4a0f201cf28ab991ef33c25b9a" title="Auto-seed the generator using std::random_device. ">seeded_uPRNG::Seed()</a>).</p>
 <dl class="section warning"><dt>Warning</dt><dd>Throws an exception if the stream runs out before the state is full, or if the stream does not follow the expected format.</dd>
 <dd>
 Per SV: "The state must be seeded so that it is not everywhere zero."<br/>
@@ -337,7 +334,7 @@ Nonetheless, the <em>only</em> checks made by <a class="el" href="classpq_rand_1
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jun 12 2017 15:18:53 for pqRand by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jun 14 2017 02:27:45 for pqRand by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.5
 </small></address>

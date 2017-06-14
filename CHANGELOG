@@ -7,6 +7,13 @@ This is the change log for the pqRand package
      |_.__/   \___|  \__|  \__,_|
 ////////////////////////////////////////////////////////////////////////
 
+version 0.4.3 ===> 14 Jun 2017
+========================================================================
+	Removed awkward engine::U_S() and renamed engine::U_S_canonical => engine::U_S().
+	Renamed uPRNG_64_Seeder => seeded_uPRNG, and PRNG_t::word_size == 32 is now allowed
+	(but only if real_t == float).
+	
+
 version 0.4.2 ===> 12 Jun 2017
 ========================================================================
 	log1p(x/(1-x)) is not more stable than -log1p(-x); 

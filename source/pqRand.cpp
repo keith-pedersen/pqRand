@@ -8,34 +8,47 @@
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 
-template<class prng64_t>
-void pqRand::uPRNG_64_Seeder<prng64_t>::Seed()
+template<class prng_t>
+void pqRand::seeded_uPRNG<prng_t>::Seed()
 {
 	std::stringstream ss;
 	{
 		std::random_device randDev;
 		
-		// One word for every seed, space-separated
-		for(size_t i = 0; i < prng64_t::state_size; ++i)
+		// Insert one word for every state_size, space-separated		
+		switch(seeded_uPRNG::word_size)
 		{
-			// Unfortunately, random_device outputs 32 bits. Make a 64-bit uint.
-			ss << ((uint64_t(randDev()) << 32) bitor uint64_t(randDev())) << " ";
-		}					
-		ss << prng64_t::state_size; // Terminate with state_size
+			case 32:
+				for(size_t i = 0; i < prng_t::state_size; ++i)
+				{
+					ss << randDev() << " ";
+				}
+			break;
+			
+			case 64:
+				for(size_t i = 0; i < prng_t::state_size; ++i)
+				{
+					// Unfortunately, random_device outputs 32 bits. Make a 64-bit uint.
+					ss << ((uint64_t(randDev()) << 32) bitor uint64_t(randDev())) << " ";
+				}
+			break;
+		}
 	}
+	
+	ss << prng_t::state_size; // Terminate with state_size
 	this->Seed_FromStream(ss);
 }
 
 ////////////////////////////////////////////////////////////////////////
 
-template<class prng64_t>
-void pqRand::uPRNG_64_Seeder<prng64_t>::Seed_FromFile(std::string const& fileName)
+template<class prng_t>
+void pqRand::seeded_uPRNG<prng_t>::Seed_FromFile(std::string const& fileName)
 {
 	std::ifstream file(fileName.c_str(), std::ios::in);
 	
 	if(not file.is_open())
 	{
-		throw std::runtime_error("pqRand::uPRNG_64_Seeder::Seed ... <"
+		throw std::runtime_error("pqRand::seeded_uPRNG::Seed ... <"
 			+ fileName + "> ... file not found!");
 	}
 	
@@ -45,32 +58,32 @@ void pqRand::uPRNG_64_Seeder<prng64_t>::Seed_FromFile(std::string const& fileNam
 
 ////////////////////////////////////////////////////////////////////////
 
-template<class prng64_t>
-void pqRand::uPRNG_64_Seeder<prng64_t>::Seed_FromString(std::string const& seed)
+template<class prng_t>
+void pqRand::seeded_uPRNG<prng_t>::Seed_FromString(std::string const& seedString)
 {
-	std::stringstream stream(seed);
+	std::stringstream stream(seedString);
 	this->Seed_FromStream(stream);
 }
 
 ////////////////////////////////////////////////////////////////////////
 
-template<class prng64_t>
-void pqRand::uPRNG_64_Seeder<prng64_t>::Seed_FromStream(std::istream& stream)
+template<class prng_t>
+void pqRand::seeded_uPRNG<prng_t>::Seed_FromStream(std::istream& stream)
 {
-	stream >> *this; // uPRNG_64_Seeder (as a wrapper) has no state to seed
+	stream >> *this; // seeded_uPRNG (as a wrapper) has no state to seed
 }
 
 ////////////////////////////////////////////////////////////////////////
 
-template<class prng64_t>
-void pqRand::uPRNG_64_Seeder<prng64_t>::WriteState(std::string const& fileName)
+template<class prng_t>
+void pqRand::seeded_uPRNG<prng_t>::WriteState(std::string const& fileName)
 {
 	// CAUTION: overwrite existing file without warning (ios::trunc)
 	std::ofstream file(fileName.c_str(), std::ios::out | std::ios::trunc);
 	
 	if(not file.is_open())
 	{
-		throw std::runtime_error("pqRand::uPRNG_64_Seeder::WriteState ... <"
+		throw std::runtime_error("pqRand::seeded_uPRNG::WriteState ... <"
 			+ fileName + "> ... file cannot be created!");
 	}
 	
@@ -80,8 +93,8 @@ void pqRand::uPRNG_64_Seeder<prng64_t>::WriteState(std::string const& fileName)
 
 ////////////////////////////////////////////////////////////////////////
 
-template<class prng64_t>
-std::string pqRand::uPRNG_64_Seeder<prng64_t>::GetState()
+template<class prng_t>
+std::string pqRand::seeded_uPRNG<prng_t>::GetState()
 {
 	std::stringstream string;
 	this->WriteState_ToStream(string);
@@ -90,10 +103,10 @@ std::string pqRand::uPRNG_64_Seeder<prng64_t>::GetState()
 
 ////////////////////////////////////////////////////////////////////////
 
-template<class prng64_t>
-void pqRand::uPRNG_64_Seeder<prng64_t>::WriteState_ToStream(std::ostream& stream)
+template<class prng_t>
+void pqRand::seeded_uPRNG<prng_t>::WriteState_ToStream(std::ostream& stream)
 {
-	stream << *this; // uPRNG_64_Seeder (as a wrapper) has no state to write
+	stream << *this; // seeded_uPRNG (as a wrapper) has no state to write
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -201,13 +214,13 @@ std::istream& pqRand::operator >> (std::istream& stream, xorshift1024_star& gen)
 ////////////////////////////////////////////////////////////////////////
 
 // Need to instantiate the template class for the object file or shared library
-template class pqRand::uPRNG_64_Seeder<pqRand::PRNG_t>;
+template class pqRand::seeded_uPRNG<pqRand::PRNG_t>;
 
 ////////////////////////////////////////////////////////////////////////
 
 typename pqRand::real_t pqRand::engine::RandomMantissa_Quasiuniform()
 {
-	uint64_t randUint = (*this)();
+	result_type randUint = (*this)();
 	
 	if(randUint < minEntropy) // Add entropy to randUint until it has enough
 	{
@@ -255,39 +268,39 @@ typename pqRand::real_t pqRand::engine::RandomMantissa_Quasiuniform()
 
 ////////////////////////////////////////////////////////////////////////
 
-typename pqRand::real_t pqRand::engine::RandomMantissa_Superuniform()
-{
-	uint64_t randUint;
+//~ typename pqRand::real_t pqRand::engine::RandomMantissa_Superuniform()
+//~ {
+	//~ result_type randUint;
 	
-	// Yes, this is a goto, but they are not always bad.
-	// This jump spans only a small number of lines, so it's easy to read.
-	generate:
-		// Better to shift right than use a bit-mask, due to bad bits
-		randUint = ((*this)() >> bitShiftRight_Superuniform); 
-		if(randUint == 0)
-		{
-			// Map 0 to the max mantissa, but only half the time
-			// Should not cause an endless loop, unless PRNG is broken
-			if(RandBool())
-				randUint = maxMantissa_Superuniform;
-			else
-				goto generate;
-		}
+	//~ // Yes, this is a goto, but they are not always bad.
+	//~ // This jump spans only a small number of lines, so it's easy to read.
+	//~ generate:
+		//~ // Better to shift right than use a bit-mask, due to bad bits
+		//~ randUint = ((*this)() >> bitShiftRight_Superuniform); 
+		//~ if(randUint == 0)
+		//~ {
+			//~ // Map 0 to the max mantissa, but only half the time
+			//~ // Should not cause an endless loop, unless PRNG is broken
+			//~ if(RandBool())
+				//~ randUint = maxMantissa_Superuniform;
+			//~ else
+				//~ goto generate;
+		//~ }
 	
 	// Equivalent code, without goto, but every call has an extra addition
 	// (hence the virtue of the goto is speed).
-	//~ do
-		//~ randUint = (((*this)() & bitMask_Superuniform) + 1);
-	//~ while((randUint == maxMantissa_Superuniform) and RandBool());
+	// do
+		// randUint = (((*this)() & bitMask_Superuniform) + 1);
+	// while((randUint == maxMantissa_Superuniform) and RandBool());
 	
-	return real_t(randUint);
-}
+	//~ return real_t(randUint);
+//~ }
 
 ////////////////////////////////////////////////////////////////////////
 
-typename pqRand::real_t pqRand::engine::RandomMantissa_Superuniform_canonical()
+typename pqRand::real_t pqRand::engine::RandomMantissa_Superuniform()
 {
-	uint64_t randUint;
+	result_type randUint;
 	
 	while((randUint = ((*this)() >> bitShiftRight_Superuniform)) == 0);
 	
@@ -299,11 +312,11 @@ typename pqRand::real_t pqRand::engine::RandomMantissa_Superuniform_canonical()
 void pqRand::engine::Seed_FromStream(std::istream& stream)
 {
 	// Seed the base class
-	uPRNG_64_Seeder<PRNG_t>::Seed_FromStream(stream);
+	seeded_uPRNG<PRNG_t>::Seed_FromStream(stream);
 		
 	// The internal state of pqRand_engine contains the bitCache,
 	// which should be appended to the seed stream after PRNG details
-	uint64_t word;
+	result_type word;
 	if(stream >> word)
 	{
 		bitCache = word;
@@ -326,7 +339,7 @@ void pqRand::engine::Seed_FromStream(std::istream& stream)
 
 void pqRand::engine::WriteState_ToStream(std::ostream& stream)
 {
-	uPRNG_64_Seeder<PRNG_t>::WriteState_ToStream(stream);
+	seeded_uPRNG<PRNG_t>::WriteState_ToStream(stream);
 	
 	// Now write out the state of the bitCache and the cacheMask
 	stream  << " " <<  bitCache << " " << cacheMask;
@@ -349,7 +362,7 @@ bool pqRand::engine::RandBool()
 	{
 		// When the cacheMask has moved too far right ... 
 		bitCache = (*this)(); // Get a new set of random bits
-		cacheMask = (uint64_t(1) << (numBitsPRNG - 1)); // Reset the cacheMask
+		cacheMask = (result_type(1) << (numBitsPRNG - 1)); // Reset the cacheMask
 	}
 	
 	bool const decision = bool(cacheMask bitand bitCache);

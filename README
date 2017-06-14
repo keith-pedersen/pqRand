@@ -6,7 +6,7 @@
  8           8 
 
 pqRand: The precise quantile random package
-	version 0.4.2 (beta); June 2017
+	version 0.4.3 (beta); June 2017
 	Copyright(c) 2017 (see COPYRIGHT_NOTICE)
 
 By Keith Pedersen (Keith.David.Pedersen @ gmail.com)
@@ -61,7 +61,7 @@ C++
 ========================================================================
 	"make all" should create all examples and the shared library.
 
-	Use the %.x rule as a template to build pqRand into your executable (via libpqr.so)
+	Use the %.x rule as a template to build pqRand into your executable (via libpqr.so).
 	Set PQR_DIR to the directory where pqRand lives, then	"make yourProgram.x" 
 	(where your source code is called "yourProgram.cpp").
 	Add needed libraries and object files as necessary.
