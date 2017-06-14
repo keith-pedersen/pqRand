@@ -116,6 +116,7 @@ Inheritance diagram for pqRand::engine:</div>
   <img src="classpq_rand_1_1engine.png" usemap="#pqRand::engine_map" alt=""/>
   <map id="pqRand::engine_map" name="pqRand::engine_map">
 <area href="classpq_rand_1_1seeded__u_p_r_n_g.html" alt="pqRand::seeded_uPRNG&lt; PRNG_t &gt;" shape="rect" coords="0,56,217,80"/>
+<area href="classpq_rand_1_1xorshift1024__star.html" title="An implementation of the xorshift1024* 64-bit pseudo-random number generator (PRNG). " alt="pqRand::xorshift1024_star" shape="rect" coords="0,0,217,24"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -128,16 +129,16 @@ Public Member Functions</h2></td></tr>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1engine.html#ac2156763a0137e6fdfaec698d41a8e5d">RandBool</a> ()</td></tr>
 <tr class="memdesc:ac2156763a0137e6fdfaec698d41a8e5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the result of an ideal coin flip. <br/></td></tr>
 <tr class="separator:ac2156763a0137e6fdfaec698d41a8e5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abce7ea3eea665c50c71241c61081d7a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1engine.html#abce7ea3eea665c50c71241c61081d7a8">ApplyRandomSign</a> (<a class="el" href="namespacepq_rand.html#aa51cb5d182d9d41526159ab036a7110b">real_t</a> &amp;victim)</td></tr>
+<tr class="memitem:abce7ea3eea665c50c71241c61081d7a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1engine.html#abce7ea3eea665c50c71241c61081d7a8">ApplyRandomSign</a> (<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> &amp;victim)</td></tr>
 <tr class="memdesc:abce7ea3eea665c50c71241c61081d7a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Give the victim a random sign (+/-), using <a class="el" href="classpq_rand_1_1engine.html#ac2156763a0137e6fdfaec698d41a8e5d" title="Return the result of an ideal coin flip. ">RandBool()</a>.  <a href="#abce7ea3eea665c50c71241c61081d7a8">More...</a><br/></td></tr>
 <tr class="separator:abce7ea3eea665c50c71241c61081d7a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0370221a1937fec92bf11ef9e701420"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepq_rand.html#aa51cb5d182d9d41526159ab036a7110b">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1engine.html#ab0370221a1937fec92bf11ef9e701420">U_Q</a> ()</td></tr>
+<tr class="memitem:ab0370221a1937fec92bf11ef9e701420"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1engine.html#ab0370221a1937fec92bf11ef9e701420">U_Q</a> ()</td></tr>
 <tr class="memdesc:ab0370221a1937fec92bf11ef9e701420"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw from quasiuniform \( U(0, 1] \).  <a href="#ab0370221a1937fec92bf11ef9e701420">More...</a><br/></td></tr>
 <tr class="separator:ab0370221a1937fec92bf11ef9e701420"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47ea303553897d6e2d07a5bb21649a92"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepq_rand.html#aa51cb5d182d9d41526159ab036a7110b">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1engine.html#a47ea303553897d6e2d07a5bb21649a92">HalfU_Q</a> ()</td></tr>
+<tr class="memitem:a47ea303553897d6e2d07a5bb21649a92"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1engine.html#a47ea303553897d6e2d07a5bb21649a92">HalfU_Q</a> ()</td></tr>
 <tr class="memdesc:a47ea303553897d6e2d07a5bb21649a92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw from quasiuniform \( U(0, 0.5] \).  <a href="#a47ea303553897d6e2d07a5bb21649a92">More...</a><br/></td></tr>
 <tr class="separator:a47ea303553897d6e2d07a5bb21649a92"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33d492182e0554da813680d88644319f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepq_rand.html#aa51cb5d182d9d41526159ab036a7110b">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1engine.html#a33d492182e0554da813680d88644319f">U_S</a> ()</td></tr>
+<tr class="memitem:a33d492182e0554da813680d88644319f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1engine.html#a33d492182e0554da813680d88644319f">U_S</a> ()</td></tr>
 <tr class="memdesc:a33d492182e0554da813680d88644319f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw from superuniform \( U(0, 1)\) (in the canonical manner).  <a href="#a33d492182e0554da813680d88644319f">More...</a><br/></td></tr>
 <tr class="separator:a33d492182e0554da813680d88644319f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classpq_rand_1_1seeded__u_p_r_n_g"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classpq_rand_1_1seeded__u_p_r_n_g')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classpq_rand_1_1seeded__u_p_r_n_g.html">pqRand::seeded_uPRNG&lt; PRNG_t &gt;</a></td></tr>
@@ -160,14 +161,29 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1seeded__u_p_r_n_g.html#af2a5c09490b4c5c372cfcdd6abdfa38b">GetState</a> ()</td></tr>
 <tr class="memdesc:af2a5c09490b4c5c372cfcdd6abdfa38b inherit pub_methods_classpq_rand_1_1seeded__u_p_r_n_g"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the ASCII state-string of the PRNG (e.g. for future reseeding by <a class="el" href="classpq_rand_1_1seeded__u_p_r_n_g.html#a18cfd256a5d4a36246d1e20455369afa" title="Seed the PRNG from a state-string (e.g. from GetState()). ">Seed_FromString()</a>). <br/></td></tr>
 <tr class="separator:af2a5c09490b4c5c372cfcdd6abdfa38b inherit pub_methods_classpq_rand_1_1seeded__u_p_r_n_g"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classpq_rand_1_1xorshift1024__star"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classpq_rand_1_1xorshift1024__star')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classpq_rand_1_1xorshift1024__star.html">pqRand::xorshift1024_star</a></td></tr>
+<tr class="memitem:a85da4e1d356fe24a22c5f1d0d62cb4d3 inherit pub_methods_classpq_rand_1_1xorshift1024__star"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1xorshift1024__star.html#a85da4e1d356fe24a22c5f1d0d62cb4d3">xorshift1024_star</a> ()</td></tr>
+<tr class="memdesc:a85da4e1d356fe24a22c5f1d0d62cb4d3 inherit pub_methods_classpq_rand_1_1xorshift1024__star"><td class="mdescLeft">&#160;</td><td class="mdescRight">Power up the generator, but leave the state un-initialized.  <a href="#a85da4e1d356fe24a22c5f1d0d62cb4d3">More...</a><br/></td></tr>
+<tr class="separator:a85da4e1d356fe24a22c5f1d0d62cb4d3 inherit pub_methods_classpq_rand_1_1xorshift1024__star"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e971578827836cec6c11e814bc40be1 inherit pub_methods_classpq_rand_1_1xorshift1024__star"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4e971578827836cec6c11e814bc40be1"></a>
+uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1xorshift1024__star.html#a4e971578827836cec6c11e814bc40be1">operator()</a> ()</td></tr>
+<tr class="memdesc:a4e971578827836cec6c11e814bc40be1 inherit pub_methods_classpq_rand_1_1xorshift1024__star"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the next 64-bit, unsigned integer. <br/></td></tr>
+<tr class="separator:a4e971578827836cec6c11e814bc40be1 inherit pub_methods_classpq_rand_1_1xorshift1024__star"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab28cf9a4d392ab09e14fdb9bed9a3997 inherit pub_methods_classpq_rand_1_1xorshift1024__star"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1xorshift1024__star.html#ab28cf9a4d392ab09e14fdb9bed9a3997">Jump</a> ()</td></tr>
+<tr class="memdesc:ab28cf9a4d392ab09e14fdb9bed9a3997 inherit pub_methods_classpq_rand_1_1xorshift1024__star"><td class="mdescLeft">&#160;</td><td class="mdescRight">Quickly jump the state of the generator forward by \( 2^{512} \) calls.  <a href="#ab28cf9a4d392ab09e14fdb9bed9a3997">More...</a><br/></td></tr>
+<tr class="separator:ab28cf9a4d392ab09e14fdb9bed9a3997 inherit pub_methods_classpq_rand_1_1xorshift1024__star"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fb9282547f2e7b3ed289ea04ddd7997 inherit pub_methods_classpq_rand_1_1xorshift1024__star"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0fb9282547f2e7b3ed289ea04ddd7997"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1xorshift1024__star.html#a0fb9282547f2e7b3ed289ea04ddd7997">Jump</a> (size_t nTimes)</td></tr>
+<tr class="memdesc:a0fb9282547f2e7b3ed289ea04ddd7997 inherit pub_methods_classpq_rand_1_1xorshift1024__star"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call <a class="el" href="classpq_rand_1_1xorshift1024__star.html#ab28cf9a4d392ab09e14fdb9bed9a3997" title="Quickly jump the state of the generator forward by  calls. ">Jump()</a> <em>nTimes</em>. <br/></td></tr>
+<tr class="separator:a0fb9282547f2e7b3ed289ea04ddd7997 inherit pub_methods_classpq_rand_1_1xorshift1024__star"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a9eedd4b727165135f739b57974644e0d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9eedd4b727165135f739b57974644e0d"></a>
-<a class="el" href="namespacepq_rand.html#aa51cb5d182d9d41526159ab036a7110b">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RandomMantissa_Quasiuniform</b> ()</td></tr>
+<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RandomMantissa_Quasiuniform</b> ()</td></tr>
 <tr class="separator:a9eedd4b727165135f739b57974644e0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03af06a6760d59b75b29456b5171a811"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a03af06a6760d59b75b29456b5171a811"></a>
-<a class="el" href="namespacepq_rand.html#aa51cb5d182d9d41526159ab036a7110b">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RandomMantissa_Superuniform</b> ()</td></tr>
+<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>RandomMantissa_Superuniform</b> ()</td></tr>
 <tr class="separator:a03af06a6760d59b75b29456b5171a811"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03fb2ee2e150d26456835e421121b55c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1engine.html#a03fb2ee2e150d26456835e421121b55c">Seed_FromStream</a> (std::istream &amp;stream)</td></tr>
 <tr class="memdesc:a03fb2ee2e150d26456835e421121b55c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the state of the PRNG from a state-string stored in a stream, using <code>prng_t's</code> <code>operator&gt;&gt;</code>.  <a href="#a03fb2ee2e150d26456835e421121b55c">More...</a><br/></td></tr>
@@ -192,10 +208,10 @@ result_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-attribs"></a>
 Static Protected Attributes</h2></td></tr>
 <tr class="memitem:a747bc4b39c10fcb730f6c388f3e9561f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a747bc4b39c10fcb730f6c388f3e9561f"></a>
-static result_type constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>numBitsPRNG</b> = word_size</td></tr>
+static result_type constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>numBitsPRNG</b> = <a class="el" href="classpq_rand_1_1xorshift1024__star.html#a936976ff2527dcfb059cd95ed9d4d028">word_size</a></td></tr>
 <tr class="separator:a747bc4b39c10fcb730f6c388f3e9561f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc24836540277bf79d5fa8f9190d764e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adc24836540277bf79d5fa8f9190d764e"></a>
-static result_type constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>numBitsMantissa</b> = std::numeric_limits&lt;<a class="el" href="namespacepq_rand.html#aa51cb5d182d9d41526159ab036a7110b">real_t</a>&gt;::digits</td></tr>
+static result_type constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>numBitsMantissa</b> = std::numeric_limits&lt;<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>&gt;::digits</td></tr>
 <tr class="separator:adc24836540277bf79d5fa8f9190d764e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17c9cb8a4b2f2c298aef1fc5dac30bdb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a17c9cb8a4b2f2c298aef1fc5dac30bdb"></a>
 static result_type constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>bitShiftRight_Superuniform</b> = numBitsPRNG - numBitsMantissa</td></tr>
@@ -203,13 +219,13 @@ static result_type constexpr&#160;</td><td class="memItemRight" valign="bottom">
 <tr class="memitem:a466d4f1322504acdc30efd9886efa517"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a466d4f1322504acdc30efd9886efa517"></a>
 static result_type constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>maxMantissa_Superuniform</b> = (result_type(1) &lt;&lt; numBitsMantissa)</td></tr>
 <tr class="separator:a466d4f1322504acdc30efd9886efa517"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac59d2c63370061087dccacba0b6a0ed7"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespacepq_rand.html#aa51cb5d182d9d41526159ab036a7110b">real_t</a> constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>scaleToU_Quasiuniform</b></td></tr>
+<tr class="memitem:ac59d2c63370061087dccacba0b6a0ed7"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>scaleToU_Quasiuniform</b></td></tr>
 <tr class="separator:ac59d2c63370061087dccacba0b6a0ed7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32ed86cfc4865010bdf99932dd6442f9"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespacepq_rand.html#aa51cb5d182d9d41526159ab036a7110b">real_t</a> constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>scaleToHalfU_Quasiuniform</b></td></tr>
+<tr class="memitem:a32ed86cfc4865010bdf99932dd6442f9"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>scaleToHalfU_Quasiuniform</b></td></tr>
 <tr class="separator:a32ed86cfc4865010bdf99932dd6442f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5517d169fab4e9410e44ec929d571119"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespacepq_rand.html#aa51cb5d182d9d41526159ab036a7110b">real_t</a> constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>scaleToU_Superuniform</b></td></tr>
+<tr class="memitem:a5517d169fab4e9410e44ec929d571119"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>scaleToU_Superuniform</b></td></tr>
 <tr class="separator:a5517d169fab4e9410e44ec929d571119"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d80e8831f97bd8fd1aed80b637ae3e8"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespacepq_rand.html#aa51cb5d182d9d41526159ab036a7110b">real_t</a> constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>scaleToHalfU_Superuniform</b></td></tr>
+<tr class="memitem:a0d80e8831f97bd8fd1aed80b637ae3e8"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>scaleToHalfU_Superuniform</b></td></tr>
 <tr class="separator:a0d80e8831f97bd8fd1aed80b637ae3e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a3711107e471497474005f12d075624"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8a3711107e471497474005f12d075624"></a>
 static result_type constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>badBits</b> = 3</td></tr>
@@ -221,6 +237,22 @@ static result_type constexpr&#160;</td><td class="memItemRight" valign="bottom">
 <tr class="separator:ab0647db49e6af4a02ccc608a8610cbcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0587f76f4f0ea6e1764f4d66824c1df0"><td class="memItemLeft" align="right" valign="top">static result_type constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>minEntropy</b></td></tr>
 <tr class="separator:a0587f76f4f0ea6e1764f4d66824c1df0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_types_classpq_rand_1_1xorshift1024__star"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classpq_rand_1_1xorshift1024__star')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classpq_rand_1_1xorshift1024__star.html">pqRand::xorshift1024_star</a></td></tr>
+<tr class="memitem:a8e06711f2c826f2ebc929a2dc713e034 inherit pub_types_classpq_rand_1_1xorshift1024__star"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8e06711f2c826f2ebc929a2dc713e034"></a>
+typedef uint64_t&#160;</td><td class="memItemRight" valign="bottom"><b>result_type</b></td></tr>
+<tr class="separator:a8e06711f2c826f2ebc929a2dc713e034 inherit pub_types_classpq_rand_1_1xorshift1024__star"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_attribs_classpq_rand_1_1xorshift1024__star"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_classpq_rand_1_1xorshift1024__star')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="classpq_rand_1_1xorshift1024__star.html">pqRand::xorshift1024_star</a></td></tr>
+<tr class="memitem:a936976ff2527dcfb059cd95ed9d4d028 inherit pub_static_attribs_classpq_rand_1_1xorshift1024__star"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a936976ff2527dcfb059cd95ed9d4d028"></a>
+static size_t constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1xorshift1024__star.html#a936976ff2527dcfb059cd95ed9d4d028">word_size</a> = 64</td></tr>
+<tr class="memdesc:a936976ff2527dcfb059cd95ed9d4d028 inherit pub_static_attribs_classpq_rand_1_1xorshift1024__star"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of <em>bits</em> per PRNG <em>word</em>. <br/></td></tr>
+<tr class="separator:a936976ff2527dcfb059cd95ed9d4d028 inherit pub_static_attribs_classpq_rand_1_1xorshift1024__star"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7334ef3ceae6472225991b488a182b66 inherit pub_static_attribs_classpq_rand_1_1xorshift1024__star"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7334ef3ceae6472225991b488a182b66"></a>
+static size_t constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1xorshift1024__star.html#a7334ef3ceae6472225991b488a182b66">state_size</a> = 16</td></tr>
+<tr class="memdesc:a7334ef3ceae6472225991b488a182b66 inherit pub_static_attribs_classpq_rand_1_1xorshift1024__star"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of <em>words</em> of seed entropy required. <br/></td></tr>
+<tr class="separator:a7334ef3ceae6472225991b488a182b66 inherit pub_static_attribs_classpq_rand_1_1xorshift1024__star"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The random number engine used by all distributions in <a class="el" href="namespacepq_rand.html" title="The namespace of the pqRand package. ">pqRand</a>. </p>
@@ -257,7 +289,7 @@ static result_type constexpr&#160;</td><td class="memItemRight" valign="bottom">
 </div><!-- fragment --><p> To supply a seed, construct like: </p>
 <div class="fragment"><div class="line"><a class="code" href="classpq_rand_1_1engine.html">pqRand::engine</a> gen3(<span class="keyword">false</span>); <span class="comment">// Don&#39;t auto-seed (leaving gen3 is an undefined state).</span></div>
 <div class="line">gen3.Seed_FromFile(<span class="stringliteral">&quot;./archive/Jan2017/run123.seed&quot;</span>); <span class="comment">// Seed from a file (gen3 is no longer undefined).</span></div>
-</div><!-- fragment --><p>If one intends to supply a user-generated seed (as opposed to storing/reusing an auto-seed), they should use the <em>minimal</em> state-string format (which is described in <a class="el" href="classpq_rand_1_1seeded__u_p_r_n_g.html#af8573c4a0f201cf28ab991ef33c25b9a" title="Auto-seed the generator using std::random_device. ">Seed()</a>) using a state_size of 16.</p>
+</div><!-- fragment --><p>If one intends to supply a user-generated seed (as opposed to storing/reusing an auto-seed), they should use the <em>minimal</em> state-string format (which is described in <a class="el" href="classpq_rand_1_1seeded__u_p_r_n_g.html#af8573c4a0f201cf28ab991ef33c25b9a" title="Auto-seed the generator using std::random_device. ">Seed()</a>) using a <a class="el" href="classpq_rand_1_1xorshift1024__star.html#a7334ef3ceae6472225991b488a182b66">state_size</a> of 16.</p>
 <dl class="section warning"><dt>Warning</dt><dd><a class="el" href="classpq_rand_1_1engine.html">engine</a> contains more state information than the minimal state-string. This extra information should only be output by <a class="el" href="classpq_rand_1_1seeded__u_p_r_n_g.html#a1058c80057124d78d54a30421a69769e" title="Write the state-string of the PRNG to an ASCII file (e.g. for future reseeding by Seed_FromFile())...">WriteState()</a>, and never generated by the user.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -276,7 +308,7 @@ static result_type constexpr&#160;</td><td class="memItemRight" valign="bottom">
         <tr>
           <td class="memname">void pqRand::engine::ApplyRandomSign </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacepq_rand.html#aa51cb5d182d9d41526159ab036a7110b">real_t</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> &amp;&#160;</td>
           <td class="paramname"><em>victim</em></td><td>)</td>
           <td></td>
         </tr>
@@ -301,7 +333,7 @@ static result_type constexpr&#160;</td><td class="memItemRight" valign="bottom">
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacepq_rand.html#aa51cb5d182d9d41526159ab036a7110b">real_t</a> pqRand::engine::HalfU_Q </td>
+          <td class="memname"><a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> pqRand::engine::HalfU_Q </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -363,7 +395,7 @@ static result_type constexpr&#160;</td><td class="memItemRight" valign="bottom">
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacepq_rand.html#aa51cb5d182d9d41526159ab036a7110b">real_t</a> pqRand::engine::U_Q </td>
+          <td class="memname"><a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> pqRand::engine::U_Q </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -390,7 +422,7 @@ static result_type constexpr&#160;</td><td class="memItemRight" valign="bottom">
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacepq_rand.html#aa51cb5d182d9d41526159ab036a7110b">real_t</a> pqRand::engine::U_S </td>
+          <td class="memname"><a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> pqRand::engine::U_S </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -496,7 +528,7 @@ static result_type constexpr&#160;</td><td class="memItemRight" valign="bottom">
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacepq_rand.html#aa51cb5d182d9d41526159ab036a7110b">real_t</a> constexpr pqRand::engine::scaleToHalfU_Quasiuniform</td>
+          <td class="memname"><a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> constexpr pqRand::engine::scaleToHalfU_Quasiuniform</td>
         </tr>
       </table>
   </td>
@@ -506,7 +538,7 @@ static result_type constexpr&#160;</td><td class="memItemRight" valign="bottom">
 </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= </div>
-<div class="line">                <a class="code" href="namespacepq_rand.html#aa51cb5d182d9d41526159ab036a7110b">real_t</a>(0.5) * scaleToU_Quasiuniform</div>
+<div class="line">                <a class="code" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>(0.5) * scaleToU_Quasiuniform</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -518,7 +550,7 @@ static result_type constexpr&#160;</td><td class="memItemRight" valign="bottom">
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacepq_rand.html#aa51cb5d182d9d41526159ab036a7110b">real_t</a> constexpr pqRand::engine::scaleToHalfU_Superuniform</td>
+          <td class="memname"><a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> constexpr pqRand::engine::scaleToHalfU_Superuniform</td>
         </tr>
       </table>
   </td>
@@ -528,7 +560,7 @@ static result_type constexpr&#160;</td><td class="memItemRight" valign="bottom">
 </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= </div>
-<div class="line">                <a class="code" href="namespacepq_rand.html#aa51cb5d182d9d41526159ab036a7110b">real_t</a>(0.5) * scaleToU_Superuniform</div>
+<div class="line">                <a class="code" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>(0.5) * scaleToU_Superuniform</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -540,7 +572,7 @@ static result_type constexpr&#160;</td><td class="memItemRight" valign="bottom">
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacepq_rand.html#aa51cb5d182d9d41526159ab036a7110b">real_t</a> constexpr pqRand::engine::scaleToU_Quasiuniform</td>
+          <td class="memname"><a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> constexpr pqRand::engine::scaleToU_Quasiuniform</td>
         </tr>
       </table>
   </td>
@@ -550,7 +582,7 @@ static result_type constexpr&#160;</td><td class="memItemRight" valign="bottom">
 </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= </div>
-<div class="line">                <a class="code" href="namespacepq_rand.html#aa51cb5d182d9d41526159ab036a7110b">real_t</a>(std::exp2(-<span class="keywordtype">int</span>(word_size)))</div>
+<div class="line">                <a class="code" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>(std::exp2(-<span class="keywordtype">int</span>(<a class="code" href="classpq_rand_1_1xorshift1024__star.html#a936976ff2527dcfb059cd95ed9d4d028">word_size</a>)))</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -562,7 +594,7 @@ static result_type constexpr&#160;</td><td class="memItemRight" valign="bottom">
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacepq_rand.html#aa51cb5d182d9d41526159ab036a7110b">real_t</a> constexpr pqRand::engine::scaleToU_Superuniform</td>
+          <td class="memname"><a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> constexpr pqRand::engine::scaleToU_Superuniform</td>
         </tr>
       </table>
   </td>
@@ -573,7 +605,7 @@ static result_type constexpr&#160;</td><td class="memItemRight" valign="bottom">
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= </div>
 <div class="line">                </div>
-<div class="line">                <a class="code" href="namespacepq_rand.html#aa51cb5d182d9d41526159ab036a7110b">real_t</a>(0.5) * std::numeric_limits&lt;real_t&gt;::epsilon()</div>
+<div class="line">                <a class="code" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>(0.5) * std::numeric_limits&lt;real_t&gt;::epsilon()</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -583,7 +615,7 @@ static result_type constexpr&#160;</td><td class="memItemRight" valign="bottom">
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 14 2017 02:27:45 for pqRand by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jun 14 2017 13:04:57 for pqRand by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.5
 </small></address>

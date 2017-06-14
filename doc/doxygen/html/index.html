@@ -110,12 +110,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li><a class="el" href="classpq_rand_1_1weibull.html">weibull</a></li>
 <li><a class="el" href="classpq_rand_1_1pareto.html">pareto</a></li>
 </ul>
-<p><a class="anchor" id="theory"></a>The principle theory behind <a class="el" href="namespacepq_rand.html" title="The namespace of the pqRand package. ">pqRand</a> is presented in the paper "Conditioning your quantile function," <a href="https://arxiv.org/abs/1704.07949">https://arxiv.org/abs/1704.07949</a> (distributed in doc/). <a class="el" href="namespacepq_rand.html" title="The namespace of the pqRand package. ">pqRand</a> permits a discrete, high-precision sample from a selection of distributions which possess an analytic quantile function (or, as is the case for the normal and log-normal, which can be drawn using a quantile function of an underlying distribution). <a class="el" href="namespacepq_rand.html" title="The namespace of the pqRand package. ">pqRand</a> uses the "quantile flip-flop", as described in the paper. For quality control purposes, the user is "forced" to use the built-in pseudo-random number generator (PRNG), although this can be changed (within limits, see <a class="el" href="namespacepq_rand.html#a965c9123f8b47cd2762d74d412a05b3b" title="The PRNG used by pqRand::engine. ">pqRand::PRNG_t</a>).</p>
+<p><a class="anchor" id="theory"></a>The principle theory behind <a class="el" href="namespacepq_rand.html" title="The namespace of the pqRand package. ">pqRand</a> is presented in the paper "Conditioning your quantile function," <a href="https://arxiv.org/abs/1704.07949">https://arxiv.org/abs/1704.07949</a> (distributed in doc/). <a class="el" href="namespacepq_rand.html" title="The namespace of the pqRand package. ">pqRand</a> permits a discrete, high-precision sample from a selection of distributions which possess an analytic quantile function (or, as is the case for the normal and log-normal, which can be drawn using a quantile function of an underlying distribution). <a class="el" href="namespacepq_rand.html" title="The namespace of the pqRand package. ">pqRand</a> uses the "quantile flip-flop", as described in the paper. For quality control purposes, the user is "forced" to use the built-in pseudo-random number generator (PRNG), although this can be changed (within limits, see <a class="el" href="namespacepq_rand.html#a871f715f9553f5e3faee5b139dd88ad5" title="The PRNG used by pqRand::engine. ">pqRand::PRNG_t</a>).</p>
 <h2>Usage </h2>
 <ol type="1">
 <li>Create a <a class="el" href="classpq_rand_1_1engine.html" title="The random number engine used by all distributions in pqRand. ">pqRand::engine</a> (one per thread) to draw random numbers.<ul>
 <li>"Auto-seed" is highly recommended (see <a class="el" href="classpq_rand_1_1seeded__u_p_r_n_g.html#af8573c4a0f201cf28ab991ef33c25b9a" title="Auto-seed the generator using std::random_device. ">pqRand::engine::Seed</a>).</li>
-<li>For auditing, only the first thread's seed needs to be stored (see pqRand::engine::Jump).</li>
+<li>For auditing, only the first thread's seed needs to be stored (see <a class="el" href="classpq_rand_1_1xorshift1024__star.html#ab28cf9a4d392ab09e14fdb9bed9a3997" title="Quickly jump the state of the generator forward by  calls. ">pqRand::engine::Jump</a>).</li>
 </ul>
 </li>
 <li>Create as many distributions as you want.</li>
@@ -141,7 +141,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 14 2017 02:27:45 for pqRand by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jun 14 2017 13:04:57 for pqRand by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.5
 </small></address>
