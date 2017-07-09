@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">pqRand
-   &#160;<span id="projectnumber">0.4.3 (beta)</span>
+   &#160;<span id="projectnumber">0.4.4 (beta)</span>
    </div>
    <div id="projectbrief">The precise quantile random package</div>
   </td>
@@ -124,7 +124,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Samples from the exponential distribution (with rate parameter \( \lambda \)): \( \text{PDF} = \lambda \exp(-\lambda\,x) \).  <a href="classpq_rand_1_1exponential.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1standard__normal__low_precision.html">standard_normal_lowPrecision</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Samples from the normal distribution, with lower precision.  <a href="classpq_rand_1_1standard__normal__low_precision.html#details">More...</a><br/></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Samples from the normal distribution using the canonical polar method (lower precision <a class="el" href="classpq_rand_1_1standard__normal.html" title="Samples from the standard normal distribution ( , ): . ">standard_normal</a>).  <a href="classpq_rand_1_1standard__normal__low_precision.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1seeded__u_p_r_n_g.html">seeded_uPRNG</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper for a PRNG (32 or 64 bit), providing a seeding interface (used by <a class="el" href="classpq_rand_1_1engine.html">engine</a>).  <a href="classpq_rand_1_1seeded__u_p_r_n_g.html#details">More...</a><br/></td></tr>
@@ -138,8 +138,8 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a871f715f9553f5e3faee5b139dd88ad5"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="classpq_rand_1_1xorshift1024__star.html">xorshift1024_star</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepq_rand.html#a871f715f9553f5e3faee5b139dd88ad5">PRNG_t</a></td></tr>
-<tr class="memdesc:a871f715f9553f5e3faee5b139dd88ad5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The PRNG used by <a class="el" href="classpq_rand_1_1engine.html" title="The random number engine used by all distributions in pqRand. ">pqRand::engine</a>.  <a href="#a871f715f9553f5e3faee5b139dd88ad5">More...</a><br/></td></tr>
+<tr class="memitem:a871f715f9553f5e3faee5b139dd88ad5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a871f715f9553f5e3faee5b139dd88ad5"></a>
+typedef <a class="el" href="classpq_rand_1_1xorshift1024__star.html">xorshift1024_star</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PRNG_t</b></td></tr>
 <tr class="separator:a871f715f9553f5e3faee5b139dd88ad5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0c99f6f51d1d98f5cdbfe788c631624"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae0c99f6f51d1d98f5cdbfe788c631624"></a>
 typedef double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a></td></tr>
@@ -155,25 +155,7 @@ Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The namespace of the <a class="el" href="namespacepq_rand.html" title="The namespace of the pqRand package. ">pqRand</a> package. </p>
-</div><h2 class="groupheader">Typedef Documentation</h2>
-<a class="anchor" id="a871f715f9553f5e3faee5b139dd88ad5"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef <a class="el" href="classpq_rand_1_1xorshift1024__star.html">xorshift1024_star</a> <a class="el" href="namespacepq_rand.html#a871f715f9553f5e3faee5b139dd88ad5">pqRand::PRNG_t</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>The PRNG used by <a class="el" href="classpq_rand_1_1engine.html" title="The random number engine used by all distributions in pqRand. ">pqRand::engine</a>. </p>
-<p>The authors of <a class="el" href="namespacepq_rand.html" title="The namespace of the pqRand package. ">pqRand</a> have carefully chosen <a class="el" href="classpq_rand_1_1xorshift1024__star.html" title="An implementation of the xorshift1024* 64-bit pseudo-random number generator (PRNG). ">xorshift1024_star</a>, a PRNG with a sufficiently large state (but not too large), excellent uniformity properties, rigorously tested by others and vetted by the authors using the dieharder battery of tests.</p>
-<p>The motivation of the <a class="el" href="namespacepq_rand.html" title="The namespace of the pqRand package. ">pqRand</a> package essentially requires that simple freedom to chose a PRNG be removed from the user, since such freedom would permit them to unwittingly destroy the benefits of <a class="el" href="namespacepq_rand.html" title="The namespace of the pqRand package. ">pqRand</a>. Nonetheless, it is still possible to override this decision by redefining PRNG_t, IFF the substituted class uses satisfies the <a class="el" href="classpq_rand_1_1seeded__u_p_r_n_g.html#prng_requirements"><code>prng_t</code> requirements</a> of <a class="el" href="classpq_rand_1_1seeded__u_p_r_n_g.html" title="A wrapper for a PRNG (32 or 64 bit), providing a seeding interface (used by engine). ">seeded_uPRNG</a>.</p>
-<p>As such, <code>std::mt19937_64</code> (the model for the xorshift102_star API) will work as a drop-in replacement. But while <code>std::mt19937_64</code> has good statistics, its state is too large for massive multi-parallelism. Nonetheless, it is fully compatible with <a class="el" href="namespacepq_rand.html" title="The namespace of the pqRand package. ">pqRand</a> (though not necessarily with pqRand_Example.cpp, which uses Jump()). To switch to std::mt19937_64, simply change this typedef </p>
-
-</div>
-</div>
-<h2 class="groupheader">Function Documentation</h2>
+</div><h2 class="groupheader">Function Documentation</h2>
 <a class="anchor" id="a584ea80b73202a239546a96395361c65"></a>
 <div class="memitem">
 <div class="memproto">
@@ -256,7 +238,7 @@ Nonetheless, the <em>only</em> checks made by <a class="el" href="namespacepq_ra
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 14 2017 13:04:57 for pqRand by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Jul 9 2017 15:38:44 for pqRand by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.5
 </small></address>

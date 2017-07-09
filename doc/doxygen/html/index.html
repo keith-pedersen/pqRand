@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">pqRand
-   &#160;<span id="projectnumber">0.4.3 (beta)</span>
+   &#160;<span id="projectnumber">0.4.4 (beta)</span>
    </div>
    <div id="projectbrief">The precise quantile random package</div>
   </td>
@@ -110,7 +110,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li><a class="el" href="classpq_rand_1_1weibull.html">weibull</a></li>
 <li><a class="el" href="classpq_rand_1_1pareto.html">pareto</a></li>
 </ul>
-<p><a class="anchor" id="theory"></a>The principle theory behind <a class="el" href="namespacepq_rand.html" title="The namespace of the pqRand package. ">pqRand</a> is presented in the paper "Conditioning your quantile function," <a href="https://arxiv.org/abs/1704.07949">https://arxiv.org/abs/1704.07949</a> (distributed in doc/). <a class="el" href="namespacepq_rand.html" title="The namespace of the pqRand package. ">pqRand</a> permits a discrete, high-precision sample from a selection of distributions which possess an analytic quantile function (or, as is the case for the normal and log-normal, which can be drawn using a quantile function of an underlying distribution). <a class="el" href="namespacepq_rand.html" title="The namespace of the pqRand package. ">pqRand</a> uses the "quantile flip-flop", as described in the paper. For quality control purposes, the user is "forced" to use the built-in pseudo-random number generator (PRNG), although this can be changed (within limits, see <a class="el" href="namespacepq_rand.html#a871f715f9553f5e3faee5b139dd88ad5" title="The PRNG used by pqRand::engine. ">pqRand::PRNG_t</a>).</p>
+<p><a class="anchor" id="theory"></a>The principle theory behind <a class="el" href="namespacepq_rand.html" title="The namespace of the pqRand package. ">pqRand</a> is presented in the paper "Conditioning your quantile function," <a href="https://arxiv.org/abs/1704.07949">https://arxiv.org/abs/1704.07949</a> (distributed in doc/). <a class="el" href="namespacepq_rand.html" title="The namespace of the pqRand package. ">pqRand</a> permits a discrete, high-precision sample from a selection of distributions which possess an analytic quantile function (or, as is the case for the normal and log-normal, which can be drawn using a quantile function of an underlying distribution). <a class="el" href="namespacepq_rand.html" title="The namespace of the pqRand package. ">pqRand</a> uses the "quantile flip-flop", as described in the paper. For quality control purposes, the user is "forced" to use the built-in pseudo-random number generator (PRNG), although this can be changed (within limits, see pqRand::PRNG_t).</p>
 <h2>Usage </h2>
 <ol type="1">
 <li>Create a <a class="el" href="classpq_rand_1_1engine.html" title="The random number engine used by all distributions in pqRand. ">pqRand::engine</a> (one per thread) to draw random numbers.<ul>
@@ -132,7 +132,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>The Python/Cython API is 99% identical to the C++ API, so I have not built a parallel documentation for Python. The two minor differences are due to limitations of the Python language, and are enumerated at the top of "pYqRand.pyx".</p>
 <h2>Features to consider in future versions </h2>
 <ul>
-<li>If a regular sample of \( U \) produces numbers with \( weight = 1 \), supply a sample of \( U \) from the tail \((u \to 0)\), given a supplied \( weight \ll 1 \).</li>
+<li>Some rejection sampling algorithms (e.g. gamma).</li>
+<li>If a regular sample of \( U \) produces numbers with \( weight = 1 \), supply a sample of \( U \) from the tail \((u \to 0)\), given a supplied \( weight \ll 1 \). *</li>
 </ul>
 <h2>Known bugs </h2>
 <ul>
@@ -141,7 +142,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 14 2017 13:04:57 for pqRand by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Jul 9 2017 15:38:44 for pqRand by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.5
 </small></address>

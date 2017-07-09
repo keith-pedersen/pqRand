@@ -1,3 +1,26 @@
+/* pqRand: The precise quantile random package
+ * Copyright (C) 2017 Keith Pedersen (Keith.David.Pedersen@gmail.com)
+ * 
+ * This package is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This package is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+ * See the COPYRIGHT_NOTICE for more details.
+ * 
+ * Under Section 7 of GPL version 3, you are granted additional
+ * permissions described in the GCC Runtime Library Exception, version
+ * 3.1, as published by the Free Software Foundation.
+ * 
+ * You should have received a copy of the GNU General Public License and
+ * a copy of the GCC Runtime Library Exception along with this package;
+ * see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+ * <http://www.gnu.org/licenses/>.
+*/
+
 #include "../include/distributions.hpp"
 
 typename pqRand::real_t pqRand::standard_normal::operator()(pqRand::engine& gen)
@@ -23,10 +46,11 @@ typename pqRand::two pqRand::standard_normal::GenTwo(pqRand::engine& gen)
 	two pair;
 	real_t u;
 	
-	// The Marsaglia polar method, modeled after GNU's std::normal_distribution,
-	// but with the added precision of the quantile flip-flop U_Q.
-	// As such, we're not doing 1 - U to get a cheap random sign; 
-	// this destroys the precision of quasiuniform U
+	// The Marsaglia polar method -- modeled after GNU's std::normal_distribution 
+	// (bits/random.tcc, line 1925, <https://gcc.gnu.org/onlinedocs/gcc-4.8.5/libstdc++/api/a01147_source.html>)
+	// on or about March 2017 -- but with the added precision of the quantile flip-flop and U_Q.
+	// As such, we don't do x = (1 - U) to get a cheap random sign; 
+	// this destroys the precision of quasiuniform U.
 	do
 	{
 		pair.x = gen.U_Q();
@@ -44,7 +68,7 @@ typename pqRand::two pqRand::standard_normal::GenTwo(pqRand::engine& gen)
 	}
 	while(u > real_t(1.));
 
-	// Give x and y a random sign via the pqRand::engine (uses its bitCache)
+	// Give x and y a random sign via the pqRand::engine (using its bitCache)
 	gen.ApplyRandomSign(pair.x);
 	gen.ApplyRandomSign(pair.y);
 	

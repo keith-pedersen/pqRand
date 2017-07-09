@@ -1,3 +1,26 @@
+/* pqRand: The precise quantile random package
+ * Copyright (C) 2017 Keith Pedersen (Keith.David.Pedersen@gmail.com)
+ * 
+ * This package is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This package is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+ * See the COPYRIGHT_NOTICE for more details.
+ * 
+ * Under Section 7 of GPL version 3, you are granted additional
+ * permissions described in the GCC Runtime Library Exception, version
+ * 3.1, as published by the Free Software Foundation.
+ * 
+ * You should have received a copy of the GNU General Public License and
+ * a copy of the GCC Runtime Library Exception along with this package;
+ * see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+ * <http://www.gnu.org/licenses/>.
+*/ 
+
 /*!
  *  @file pqRand.hpp
  *  @brief Establishes pqRand and defines the PRNG engine needed by distributions
@@ -9,6 +32,7 @@
  *  @author Keith Pedersen (Keith.David.Pedersen@gmail.com)
  *  @date 2017
 */
+
 /*! @mainpage 
  * 
  *  @brief pqRand
@@ -88,10 +112,10 @@
  * 
  *  Features to consider in future versions
  *  --------------------------------------------------------------------
+ *  - Some rejection sampling algorithms (e.g. gamma).
  *  - If a regular sample of \f$ U \f$ produces numbers with \f$ weight = 1 \f$, 
  *    supply a sample of \f$ U \f$ from the tail \f$(u \to 0)\f$,
- *    given a supplied \f$ weight \ll 1 \f$.
- * 
+ *    given a supplied \f$ weight \ll 1 \f$. * 
  * 
  *  Known bugs
  *  --------------------------------------------------------------------
@@ -130,7 +154,9 @@ namespace pqRand //! @brief The namespace of the pqRand package
 	 *  Nonetheless, it is fully compatible with pqRand
 	 *  (though not necessarily with pqRand_Example.cpp, which uses Jump()).
 	 *  To switch to std::mt19937_64, simply change this typedef
-	*/ 
+	*/
+	
+	class xorshift1024_star; // Forward declare for the typedef; class defined below
 	typedef xorshift1024_star PRNG_t;
 	// typedef std::mt19937_64 PRNG_t;
 	// typedef std::mt19937 PRNG_t; // valid if real_t == float

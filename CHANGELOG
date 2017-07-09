@@ -7,33 +7,53 @@ This is the change log for the pqRand package
      |_.__/   \___|  \__|  \__,_|
 ////////////////////////////////////////////////////////////////////////
 
+version 0.4.4 ===> 9 Jul 2017
+========================================================================
+ * Bug fix: v0.4.3 moved the pqRand::PRNG_t typeddef to near the top of pqRand.hpp.
+   Unfortunately, this is before xorshift1024_star was defined,
+   so the code will not compile without a foward declaration of xorshift1024_star (added).
+ * IMPORTANT: Re-licensed pqRand (retroactively) under GPL v3 (see COPYING3) 
+   with the GCC Runtime Library Exception, version 3.1 (see COPYING.RUNTIME).
+   This move reflects the fact that some of my code (e.g. standard_normal) 
+   were modeled after implementations of sampling algorithms found in 
+   GNU's bits/random.tcc, thus making my code a "modified version"  
+   (and requiring pqRand to use the same license as bits/random.tcc).
+   THE UPSHOT: pqRand may still be used inside YOUR closed-source, 
+   proprietary software. You can create pqRand objects and call pqRand functions
+   provided you build and use pqRand "as-is" and YOUR source code is not 
+   directly derivative of the pqRand source code. See COPYRIGHT_NOTICE for a 
+   more detailed but plain-worded explanation of the license 
+   (and its exception) as I understand them.
+ * Retroactively added bullets (*) to CHANGELOG, for readability.
+
 version 0.4.3 ===> 14 Jun 2017
 ========================================================================
-	Removed awkward engine::U_S() and renamed engine::U_S_canonical => engine::U_S().
-	Renamed uPRNG_64_Seeder => seeded_uPRNG, and PRNG_t::word_size == 32 is now allowed
-	(but only if real_t == float).	
+ * Removed awkward engine::U_S() and renamed engine::U_S_canonical => engine::U_S().
+ * Renamed uPRNG_64_Seeder => seeded_uPRNG, and PRNG_t::word_size == 32 is now allowed
+   (but only if real_t == float).
 
 version 0.4.2 ===> 12 Jun 2017
 ========================================================================
-	log1p(x/(1-x)) is not more stable than -log1p(-x); 
-	both are equally numerically unstable as x => -1.
-	Fix distributions which used this trick (standard_normal, exponential, weibull).
+ * log1p(x/(1-x)) is not more stable than -log1p(-x); 
+   both are equally numerically unstable as x => -1.
+   Fix distributions which used this trick (standard_normal, exponential, weibull).
 
 version 0.4.1 ===> 18 May 2017
 ========================================================================
-	Fix some portability issues with Makefile and documentation
-	(thanks to Nathaniel Beaver).
+ * Fix some portability issues with Makefile and documentation
+   (thanks to Nathaniel Beaver).
 
-version 0.4.0 ===> 15 May 2017
+version 0.4.0 ===> 15 May 2017  (first beta release)
 ========================================================================
-	First beta release. Added Doxygen documentation, 
-	changed exponential distribution to use rate parameter lambda 
-	(instead of mean time mu in, line with convention),
-	but then changed all distribution parameter getter functions because
-	"lambda" is a reserved word in Python (F8X! $H17 @55),
-	created COPYWRITE_NOTICE and CHANGELOG. 
-	Note: Some features are still in alpha (e.g. ParallelList).
-	
+ * Added Doxygen documentation.
+ * Changed exponential distribution to use rate parameter lambda 
+   (instead of mean time mu), in line with convention.
+   But then changed all distribution parameter getter functions 
+   to start with a capital letter because
+   "lambda" is a reserved word in Python (F8X! $H17 @55).
+ * Created COPYRIGHT_NOTICE and CHANGELOG. 
+   Note: Some features are still in alpha (e.g. ParallelList).
+
               _           _             
        __ _  | |  _ __   | |__     __ _ 
       / _` | | | | '_ \  | '_ \   / _` |
@@ -46,17 +66,19 @@ changes will be very broadly described, since they are often sweeping
 
 version 0.3 --- 11 May 2017 
 ========================================================================
-	Changed API for easier transition to Python, namespace pqr->pqRand, 
-	created Cython implementation, introduced ParallelList functionality
-	in Cython only for alpha testing.
+ * Changed API for easier transition to Python.
+ * namespace pqr->pqRand.
+ * Created Cython implementation.
+ * Introduced ParallelList functionality (in Cython only) for alpha testing.
 
 
 version 0.2 --- 25 Apr 2017 
 ========================================================================
-	Changed name to pqRand, fixed U_Q to round correctly, 
-	pushed paper to arXiv, pushed code to GitHub.
+ * Changed name to pqRand.
+ * Fixed U_Q to round correctly.
+ * Pushed paper to arXiv, pushed code to GitHub.
 
 
 version 0.1 --- 06 Mar 2017 
 ========================================================================
-	Introduced as rTailor, VERY alpha.
+ * Package introduced as rTailor; VERY alpha.

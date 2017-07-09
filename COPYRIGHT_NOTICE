@@ -1,22 +1,34 @@
 pqRand: The precise quantile random package
-	Copyright(c) 2017 Keith Pedersen
+	Copyright (C) 2017 Keith Pedersen <www.hepguy.com>
+	Keith.David.Pedersen@gmail.com
 	https://github.com/keith-pedersen/pqRand
 
 Based upon work presented in:
 	"Conditioning your quantile function", 
-	https://arxiv.org/abs/1704.07949
-	
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
- * Redistribution of source code must retain the entirety of this
-   <Copyright_Notice>. Please cite the paper in the documentation and/or 
-   other materials provided with the distribution.
- * Redistribution of methods in binary form (even in part) must 
-   reproduce the entire <Copyright_Notice> in the documentation and/or 
-   other materials provided with the distribution.
- * Neither the name of the copyright owner nor the names of its
-   contributors may be used to endorse or promote products derived from
-   this software without specific prior written permission.
+	https://arxiv.org/abs/1704.07949.
+
+This package is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This package is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+See the COPYRIGHT_NOTICE for more details.
+
+Under Section 7 of GPL version 3, you are granted additional
+permissions described in the GCC Runtime Library Exception, version
+3.1, as published by the Free Software Foundation
+(hereafter referred to as "the Exception").
+ 
+You should have received a copy of the GNU General Public License and
+a copy of the GCC Runtime Library Exception along with this package;
+see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<http://www.gnu.org/licenses/>.
+
+"The disclaimer" refers to the following paragraph 
+AND the disclaimer in the GPL version 3 ...
 
 THIS SOFTWARE (pqRand) IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -31,3 +43,119 @@ OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Frequently Asked Questions (FAQ) about the GPL with the Exception
+
+FAQ Disclaimer: This FAQ is the author's best interpretation of
+the GPL version 3 with GCC Runtime Library Exception version 3.1.
+However, the FAQ is completely non-binding, and in no way alters the license.
+"The disclaimer" covers damages from ANY use of this software, 
+even if such use seemed legal after reading FAQ, but was actually in 
+violation of the explicit license.
+
+Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q
+
+Can I use pqRand in proprietary software?
+
+
+Yes. The Exception grants you the right to use pqRand in your close-source code. 
+However, this must be done correctly. To not incur additional responsibilities,
+you can only use pqRand as an independent module and without modification of pqRand.
+You can create pqRand objects and call pqRand functions to your hearts desire, 
+but pqRand must remain separate from the source code you are developing
+(i.e. you can't monkey with the pqRand source code, 
+then distribute a program which uses this modified pqRand, without consequences).
+
+Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q
+
+Can I monkey with pqRand if I don't distribute the results?
+
+
+Yes. This is legal even under GPL. Only "propagated" works fall under the GPL.
+
+Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q
+
+What if I change the pqRand source and use that in my program?
+
+
+You will have to distribute the source code for your modified pqRand with your program, 
+(and your modified pqRand must maintain the GPL, with or without the Exception). 
+Your independent source code is still proprietary;
+you are only FORCED to distribute your modified version of pqRand.
+
+Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q
+
+But what if I only change pqRand to fix a bug? Do I still have to 
+distribute the source code for the entire modified pqRand?
+
+
+Yes! That's one of the main benefits of GPL; we want to know about those bugs.
+So instead of painfully releasing the modified pqRand, why not just 
+alert the author(s) to the bug (e.g. via a pull request)?
+If the patch get's included into a new version of pqRand, 
+then voila, you can use it unmodified again.
+
+Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q
+
+What if I use pqRand to implement a distribution that is 
+not included in pqRand (e.g. using engine.U_Q() and a quantile flip-flop 
+to create a rejection sampling algorithm for my custom distribution)?
+
+
+Let's do a thought experiment. It's OK to use random numbers from pqRand
+without releasing your entire source code. So it's OK to do math and statistics
+that's derived from pqRand. In fact, every program that uses pqRand is
+using a piece of pqRand to do something that pqRand doesn't do.
+Are these derivative works? Absolutely, but they're permitted by the Exception.
+
+As long as your using pqRand "as-is", you don't have to GPL any 
+work derived from it, even if that work expands pqRand's library of distributions
+(just like using GNU's cmath to create an implementation of inverse_erf
+does not require GPLing your inverse_erf function). HOWEVER, if your 
+new distribution is sufficiently general, then it sure would be nice to at least 
+alert the author(s), for possible public inclusion in pqRand
+(e.g. via pull request) OR simply GPL that slice of the code, 
+for distribution with the closed-source program.
+
+BUT BE CAREFUL! If your distribution's code is a trivially modified version of
+source code copied from pqRand, it too must be GPL'd (with or without the Exception), 
+because it is derivative of the SOURCE CODE.
+This is the very sin which forced pqRand to use this license.
+Remember, it's the SOURCE CODE which is copyrighted and licensed, 
+not the underlying algorithms.
+
+Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q
+
+Do I have to dynamically link my program to pqRand to qualify for the Exception
+(i.e. do I have to link against libpqr.so)? 
+
+
+No. You can statically link pqRand into your executable
+(i.e. build pqRand.o and distribution.o and link against them). 
+In fact, some parts of pqRand are header only, so there are pieces
+that get built directly into your code. Per the Exception,
+this is totally fine (just like all the header-only stuff in glibc).
+
+Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q
+
+Do I have to compile with gcc to qualify for the Exception?
+
+
+No. But there are caveats. See GNU's answer to this question on their FAQ.
+<https://www.gnu.org/licenses/gcc-exception-3.1-faq.html>
+
+Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q - Q
+
+What is your opinion of this package's license?
+
+
+I'm not a litigious person. I used this license because I derived a 
+small part of this package from code that was so licensed, inadvertently 
+"infecting" my work. I think the standalone GPL license is too strong, 
+since it encourages corporations to create internal knock-offs, 
+re-creating the kind of bugs that have already been picked out of the free code.
+On the other hand, the Exception (which effectively makes this license LPGL)
+is probably a good compromise, because it permits proprietary use while also 
+promoting public improvement of the free code, for the benefit of all.

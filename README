@@ -6,12 +6,16 @@
  8           8 
 
 pqRand: The precise quantile random package
-	version 0.4.3 (beta); June 2017
-	Copyright(c) 2017 (see COPYRIGHT_NOTICE)
+	version 0.4.4 (beta); July 2017
+	Copyright (C) 2017 (see COPYRIGHT_NOTICE)
 
 By Keith Pedersen (Keith.David.Pedersen @ gmail.com)
+	https://www.hepguy.com/
 	https://github.com/keith-pedersen/pqRand
-	https://arxiv.org/abs/1704.07949
+
+Based upon work presented in:
+	"Conditioning your quantile function", 
+	https://arxiv.org/abs/1704.07949.
 
 Special thanks to Zack Sullivan, Andrew Webster and Sebastiano Vigna.
 
@@ -23,16 +27,26 @@ This package is designed to improve sampling from the following distributions
 	* weibull
 	* pareto
 	
-ATTENTION.
+ATTENTION
 ========================================================================
 	This package is in beta. Please see the disclaimer in the COPYRIGHT_NOTICE.
-	If you find a bug, PLEASE contact me with as much information as you can. 
-	I am also open to new features (like new distributions, or new ways to use them) 
+	If you find a bug, PLEASE contact me with as much information as you can
+	(e.g. a documented pull request on github). I am also open to new features 
+	(like new distributions, or new ways to use them)
 	and suggestions for the API.
 	
 	Additionally, this package uses C++11. Hopefully by now (2017), 
 	C++11 is supported at your site. My apologies if it is not, 
 	but there are SO many reasons to use it.
+	
+LICENSE
+========================================================================
+	This package is licensed under the GPL version 3 with the 
+	GCC Runtime Library Exception version 3.1.
+	The one-line description of this license is,
+	"It's OK to use pqRand in close-source software as long as pqRand remains an
+	unmodified and independent module." See COPYING3 and COPYING.RUNTIME 
+	for the legalese, and COPYRIGHT_NOTICE for more details (including an FAQ).	
 	
 INSTALLATION
 ========================================================================
@@ -95,7 +109,3 @@ SEEDING
 	but it must be in the right format (see the documentation for pqRand::Seed).
 	The recommended method to store seeds for auditing is:
 	(i) auto-seed then (ii) store the seed to a file (~1/3 kB).
-
-DISTRIBUTIONS
-========================================================================
-	Check out pqRandExample.cpp to see how to access distributions.

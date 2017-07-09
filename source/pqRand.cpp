@@ -1,3 +1,26 @@
+/* pqRand: The precise quantile random package
+ * Copyright (C) 2017 Keith Pedersen (Keith.David.Pedersen@gmail.com)
+ * 
+ * This package is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This package is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+ * See the COPYRIGHT_NOTICE for more details.
+ * 
+ * Under Section 7 of GPL version 3, you are granted additional
+ * permissions described in the GCC Runtime Library Exception, version
+ * 3.1, as published by the Free Software Foundation.
+ * 
+ * You should have received a copy of the GNU General Public License and
+ * a copy of the GCC Runtime Library Exception along with this package;
+ * see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+ * <http://www.gnu.org/licenses/>.
+*/
+
 #include "../include/pqRand.hpp"
 #include <string>
 #include <fstream>
@@ -15,7 +38,7 @@ void pqRand::seeded_uPRNG<prng_t>::Seed()
 	{
 		std::random_device randDev;
 		
-		// Insert one word for every state_size, space-separated		
+		// Insert one word for every state_size, space-separated
 		switch(seeded_uPRNG::word_size)
 		{
 			case 32:

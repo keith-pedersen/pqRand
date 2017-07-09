@@ -1,3 +1,26 @@
+/* pqRand: The precise quantile random package
+ * Copyright (C) 2017 Keith Pedersen (Keith.David.Pedersen@gmail.com)
+ * 
+ * This package is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This package is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+ * See the COPYRIGHT_NOTICE for more details.
+ * 
+ * Under Section 7 of GPL version 3, you are granted additional
+ * permissions described in the GCC Runtime Library Exception, version
+ * 3.1, as published by the Free Software Foundation.
+ * 
+ * You should have received a copy of the GNU General Public License and
+ * a copy of the GCC Runtime Library Exception along with this package;
+ * see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+ * <http://www.gnu.org/licenses/>.
+*/
+
 /*!
  *  @file distributions.hpp
  *  @brief This file Defines pqRand's non-uniform distributions.
@@ -207,7 +230,8 @@ namespace pqRand
 			inline real_t Lambda() {return lambda_;} //!< rate parameter
 	};
 	
-	/*! @brief Samples from the normal distribution, with lower precision.
+	/*! @brief Samples from the normal distribution using the canonical polar method 
+	 *  (lower precision standard_normal).
 	 * 
 	 *  This implementation of Marsaglia polar method is used by 
 	 *  GNU and Numpy, and is included for testing purposes.
