@@ -247,16 +247,16 @@ typename pqRand::real_t pqRand::engine::RandomMantissa_Quasiuniform()
 	
 	if(randUint < minEntropy) // Add entropy to randUint until it has enough
 	{
-		real_t downScale = 1.; // Downscale will be set at the end
-		
+		// We need to shift left at least once, so let's start with that
+		real_t downScale = real_t(0.5);	
 		{
-			// We need to shift left at least once, so let's start with that
-			int shiftLeft = 1; // Must use signed type, for negative exponent in pow()
+			int shiftLeft = 1; // Must use signed type, for negative exponent in exp2()
 			randUint <<= 1;
 			
 			if(randUint == 0) // Exceedingly rare, but need to handle
 			{
 				shiftLeft = 0; // Undo the initial left shift because ...
+				downScale = real_t(1);
 				
 				// ... every time we draw a zero, do a 64-bit leftward shift.
 				// It's like we have an infinite bit stream which we keep shifting left
@@ -271,10 +271,11 @@ typename pqRand::real_t pqRand::engine::RandomMantissa_Quasiuniform()
 			{
 				randUint <<= 1;
 				++shiftLeft;
+				downScale *= real_t(0.5);
 			}
 			
-			assert(shiftLeft < numBitsOfEntropyRequired);
-			downScale *= real_t(std::exp2(-shiftLeft));
+			assert(size_t(shiftLeft) < numBitsOfEntropyRequired);
+			//~ downScale = std::exp2(-shiftLeft); // original, not faster
 						
 			// Insert new bits into the gap filled by the shift left
 			// Usually quite wasteful, but generally quite rare
@@ -323,11 +324,14 @@ typename pqRand::real_t pqRand::engine::RandomMantissa_Quasiuniform()
 
 typename pqRand::real_t pqRand::engine::RandomMantissa_Superuniform()
 {
-	result_type randUint;
+	//~ result_type randUint;
 	
-	while((randUint = ((*this)() >> bitShiftRight_Superuniform)) == 0);
+	//~ while((randUint = ((*this)() >> bitShiftRight_Superuniform)) == 0);
+		
+	//~ return real_t(randUint);
 	
-	return real_t(randUint);
+	// std::generate_canonical returns [0, 1), so we should as well
+	return real_t((*this)() >> bitShiftRight_Superuniform);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -395,8 +399,10 @@ bool pqRand::engine::RandBool()
 
 ////////////////////////////////////////////////////////////////////////
 
-void pqRand::engine::ApplyRandomSign(real_t& victim)
+typename pqRand::real_t pqRand::engine::ApplyRandomSign(real_t& victim)
 {
-	bool const decision = RandBool();
-	victim = std::copysign(victim, decision ? real_t(1.) : real_t(-1.));
+	//~ bool const decision = RandBool();
+	//~ victim = std::copysign(victim, decision ? real_t(1.) : real_t(-1.));
+	if(RandBool()) victim = -victim;
+	return victim;
 }

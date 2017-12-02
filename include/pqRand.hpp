@@ -157,13 +157,13 @@ namespace pqRand //! @brief The namespace of the pqRand package
 	*/
 	
 	class xorshift1024_star; // Forward declare for the typedef; class defined below
-	typedef xorshift1024_star PRNG_t;
-	// typedef std::mt19937_64 PRNG_t;
-	// typedef std::mt19937 PRNG_t; // valid if real_t == float
+	//~ typedef xorshift1024_star PRNG_t;
+	//~ typedef std::mt19937_64 PRNG_t;
+	typedef std::mt19937 PRNG_t; // valid if real_t == float
 	
 	//! @brief Defined to allow internal testing with float/binary32.
-	typedef double real_t;
-	// typedef float real_t;
+	typedef float real_t;
+	//~ typedef double real_t;
 	
 	/*! @brief A wrapper for a PRNG (32 or 64 bit), providing a seeding interface (used by \ref engine).
 	 * 
@@ -383,6 +383,9 @@ namespace pqRand //! @brief The namespace of the pqRand package
 			// We must have p < state_size, so make sure to initialize it.
 			// This is a bad state, but valid 
 			// ... unless the uninitialized state happens to be all zeros.
+			
+			static constexpr size_t min() {return std::numeric_limits<result_type>::min();}
+			static constexpr size_t max() {return std::numeric_limits<result_type>::max();}
 						
 			uint64_t operator()(); //!< @brief Return the next 64-bit, unsigned integer
 			
@@ -548,7 +551,9 @@ namespace pqRand //! @brief The namespace of the pqRand package
 				real_t(0.5) * scaleToU_Superuniform;
 					
 			// The last three bits of xorshift1024_star are not as good to use, per S. Vigna
+			// It some other PRNG_t is used instead, we will waste some bits.
 			result_type static constexpr badBits = 3;
+				
 			result_type static constexpr replenishBitCache = (result_type(1) << (badBits - 1));
 			// NOTE: if badBits == 0, replenishBitCache == 0 (a shift left of -1).
 			// This may output a warning, but should still be valid.
@@ -630,7 +635,13 @@ namespace pqRand //! @brief The namespace of the pqRand package
 			 * @param victim 
 			 * The floating-point number which is assigned a random sign (+/-).
 			*/ 			
-			void ApplyRandomSign(real_t& victim); 
+			real_t ApplyRandomSign(real_t& victim); 
+			
+			real_t ApplyRandomSign(real_t&& victim)
+			{
+				ApplyRandomSign(victim);
+				return victim;
+			}
 				
 			/*! @brief Draw from quasiuniform \f$ U(0, 1] \f$.
 			 * 
