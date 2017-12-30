@@ -18,7 +18,7 @@
     extensions: ["tex2jax.js"],
     jax: ["input/TeX","output/HTML-CSS"],
 });
-</script><script src="../../MathJax-minimal/MathJax.js"></script>
+</script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">pqRand
-   &#160;<span id="projectnumber">0.4.4 (beta)</span>
+   &#160;<span id="projectnumber">0.5.0 (beta)</span>
    </div>
    <div id="projectbrief">The precise quantile random package</div>
   </td>
@@ -79,7 +79,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Friends</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -96,13 +96,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classpq_rand_1_1standard__normal-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">pqRand::standard_normal Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Samples from the standard normal distribution ( \( \mu =0 \), \(\sigma=1\)): \( \text{PDF} = \exp(-\frac{1}{2}x^2)/\sqrt{2\pi} \).  
+<p>Sample the standard normal distribution ( \( \mu =0 \), \(\sigma=1\)).  
  <a href="classpq_rand_1_1standard__normal.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="distributions_8hpp_source.html">distributions.hpp</a>&gt;</code></p>
@@ -112,38 +113,163 @@ Inheritance diagram for pqRand::standard_normal:</div>
  <div class="center">
   <img src="classpq_rand_1_1standard__normal.png" usemap="#pqRand::standard_normal_map" alt=""/>
   <map id="pqRand::standard_normal_map" name="pqRand::standard_normal_map">
-<area href="classpq_rand_1_1normal.html" title="Samples from the normal distribution (mean  and standard deviation ): . " alt="pqRand::normal" shape="rect" coords="0,56,233,80"/>
-<area href="classpq_rand_1_1standard__normal__low_precision.html" title="Samples from the normal distribution using the canonical polar method (lower precision standard_norma..." alt="pqRand::standard_normal_lowPrecision" shape="rect" coords="243,56,476,80"/>
-<area href="classpq_rand_1_1log__normal.html" title="Samples from the log-normal distribution: . " alt="pqRand::log_normal" shape="rect" coords="0,112,233,136"/>
+<area href="classpq_rand_1_1distribution_c_d_f.html" title="An abstract class which extends the distributionPDF interface for those distributions with a calculab..." alt="pqRand::distributionCDF" shape="rect" coords="121,112,354,136"/>
+<area href="classpq_rand_1_1distribution_p_d_f.html" title="An abstract class which extends the distribution interface for those distributions with an analytic P..." alt="pqRand::distributionPDF" shape="rect" coords="121,56,354,80"/>
+<area href="classpq_rand_1_1distribution.html" alt="pqRand::distribution&lt; real_t &gt;" shape="rect" coords="121,0,354,24"/>
+<area href="classpq_rand_1_1normal.html" title="Sample the normal distribution (mean  and standard deviation ). " alt="pqRand::normal" shape="rect" coords="0,224,233,248"/>
+<area href="classpq_rand_1_1standard__normal__low_precision.html" title="Sample from the normal distribution using the canonical polar method (lower precision standard_normal..." alt="pqRand::standard_normal_lowPrecision" shape="rect" coords="243,224,476,248"/>
+<area href="classpq_rand_1_1log__normal.html" title="Sample the log-normal distribution (the log of the variates are normally distributed, with mean  and standard deviation ). " alt="pqRand::log_normal" shape="rect" coords="0,280,233,304"/>
 </map>
  </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ab731a2c71e62eeb7ff83ebe7ed65e1c7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab731a2c71e62eeb7ff83ebe7ed65e1c7"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1standard__normal.html#ab731a2c71e62eeb7ff83ebe7ed65e1c7">standard_normal</a> ()</td></tr>
-<tr class="memdesc:ab731a2c71e62eeb7ff83ebe7ed65e1c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The distribution is hard-coded; no arguments to supply. <br/></td></tr>
-<tr class="separator:ab731a2c71e62eeb7ff83ebe7ed65e1c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add44581721180e8051a27850b81de215"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="add44581721180e8051a27850b81de215"></a>
-<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1standard__normal.html#add44581721180e8051a27850b81de215">operator()</a> (<a class="el" href="classpq_rand_1_1engine.html">pqRand::engine</a> &amp;gen)</td></tr>
-<tr class="memdesc:add44581721180e8051a27850b81de215"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sample one value. <br/></td></tr>
-<tr class="separator:add44581721180e8051a27850b81de215"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a519b8fd942f6d0e1a6681e3e62845247"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a519b8fd942f6d0e1a6681e3e62845247"></a>
-virtual <a class="el" href="structpq_rand_1_1two.html">two</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1standard__normal.html#a519b8fd942f6d0e1a6681e3e62845247">GenTwo</a> (<a class="el" href="classpq_rand_1_1engine.html">pqRand::engine</a> &amp;gen)</td></tr>
-<tr class="memdesc:a519b8fd942f6d0e1a6681e3e62845247"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sample a pair of values. <br/></td></tr>
-<tr class="separator:a519b8fd942f6d0e1a6681e3e62845247"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5feb69d11da8a284d3ad67b2245752c6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5feb69d11da8a284d3ad67b2245752c6"></a>
+virtual <a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1standard__normal.html#a5feb69d11da8a284d3ad67b2245752c6">min</a> () const </td></tr>
+<tr class="memdesc:a5feb69d11da8a284d3ad67b2245752c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The minimum variate sampled. <br/></td></tr>
+<tr class="separator:a5feb69d11da8a284d3ad67b2245752c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab87df9b4ceff27f7d0a825c334fd5bb1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab87df9b4ceff27f7d0a825c334fd5bb1"></a>
+virtual <a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1standard__normal.html#ab87df9b4ceff27f7d0a825c334fd5bb1">max</a> () const </td></tr>
+<tr class="memdesc:ab87df9b4ceff27f7d0a825c334fd5bb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum variate sampled. <br/></td></tr>
+<tr class="separator:ab87df9b4ceff27f7d0a825c334fd5bb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a80adc641545378adef4528e2bbef6c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8a80adc641545378adef4528e2bbef6c"></a>
+<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1standard__normal.html#a8a80adc641545378adef4528e2bbef6c">Mean</a> () const </td></tr>
+<tr class="memdesc:a8a80adc641545378adef4528e2bbef6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The distribution's mean, \( \langle x \rangle = \int \text{PDF}(x)\, x\, dx \). <br/></td></tr>
+<tr class="separator:a8a80adc641545378adef4528e2bbef6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adec89fa428bdef2f3a7734d2c1d66fc7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adec89fa428bdef2f3a7734d2c1d66fc7"></a>
+<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1standard__normal.html#adec89fa428bdef2f3a7734d2c1d66fc7">Variance</a> () const </td></tr>
+<tr class="memdesc:adec89fa428bdef2f3a7734d2c1d66fc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The distribution's variance, \( \langle x^2 \rangle - \langle x \rangle^2 \). <br/></td></tr>
+<tr class="separator:adec89fa428bdef2f3a7734d2c1d66fc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7faafbbd64b15abd621fe5690f01afd7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1standard__normal.html#a7faafbbd64b15abd621fe5690f01afd7">operator()</a> (<a class="el" href="classpq_rand_1_1engine.html">pqRand::engine</a> &amp;gen) const </td></tr>
+<tr class="memdesc:a7faafbbd64b15abd621fe5690f01afd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sample one variate.  <a href="#a7faafbbd64b15abd621fe5690f01afd7">More...</a><br/></td></tr>
+<tr class="separator:a7faafbbd64b15abd621fe5690f01afd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5316cfa6cbc53630b445d708e2e2b60b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5316cfa6cbc53630b445d708e2e2b60b"></a>
+virtual <a class="el" href="structpq_rand_1_1two.html">two</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1standard__normal.html#a5316cfa6cbc53630b445d708e2e2b60b">GetTwo</a> (<a class="el" href="classpq_rand_1_1engine.html">pqRand::engine</a> &amp;gen) const </td></tr>
+<tr class="memdesc:a5316cfa6cbc53630b445d708e2e2b60b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sample a pair of variates. <br/></td></tr>
+<tr class="separator:a5316cfa6cbc53630b445d708e2e2b60b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab91c7f80784bb48c90fa68a5e5be07c9"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1standard__normal.html#ab91c7f80784bb48c90fa68a5e5be07c9">GetSample</a> (size_t const sampleSize, <a class="el" href="classpq_rand_1_1engine.html">pqRand::engine</a> &amp;gen) const </td></tr>
+<tr class="memdesc:ab91c7f80784bb48c90fa68a5e5be07c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sample a number of variates and return them in a vector.  <a href="#ab91c7f80784bb48c90fa68a5e5be07c9">More...</a><br/></td></tr>
+<tr class="separator:ab91c7f80784bb48c90fa68a5e5be07c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c9bc404ca5f0e7f1e3b7b205082efe4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7c9bc404ca5f0e7f1e3b7b205082efe4"></a>
+<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1distribution_c_d_f.html#a7c9bc404ca5f0e7f1e3b7b205082efe4">CDF</a> (<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> const x) const </td></tr>
+<tr class="memdesc:a7c9bc404ca5f0e7f1e3b7b205082efe4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The cumulative distribution function; \( \text{CDF}(x) = \int_\text{min}^x \text{PDF}(x^\prime)\text{d}x^\prime \). <br/></td></tr>
+<tr class="separator:a7c9bc404ca5f0e7f1e3b7b205082efe4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19b3d553bc10edf0886657f2fb59917f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a19b3d553bc10edf0886657f2fb59917f"></a>
+<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1distribution_c_d_f.html#a19b3d553bc10edf0886657f2fb59917f">CompCDF</a> (<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> const x) const </td></tr>
+<tr class="memdesc:a19b3d553bc10edf0886657f2fb59917f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The accurate complementary CDF (i.e. 1 - CDF(x), without cancellation). <br/></td></tr>
+<tr class="separator:a19b3d553bc10edf0886657f2fb59917f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9db927b7513deef78843cd2d0b401538"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9db927b7513deef78843cd2d0b401538"></a>
+<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1distribution_p_d_f.html#a9db927b7513deef78843cd2d0b401538">PDF</a> (<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> const x) const </td></tr>
+<tr class="memdesc:a9db927b7513deef78843cd2d0b401538"><td class="mdescLeft">&#160;</td><td class="mdescRight">The probability distribution function (zero outside of [min, max]). <br/></td></tr>
+<tr class="separator:a9db927b7513deef78843cd2d0b401538"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a1000a0d03c5a291a51372a49f96f565a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1000a0d03c5a291a51372a49f96f565a"></a>
+virtual <a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1standard__normal.html#a1000a0d03c5a291a51372a49f96f565a">PDF_supported</a> (<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> const x) const </td></tr>
+<tr class="memdesc:a1000a0d03c5a291a51372a49f96f565a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The PDF, where x is guaranteed to be supported by <a class="el" href="classpq_rand_1_1distribution_p_d_f.html#a9db927b7513deef78843cd2d0b401538">PDF</a>. <br/></td></tr>
+<tr class="separator:a1000a0d03c5a291a51372a49f96f565a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99cc95948ff0c9123370353e6530f910"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a99cc95948ff0c9123370353e6530f910"></a>
+virtual <a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1standard__normal.html#a99cc95948ff0c9123370353e6530f910">CDF_small_supported</a> (<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> const x) const </td></tr>
+<tr class="memdesc:a99cc95948ff0c9123370353e6530f910"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CDF, where x is guaranteed to be supported by <a class="el" href="classpq_rand_1_1distribution_c_d_f.html#a7c9bc404ca5f0e7f1e3b7b205082efe4">CDF</a>. <br/></td></tr>
+<tr class="separator:a99cc95948ff0c9123370353e6530f910"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4780c7e8ef8f1fe9c54180669f01156"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af4780c7e8ef8f1fe9c54180669f01156"></a>
+virtual <a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1standard__normal.html#af4780c7e8ef8f1fe9c54180669f01156">CDF_large_supported</a> (<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> const x) const </td></tr>
+<tr class="memdesc:af4780c7e8ef8f1fe9c54180669f01156"><td class="mdescLeft">&#160;</td><td class="mdescRight">The complementary CDF, where x is guaranteed to be supported by <a class="el" href="classpq_rand_1_1distribution_c_d_f.html#a7c9bc404ca5f0e7f1e3b7b205082efe4">CDF</a>. <br/></td></tr>
+<tr class="separator:af4780c7e8ef8f1fe9c54180669f01156"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Samples from the standard normal distribution ( \( \mu =0 \), \(\sigma=1\)): \( \text{PDF} = \exp(-\frac{1}{2}x^2)/\sqrt{2\pi} \). </p>
-<p>Samples are generated using the Marsaglia polar method, modified to use a quantile flip-flop and quasiuniform \( U \).</p>
-<dl class="section note"><dt>Note</dt><dd>The Marsaglia polar method generates two numbers per call. If only one number is requested, the second is cached for the next call. This caching functionality is the reason that this is an object, versus a standalone function (since its mean and variance are hard-coded). Furthermore, derivative distributions (<a class="el" href="classpq_rand_1_1normal.html">normal</a>, <a class="el" href="classpq_rand_1_1log__normal.html" title="Samples from the log-normal distribution: . ">log_normal</a>) extend <a class="el" href="classpq_rand_1_1standard__normal.html" title="Samples from the standard normal distribution ( , ): . ">standard_normal</a> to reuse its caching functionality. </dd></dl>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+<div class="textblock"><p>Sample the standard normal distribution ( \( \mu =0 \), \(\sigma=1\)). </p>
+<p>\( \text{PDF}(x) = \exp(-\frac{1}{2}x^2)/\sqrt{2\pi} \)</p>
+<p>Samples are generated using the Marsaglia polar method, modified to use a quantile flip-flop and uneven \( U(0,1) \).</p>
+<dl class="section note"><dt>Note</dt><dd>The Marsaglia polar method generates two numbers per call. If only one number is requested, the second is cached for the next call. </dd></dl>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="ab91c7f80784bb48c90fa68a5e5be07c9"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>&gt; pqRand::standard_normal::GetSample </td>
+          <td>(</td>
+          <td class="paramtype">size_t const&#160;</td>
+          <td class="paramname"><em>sampleSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpq_rand_1_1engine.html">pqRand::engine</a> &amp;&#160;</td>
+          <td class="paramname"><em>gen</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sample a number of variates and return them in a vector. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sampleSize</td><td>the sample size </td></tr>
+    <tr><td class="paramname">gen</td><td>the PRNG engine </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented from <a class="el" href="classpq_rand_1_1distribution.html#a84ee93b6121f233d7c0352e16de713bf">pqRand::distribution&lt; real_t &gt;</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a7faafbbd64b15abd621fe5690f01afd7"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> pqRand::standard_normal::operator() </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpq_rand_1_1engine.html">pqRand::engine</a> &amp;&#160;</td>
+          <td class="paramname"><em>gen</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sample one variate. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">gen</td><td>the PRNG engine </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="classpq_rand_1_1distribution.html#a967568220aaa3a1833331dad59d2cedd">pqRand::distribution&lt; real_t &gt;</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>include/<a class="el" href="distributions_8hpp_source.html">distributions.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Jul 9 2017 15:38:44 for pqRand by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Dec 30 2017 00:46:48 for pqRand by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.5
 </small></address>

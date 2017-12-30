@@ -18,7 +18,7 @@
     extensions: ["tex2jax.js"],
     jax: ["input/TeX","output/HTML-CSS"],
 });
-</script><script src="../../MathJax-minimal/MathJax.js"></script>
+</script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">pqRand
-   &#160;<span id="projectnumber">0.4.4 (beta)</span>
+   &#160;<span id="projectnumber">0.5.0 (beta)</span>
    </div>
    <div id="projectbrief">The precise quantile random package</div>
   </td>
@@ -79,7 +79,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Friends</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -96,45 +96,221 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classpq_rand_1_1pareto-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">pqRand::pareto Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Samples from the Pareto distribution (for minimum value \( x_m^{} \) and index \( \alpha \)): \( \text{PDF} = (\alpha\,x_m^\alpha)/(x^{\alpha + 1}) \).  
+<p>Sample the Pareto distribution (with minimum value \( x_\text{min}^{} &gt; 0 \) and index \( \alpha &gt; 0 \)).  
  <a href="classpq_rand_1_1pareto.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="distributions_8hpp_source.html">distributions.hpp</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for pqRand::pareto:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classpq_rand_1_1pareto.png" usemap="#pqRand::pareto_map" alt=""/>
+  <map id="pqRand::pareto_map" name="pqRand::pareto_map">
+<area href="classpq_rand_1_1distribution_c_d_f.html" title="An abstract class which extends the distributionPDF interface for those distributions with a calculab..." alt="pqRand::distributionCDF" shape="rect" coords="0,112,177,136"/>
+<area href="classpq_rand_1_1distribution_p_d_f.html" title="An abstract class which extends the distribution interface for those distributions with an analytic P..." alt="pqRand::distributionPDF" shape="rect" coords="0,56,177,80"/>
+<area href="classpq_rand_1_1distribution.html" alt="pqRand::distribution&lt; real_t &gt;" shape="rect" coords="0,0,177,24"/>
+</map>
+ </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:afe275455e62fbd0cdc03926ea729d5f0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afe275455e62fbd0cdc03926ea729d5f0"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>pareto</b> (<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> const xm_in, <a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> const alpha_in)</td></tr>
-<tr class="separator:afe275455e62fbd0cdc03926ea729d5f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad5f7a1b194c5d7b66335e3b5f1387c73"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad5f7a1b194c5d7b66335e3b5f1387c73"></a>
-<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1pareto.html#ad5f7a1b194c5d7b66335e3b5f1387c73">operator()</a> (<a class="el" href="classpq_rand_1_1engine.html">pqRand::engine</a> &amp;gen)</td></tr>
-<tr class="memdesc:ad5f7a1b194c5d7b66335e3b5f1387c73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sample one value. <br/></td></tr>
-<tr class="separator:ad5f7a1b194c5d7b66335e3b5f1387c73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:affed35f0a1fc1bf9a7738bce0aa37eca"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="affed35f0a1fc1bf9a7738bce0aa37eca"></a>
-<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1pareto.html#affed35f0a1fc1bf9a7738bce0aa37eca">xM</a> ()</td></tr>
-<tr class="memdesc:affed35f0a1fc1bf9a7738bce0aa37eca"><td class="mdescLeft">&#160;</td><td class="mdescRight">min value <br/></td></tr>
-<tr class="separator:affed35f0a1fc1bf9a7738bce0aa37eca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff237f46a293642231281629a325a82f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aff237f46a293642231281629a325a82f"></a>
-<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1pareto.html#aff237f46a293642231281629a325a82f">Alpha</a> ()</td></tr>
-<tr class="memdesc:aff237f46a293642231281629a325a82f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pareto index. <br/></td></tr>
-<tr class="separator:aff237f46a293642231281629a325a82f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95ac1399a97b178ef50bc767742956fd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1pareto.html#a95ac1399a97b178ef50bc767742956fd">pareto</a> (<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> const xMin, <a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> const alpha)</td></tr>
+<tr class="memdesc:a95ac1399a97b178ef50bc767742956fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define the distribution's parameters.  <a href="#a95ac1399a97b178ef50bc767742956fd">More...</a><br/></td></tr>
+<tr class="separator:a95ac1399a97b178ef50bc767742956fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a314a8033acf194a3797e553d984ffaaf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a314a8033acf194a3797e553d984ffaaf"></a>
+<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1pareto.html#a314a8033acf194a3797e553d984ffaaf">min</a> () const </td></tr>
+<tr class="memdesc:a314a8033acf194a3797e553d984ffaaf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The minimum variate sampled. <br/></td></tr>
+<tr class="separator:a314a8033acf194a3797e553d984ffaaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84cb40e99e52c4ccd20220fabc01db43"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a84cb40e99e52c4ccd20220fabc01db43"></a>
+<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1pareto.html#a84cb40e99e52c4ccd20220fabc01db43">max</a> () const </td></tr>
+<tr class="memdesc:a84cb40e99e52c4ccd20220fabc01db43"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum variate sampled. <br/></td></tr>
+<tr class="separator:a84cb40e99e52c4ccd20220fabc01db43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a799519a73ecc94c7f413362604165bdd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a799519a73ecc94c7f413362604165bdd"></a>
+<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1pareto.html#a799519a73ecc94c7f413362604165bdd">Mean</a> () const </td></tr>
+<tr class="memdesc:a799519a73ecc94c7f413362604165bdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The distribution's mean, \( \langle x \rangle = \int \text{PDF}(x)\, x\, dx \). <br/></td></tr>
+<tr class="separator:a799519a73ecc94c7f413362604165bdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5cae75396daf6205b1ddfe58c774418"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae5cae75396daf6205b1ddfe58c774418"></a>
+<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1pareto.html#ae5cae75396daf6205b1ddfe58c774418">Variance</a> () const </td></tr>
+<tr class="memdesc:ae5cae75396daf6205b1ddfe58c774418"><td class="mdescLeft">&#160;</td><td class="mdescRight">The distribution's variance, \( \langle x^2 \rangle - \langle x \rangle^2 \). <br/></td></tr>
+<tr class="separator:ae5cae75396daf6205b1ddfe58c774418"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1703f0758dc11ce9fe2a7a7553980e65"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1pareto.html#a1703f0758dc11ce9fe2a7a7553980e65">operator()</a> (<a class="el" href="classpq_rand_1_1engine.html">pqRand::engine</a> &amp;gen) const </td></tr>
+<tr class="memdesc:a1703f0758dc11ce9fe2a7a7553980e65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sample one variate.  <a href="#a1703f0758dc11ce9fe2a7a7553980e65">More...</a><br/></td></tr>
+<tr class="separator:a1703f0758dc11ce9fe2a7a7553980e65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad656add1653a8743812063ab3cdd99e6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad656add1653a8743812063ab3cdd99e6"></a>
+<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1pareto.html#ad656add1653a8743812063ab3cdd99e6">Alpha</a> () const </td></tr>
+<tr class="memdesc:ad656add1653a8743812063ab3cdd99e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Pareto index. <br/></td></tr>
+<tr class="separator:ad656add1653a8743812063ab3cdd99e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c9bc404ca5f0e7f1e3b7b205082efe4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7c9bc404ca5f0e7f1e3b7b205082efe4"></a>
+<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1distribution_c_d_f.html#a7c9bc404ca5f0e7f1e3b7b205082efe4">CDF</a> (<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> const x) const </td></tr>
+<tr class="memdesc:a7c9bc404ca5f0e7f1e3b7b205082efe4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The cumulative distribution function; \( \text{CDF}(x) = \int_\text{min}^x \text{PDF}(x^\prime)\text{d}x^\prime \). <br/></td></tr>
+<tr class="separator:a7c9bc404ca5f0e7f1e3b7b205082efe4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19b3d553bc10edf0886657f2fb59917f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a19b3d553bc10edf0886657f2fb59917f"></a>
+<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1distribution_c_d_f.html#a19b3d553bc10edf0886657f2fb59917f">CompCDF</a> (<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> const x) const </td></tr>
+<tr class="memdesc:a19b3d553bc10edf0886657f2fb59917f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The accurate complementary CDF (i.e. 1 - CDF(x), without cancellation). <br/></td></tr>
+<tr class="separator:a19b3d553bc10edf0886657f2fb59917f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9db927b7513deef78843cd2d0b401538"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9db927b7513deef78843cd2d0b401538"></a>
+<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1distribution_p_d_f.html#a9db927b7513deef78843cd2d0b401538">PDF</a> (<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> const x) const </td></tr>
+<tr class="memdesc:a9db927b7513deef78843cd2d0b401538"><td class="mdescLeft">&#160;</td><td class="mdescRight">The probability distribution function (zero outside of [min, max]). <br/></td></tr>
+<tr class="separator:a9db927b7513deef78843cd2d0b401538"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84ee93b6121f233d7c0352e16de713bf"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; <a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1distribution.html#a84ee93b6121f233d7c0352e16de713bf">GetSample</a> (size_t const sampleSize, <a class="el" href="classpq_rand_1_1engine.html">engine</a> &amp;gen) const</td></tr>
+<tr class="memdesc:a84ee93b6121f233d7c0352e16de713bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sample a number of variates and return them in a vector.  <a href="#a84ee93b6121f233d7c0352e16de713bf">More...</a><br/></td></tr>
+<tr class="separator:a84ee93b6121f233d7c0352e16de713bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a01d09b096abfb3477338b289cfc3d7ce"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a01d09b096abfb3477338b289cfc3d7ce"></a>
+<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1pareto.html#a01d09b096abfb3477338b289cfc3d7ce">PDF_supported</a> (<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> const x) const </td></tr>
+<tr class="memdesc:a01d09b096abfb3477338b289cfc3d7ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">The PDF, where x is guaranteed to be supported by <a class="el" href="classpq_rand_1_1distribution_p_d_f.html#a9db927b7513deef78843cd2d0b401538">PDF</a>. <br/></td></tr>
+<tr class="separator:a01d09b096abfb3477338b289cfc3d7ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaefe9b345107b233c2319d5d673b0ae3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaefe9b345107b233c2319d5d673b0ae3"></a>
+<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1pareto.html#aaefe9b345107b233c2319d5d673b0ae3">CDF_small_supported</a> (<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> const x) const </td></tr>
+<tr class="memdesc:aaefe9b345107b233c2319d5d673b0ae3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The CDF, where x is guaranteed to be supported by <a class="el" href="classpq_rand_1_1distribution_c_d_f.html#a7c9bc404ca5f0e7f1e3b7b205082efe4">CDF</a>. <br/></td></tr>
+<tr class="separator:aaefe9b345107b233c2319d5d673b0ae3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa108b60564f137e5dd0ad6f06aaf5935"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa108b60564f137e5dd0ad6f06aaf5935"></a>
+<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1pareto.html#aa108b60564f137e5dd0ad6f06aaf5935">CDF_large_supported</a> (<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> const x) const </td></tr>
+<tr class="memdesc:aa108b60564f137e5dd0ad6f06aaf5935"><td class="mdescLeft">&#160;</td><td class="mdescRight">The complementary CDF, where x is guaranteed to be supported by <a class="el" href="classpq_rand_1_1distribution_c_d_f.html#a7c9bc404ca5f0e7f1e3b7b205082efe4">CDF</a>. <br/></td></tr>
+<tr class="separator:aa108b60564f137e5dd0ad6f06aaf5935"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Samples from the Pareto distribution (for minimum value \( x_m^{} \) and index \( \alpha \)): \( \text{PDF} = (\alpha\,x_m^\alpha)/(x^{\alpha + 1}) \). </p>
-<p>This distribution has an invertible CDF: \( \text{CDF}^{-1} = x_m^{} u^{-1/\alpha} \). This \( \mathrm{CDF}^{-1} \) becomes ill-conditioned in only one tail \((u\to 0)\), so we don't need a quantile flip-flop. However, we still need to use quasiuniform \( U(0, 1] \). </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+<div class="textblock"><p>Sample the Pareto distribution (with minimum value \( x_\text{min}^{} &gt; 0 \) and index \( \alpha &gt; 0 \)). </p>
+<p>\( \text{PDF}(x) = (\alpha\,x_\text{min}^\alpha)/(x^{\alpha + 1}) \)</p>
+<dl class="section note"><dt>Note</dt><dd>This distribution has an invertible CDF, but it only becomes ill-conditioned in one tail \((u\to 0)\), so we don't need a quantile flip-flop. However, we still need to use uneven \( U(0, 1] \). </dd></dl>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a95ac1399a97b178ef50bc767742956fd"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">pqRand::pareto::pareto </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> const&#160;</td>
+          <td class="paramname"><em>xMin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> const&#160;</td>
+          <td class="paramname"><em>alpha</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Define the distribution's parameters. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">xMin</td><td>the minimum value </td></tr>
+    <tr><td class="paramname">k</td><td>the Pareto index</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">throws</td><td>std::domain_error if either parameter is non-positive. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a84ee93b6121f233d7c0352e16de713bf"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual std::vector&lt;<a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> &gt; <a class="el" href="classpq_rand_1_1distribution.html">pqRand::distribution</a>&lt; <a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a>  &gt;::GetSample </td>
+          <td>(</td>
+          <td class="paramtype">size_t const&#160;</td>
+          <td class="paramname"><em>sampleSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classpq_rand_1_1engine.html">engine</a> &amp;&#160;</td>
+          <td class="paramname"><em>gen</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sample a number of variates and return them in a vector. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sampleSize</td><td>the sample size </td></tr>
+    <tr><td class="paramname">gen</td><td>the PRNG engine </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="classpq_rand_1_1standard__normal.html#ab91c7f80784bb48c90fa68a5e5be07c9">pqRand::standard_normal</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a1703f0758dc11ce9fe2a7a7553980e65"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">real_t</a> pqRand::pareto::operator() </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classpq_rand_1_1engine.html">pqRand::engine</a> &amp;&#160;</td>
+          <td class="paramname"><em>gen</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sample one variate. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">gen</td><td>the PRNG engine </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="classpq_rand_1_1distribution.html#a967568220aaa3a1833331dad59d2cedd">pqRand::distribution&lt; real_t &gt;</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>include/<a class="el" href="distributions_8hpp_source.html">distributions.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Jul 9 2017 15:38:44 for pqRand by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Dec 30 2017 00:46:48 for pqRand by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.5
 </small></address>

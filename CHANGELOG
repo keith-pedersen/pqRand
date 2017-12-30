@@ -7,6 +7,37 @@ This is the change log for the pqRand package
      |_.__/   \___|  \__|  \__,_|
 ////////////////////////////////////////////////////////////////////////
 
+version 0.5.0 ===> 15 Dec 2017
+========================================================================
+ * Major refit, but we are getting much closer to a stable API.
+ * "Conditioning your quantile function" => "Reconditioning your quantile function",
+	a top down rewrite of the theory paper behind pqRand.
+ * Major nomenclature change (due to above paper rewrite)
+		quasiuniform => uneven
+		superuniform => even
+ * Downgraded Makefiles from optimization "-O3" to "-O2 -ftreevectorize" (which is generally faster).
+ * Made uniform variates faster. Fixed U_even so it 
+	matches std::generate_canoncial with B = P (U_even should return 0). 
+ * Gave engine::ApplyRandomSign a universal signature; it can now take an r-value and is faster.
+ * Added seeded_uPRNG::GetState_JumpVec() for parallelized runs, if PRNG_CAN_JUMP = 1.
+ * Added more descriptive exceptions where appropriate (instead of always runtime_error);
+	this includes the seed_error exception for when the PRNG state is malformed.
+ * Updated SV's xorshift1024* to the 2017 edit; also added min() and max() methods 
+   so it can be used as the PRNG for std::xyz_distribution.
+ * Removed some unnecessary or vestigial methods.
+ * Gave distributions a polymorphic interface, via the abstract classes
+   distribution, distributionPDF, distributionCDF and distributionQ2,
+   depending on the analytic knowledge for each distro (see the documentation).
+ * Added GetSample utility function to each distribution to generate a large sample vector.
+ * Added several distributions: uniform, uniformInteger, logistic, log_logistic, and gamma (as gammaDist) 
+ * Distributions now throw std::domain_error when parameters make no sense.
+ * Documented pYqRand via docstrings, so now you in Python you can: help(pYqRand)
+ * pYqRand converts C++ exceptions into Python exceptions (to avoid segmentation fault).
+ * pYqRand now uses libpqr.so directly, instead of replicating it internally. 
+ * Added a Python routine to validate the accuracy of the supplied distributions.
+ * Removed offline/local MathJax (because it broke on my system after a Java update, 
+   and I don't want to maintain it). Sorry offline users.
+ 
 version 0.4.4 ===> 9 Jul 2017
 ========================================================================
  * Bug fix: v0.4.3 moved the pqRand::PRNG_t typeddef to near the top of pqRand.hpp.

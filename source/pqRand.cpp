@@ -22,11 +22,10 @@
 */
 
 #include "../include/pqRand.hpp"
-#include <string>
 #include <fstream>
-#include <stdexcept>
 #include <assert.h>
 #include <sstream>
+#include <random> // random_device, mt19937
 
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
@@ -34,6 +33,7 @@
 template<class prng_t>
 void pqRand::seeded_uPRNG<prng_t>::Seed()
 {
+	// Construct the minimal state-string into a temporary stream
 	std::stringstream ss;
 	{
 		std::random_device randDev;
@@ -65,14 +65,14 @@ void pqRand::seeded_uPRNG<prng_t>::Seed()
 ////////////////////////////////////////////////////////////////////////
 
 template<class prng_t>
-void pqRand::seeded_uPRNG<prng_t>::Seed_FromFile(std::string const& fileName)
+void pqRand::seeded_uPRNG<prng_t>::Seed_FromFile(std::string const& filePath)
 {
-	std::ifstream file(fileName.c_str(), std::ios::in);
+	std::ifstream file(filePath.c_str(), std::ios::in);
 	
 	if(not file.is_open())
 	{
-		throw std::runtime_error("pqRand::seeded_uPRNG::Seed ... <"
-			+ fileName + "> ... file not found!");
+		throw std::ifstream::failure("pqRand::seeded_uPRNG::Seed ... seed file <"
+			+ filePath + "> ... cannot be opened (probably does not exist)!");
 	}
 	
 	this->Seed_FromStream(file);
@@ -93,21 +93,23 @@ void pqRand::seeded_uPRNG<prng_t>::Seed_FromString(std::string const& seedString
 template<class prng_t>
 void pqRand::seeded_uPRNG<prng_t>::Seed_FromStream(std::istream& stream)
 {
-	stream >> *this; // seeded_uPRNG (as a wrapper) has no state to seed
+	// Nothing to do but put the stream into the PRNG, because 
+	// seeded_uPRNG (as a wrapper) has no other state to seed
+	stream >> *this; 
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 template<class prng_t>
-void pqRand::seeded_uPRNG<prng_t>::WriteState(std::string const& fileName)
+void pqRand::seeded_uPRNG<prng_t>::WriteState(std::string const& filePath)
 {
 	// CAUTION: overwrite existing file without warning (ios::trunc)
-	std::ofstream file(fileName.c_str(), std::ios::out | std::ios::trunc);
+	std::ofstream file(filePath.c_str(), std::ios::out | std::ios::trunc);
 	
 	if(not file.is_open())
 	{
-		throw std::runtime_error("pqRand::seeded_uPRNG::WriteState ... <"
-			+ fileName + "> ... file cannot be created!");
+		throw std::ifstream::failure("pqRand::seeded_uPRNG::WriteState ... seed file <"
+			+ filePath + "> ... cannot be created or overwritten!");
 	}
 	
 	this->WriteState_ToStream(file);
@@ -129,68 +131,68 @@ std::string pqRand::seeded_uPRNG<prng_t>::GetState()
 template<class prng_t>
 void pqRand::seeded_uPRNG<prng_t>::WriteState_ToStream(std::ostream& stream)
 {
-	stream << *this; // seeded_uPRNG (as a wrapper) has no state to write
+	// Nothing to do but put the stream into the PRNG, because 
+	// seeded_uPRNG (as a wrapper) has no other state to add 
+	stream << *this;
 }
 
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 
 // BEGIN deep magic, do not touch!
-uint64_t const pqRand::xorshift1024_star::JUMP[pqRand::xorshift1024_star::state_size] =  
-{ 0x84242f96eca9c41d, 0xa3c65b8776f96855, 0x5b34a39f070b5837, 0x4489affce4f31a1e,
-	0x2ffeeb0a48316f40, 0xdc2d9891fe68c022, 0x3659132bb12fea70, 0xaac17d8efa43cab8,
-	0xc4cb815590989b13, 0x5ee975283d71c93b, 0x691548c86c1bd540, 0x7910c41d10a1e6a5, 
-	0x0b5fc64563b3e2a8, 0x047f7684e9fc949d, 0xb99181f2d8f685ca, 0x284600e3f30e38c3};
-
+// xorshift1024_starPhi (SV's 2017 edit)
 uint64_t pqRand::xorshift1024_star::operator()() 
 {
 	uint64_t s1;
 	{
 		uint64_t const s0 = state[p];
-		s1 = state[p = (p + 1) & 15];
+		s1 = state[p = (p + 1) & 15]; // Fast modulo 16 (that's an & not a %)
 		s1 ^= s1 << 31; // a
 		s1 = s1 ^ s0 ^ (s1 >> 11) ^ (s0 >> 30); // b,c
 	}
 	state[p] = s1;
-	return s1 * UINT64_C(1181783497276652981);
+	return s1 * 0x9e3779b97f4a7c13;
 }
 
 void pqRand::xorshift1024_star::Jump()
 {
+	static constexpr uint64_t JUMP[] = { 0x84242f96eca9c41d,
+		0xa3c65b8776f96855, 0x5b34a39f070b5837, 0x4489affce4f31a1e,
+		0x2ffeeb0a48316f40, 0xdc2d9891fe68c022, 0x3659132bb12fea70,
+		0xaac17d8efa43cab8, 0xc4cb815590989b13, 0x5ee975283d71c93b,
+		0x691548c86c1bd540, 0x7910c41d10a1e6a5, 0x0b5fc64563b3e2a8,
+		0x047f7684e9fc949d, 0xb99181f2d8f685ca, 0x284600e3f30e38c3
+	};
+	
 	uint64_t t[16] = { 0 };
-	for(size_t i = 0; i < (sizeof(JUMP) / sizeof(*JUMP)); i++)
+	for(uint64_t i = 0; i < (sizeof(JUMP) / sizeof(*JUMP)); i++)
 	{
-		for(size_t b = 0; b < 64; b++) 
+		for(uint64_t b = 0; b < 64lu; b++) 
 		{
-			if (JUMP[i] & 1ULL << b) // What is the order of operations here?
+			if (JUMP[i] & UINT64_C(1) << b) // What is the order of operations here?
 			{
-				for(size_t j = 0; j < 16; j++)
-					t[j] ^= state[(j + p) & 15];
+				for(uint64_t j = 0; j < 16lu; j++)
+					t[j] ^= state[(j + p) & 15lu];
 			}
 			(*this)();
 		}
 	}
 
-	for(size_t j = 0; j < 16; j++)
-		state[(j + p) & 15] = t[j];
+	for(uint64_t j = 0; j < 16lu; j++)
+		state[(j + p) & 15lu] = t[j];
 }
 // END deep magic
 
 ////////////////////////////////////////////////////////////////////////
 
-void pqRand::xorshift1024_star::Jump(size_t nTimes)
-{
-	for(size_t n = 0; n < nTimes; ++n)
-		Jump();
-}
-
-////////////////////////////////////////////////////////////////////////
-
+// Write the state to the stream
 std::ostream& pqRand::operator << (std::ostream& stream, xorshift1024_star const& gen)
 {
+	// Put each word in the stream
 	for(size_t i = 0; i < xorshift1024_star::state_size; ++i)
 		stream << gen.state[i] << " ";
 	
+	// Add the state_size
 	stream << xorshift1024_star::state_size << " ";
 	
 	// Store p as well (it defines the internal state too).
@@ -202,8 +204,8 @@ std::ostream& pqRand::operator << (std::ostream& stream, xorshift1024_star const
 ////////////////////////////////////////////////////////////////////////
 
 // Seed the generator from the stream. Two formats expected (N = state_size)
-// s_1 s_2 ... s_N N    --> p not specified, set to zero
-// s_1 s_2 ... s_N N p  --> p specified
+// s_1 s_2 ... s_N  N    --> p not specified, set to zero
+// s_1 s_2 ... s_N  N p  --> p specified
 std::istream& pqRand::operator >> (std::istream& stream, xorshift1024_star& gen)
 {
 	uint64_t word;
@@ -211,26 +213,26 @@ std::istream& pqRand::operator >> (std::istream& stream, xorshift1024_star& gen)
 	for(size_t i = 0; i < xorshift1024_star::state_size; ++i)
 	{	
 		if(not (stream >> word))
-			throw std::runtime_error("pqRand::xorshift1024_star: seed stream malformed -- not enough words to fill state.");
+			throw pqRand::seed_error("pqRand::xorshift1024_star: seed stream malformed -- not enough words to fill state.");
 		
 		gen.state[i] = word;
 	}
 	
 	if(not (stream >> word))
-		throw std::runtime_error("pqRand::xorshift1024_star: seed stream malformed -- state size not supplied.");
+		throw pqRand::seed_error("pqRand::xorshift1024_star: seed stream malformed -- state size not supplied.");
 	else if(word not_eq xorshift1024_star::state_size)
-		throw std::runtime_error("pqRand::xorshift1024_star: seed stream malformed -- wrong state size.");
+		throw pqRand::seed_error("pqRand::xorshift1024_star: seed stream malformed -- wrong state size.");
 	
 	// Read p, which exists in [0, 16). If p is not stored, then use p = 0
-	if(stream >> word)
+	if(stream >> word) // If there is another parse-able word, it must be p
 	{
 		if(word >= xorshift1024_star::state_size)
-			throw std::runtime_error("pqRand::xorshift1024_star: seed stream malformed -- p is larger than state_size");
+			throw pqRand::seed_error("pqRand::xorshift1024_star: seed stream malformed -- p is larger than state_size");
 		gen.p = word;
 	}
 	else gen.p = 0;
 	
-	return stream;
+	return stream; // There might be more state to read
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -241,104 +243,60 @@ template class pqRand::seeded_uPRNG<pqRand::PRNG_t>;
 
 ////////////////////////////////////////////////////////////////////////
 
-typename pqRand::real_t pqRand::engine::RandomMantissa_Quasiuniform()
+// When randUint does not have enough entropy, we make sure it has P+2 bits
+typename pqRand::real_t pqRand::engine::U_uneven_TopUpEntropy(result_type randUint)
 {
-	result_type randUint = (*this)();
+	// downScale reverses the leftward shift, so the uniform variate doesn't move
+	// We need to shift randUint left at least once, so we start with that
 	
-	if(randUint < minEntropy) // Add entropy to randUint until it has enough
+	real_t downScale = real_t(0.5) * scaleToU_uneven;
 	{
-		// We need to shift left at least once, so let's start with that
-		real_t downScale = real_t(0.5);	
+		size_t shiftLeft = 1; // Must use signed type, for negative exponent in exp2()
+		randUint <<= 1;
+		
+		if(randUint == 0) // Exceedingly rare, but need to handle
 		{
-			int shiftLeft = 1; // Must use signed type, for negative exponent in exp2()
-			randUint <<= 1;
+			shiftLeft = 0; // Undo the initial left shift because ...
+			downScale = scaleToU_uneven;
 			
-			if(randUint == 0) // Exceedingly rare, but need to handle
-			{
-				shiftLeft = 0; // Undo the initial left shift because ...
-				downScale = real_t(1);
-				
-				// ... every time we draw a zero, do a 64-bit leftward shift.
-				// It's like we have an infinite bit stream which we keep shifting left
-				do // We already drew one zero, so we have to downscale at least once
-					downScale *= scaleToU_Quasiuniform;
-				while((randUint = (*this)()) == 0);
-			}
-			
-			// Keep shifting left until the mantissa's most significant bit is
-			// in the correct position
-			while(randUint < minEntropy)
-			{
-				randUint <<= 1;
-				++shiftLeft;
-				downScale *= real_t(0.5);
-			}
-			
-			assert(size_t(shiftLeft) < numBitsOfEntropyRequired);
-			//~ downScale = std::exp2(-shiftLeft); // original, not faster
-						
-			// Insert new bits into the gap filled by the shift left
-			// Usually quite wasteful, but generally quite rare
-			randUint or_eq ((*this)() >> (numBitsPRNG - shiftLeft));
+			// ... every time we draw a zero, do a 64-bit leftward shift.
+			// It's like we have an infinite bit stream which we keep shifting left
+			do // We already drew one zero, so we have to downscale at least once
+				downScale *= scaleToU_uneven;
+			while((randUint = (*this)()) == 0);
 		}
 		
-		// Set the sticky bit, to defeat round-to-even,
-		// then downScale, to maintain the coarse location
-		return real_t(randUint bitor 1) * downScale;
-	}
-	else
-		return real_t(randUint bitor 1);
-}
-
-////////////////////////////////////////////////////////////////////////
-
-//~ typename pqRand::real_t pqRand::engine::RandomMantissa_Superuniform()
-//~ {
-	//~ result_type randUint;
-	
-	//~ // Yes, this is a goto, but they are not always bad.
-	//~ // This jump spans only a small number of lines, so it's easy to read.
-	//~ generate:
-		//~ // Better to shift right than use a bit-mask, due to bad bits
-		//~ randUint = ((*this)() >> bitShiftRight_Superuniform); 
-		//~ if(randUint == 0)
-		//~ {
-			//~ // Map 0 to the max mantissa, but only half the time
-			//~ // Should not cause an endless loop, unless PRNG is broken
-			//~ if(RandBool())
-				//~ randUint = maxMantissa_Superuniform;
-			//~ else
-				//~ goto generate;
-		//~ }
-	
-	// Equivalent code, without goto, but every call has an extra addition
-	// (hence the virtue of the goto is speed).
-	// do
-		// randUint = (((*this)() & bitMask_Superuniform) + 1);
-	// while((randUint == maxMantissa_Superuniform) and RandBool());
-	
-	//~ return real_t(randUint);
-//~ }
-
-////////////////////////////////////////////////////////////////////////
-
-typename pqRand::real_t pqRand::engine::RandomMantissa_Superuniform()
-{
-	//~ result_type randUint;
-	
-	//~ while((randUint = ((*this)() >> bitShiftRight_Superuniform)) == 0);
+		// Keep shifting left until the mantissa's most significant bit is
+		// in the correct position
+		while(randUint < minEntropy)
+		{
+			randUint <<= 1;
+			++shiftLeft;
+			downScale *= real_t(0.5);
+		}
 		
-	//~ return real_t(randUint);
+		// This has been tested enough
+		//~ assert(size_t(shiftLeft) < numBitsOfEntropyRequired);
+		
+		// Using downcale is empirically faster than exp2(-shiftLeft)
+		// WARNING: this requires shiftLeft to be an int, so it can be negative
+		//~ downScale = std::exp2(-shiftLeft); 
+					
+		// Insert new bits into the gap filled by the shift left
+		// Usually quite wasteful, but generally rare enough
+		randUint or_eq ((*this)() >> (numBitsPRNG - shiftLeft));
+	}
 	
-	// std::generate_canonical returns [0, 1), so we should as well
-	return real_t((*this)() >> bitShiftRight_Superuniform);
+	// Make randUint odd, to defeat round-to-even,
+	// then downScale, to maintain the coarse location
+	return real_t(randUint bitor result_type(1)) * downScale;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 void pqRand::engine::Seed_FromStream(std::istream& stream)
 {
-	// Seed the base class
+	// Seed the base class, advancing the stream
 	seeded_uPRNG<PRNG_t>::Seed_FromStream(stream);
 		
 	// The internal state of pqRand_engine contains the bitCache,
@@ -348,10 +306,10 @@ void pqRand::engine::Seed_FromStream(std::istream& stream)
 	{
 		bitCache = word;
 		
-		// The state of bitCache can be missing. But if the bitCache is there, 
+		// The bitCache can be missing; but if the bitCache is there, 
 		// the cacheMask cannot be missing
 		if(not (stream >> word))
-			throw std::runtime_error("pqRand::engine::Seed: bitCache stored in seed, but not cacheMask");
+			throw pqRand::seed_error("pqRand::engine::Seed: bitCache stored in seed, but not cacheMask");
 		else
 			cacheMask = word;
 			
@@ -366,6 +324,7 @@ void pqRand::engine::Seed_FromStream(std::istream& stream)
 
 void pqRand::engine::WriteState_ToStream(std::ostream& stream)
 {
+	// Write out the state of the underlying PRNG
 	seeded_uPRNG<PRNG_t>::WriteState_ToStream(stream);
 	
 	// Now write out the state of the bitCache and the cacheMask
@@ -376,7 +335,8 @@ void pqRand::engine::WriteState_ToStream(std::ostream& stream)
 
 void pqRand::engine::DefaultInitializeBitCache()
 {
-	// Defer initialization until next call to RandBool()
+	// By setting cacheMask to this value, we ensure that the next call to RandBool()
+	// will induce the bitCache to be replenished and reset. We defer this work till it's needed.
 	cacheMask = replenishBitCache;
 }
 
@@ -395,14 +355,4 @@ bool pqRand::engine::RandBool()
 	bool const decision = bool(cacheMask bitand bitCache);
 	cacheMask >>= 1;
 	return decision;
-}
-
-////////////////////////////////////////////////////////////////////////
-
-typename pqRand::real_t pqRand::engine::ApplyRandomSign(real_t& victim)
-{
-	//~ bool const decision = RandBool();
-	//~ victim = std::copysign(victim, decision ? real_t(1.) : real_t(-1.));
-	if(RandBool()) victim = -victim;
-	return victim;
 }

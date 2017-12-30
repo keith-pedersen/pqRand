@@ -18,7 +18,7 @@
     extensions: ["tex2jax.js"],
     jax: ["input/TeX","output/HTML-CSS"],
 });
-</script><script src="../../MathJax-minimal/MathJax.js"></script>
+</script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">pqRand
-   &#160;<span id="projectnumber">0.4.4 (beta)</span>
+   &#160;<span id="projectnumber">0.5.0 (beta)</span>
    </div>
    <div id="projectbrief">The precise quantile random package</div>
   </td>
@@ -69,6 +69,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
+      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 <!-- window showing the filter options -->
@@ -76,7 +77,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Friends</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -94,6 +95,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
+<a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
@@ -104,16 +106,19 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>Establishes <a class="el" href="namespacepq_rand.html" title="The namespace of the pqRand package. ">pqRand</a> and defines the PRNG engine needed by distributions.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;limits&gt;</code><br/>
-<code>#include &lt;string&gt;</code><br/>
 <code>#include &lt;array&gt;</code><br/>
+<code>#include &lt;vector&gt;</code><br/>
 <code>#include &lt;random&gt;</code><br/>
 </div>
 <p><a href="pq_rand_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1seed__error.html">pqRand::seed_error</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An exception thrown when parsing state-strings fails.  <a href="classpq_rand_1_1seed__error.html#details">More...</a><br/></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1seeded__u_p_r_n_g.html">pqRand::seeded_uPRNG&lt; prng_t &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper for a PRNG (32 or 64 bit), providing a seeding interface (used by <a class="el" href="classpq_rand_1_1engine.html">engine</a>).  <a href="classpq_rand_1_1seeded__u_p_r_n_g.html#details">More...</a><br/></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper for a PRNG (32 or 64 bit), providing a seeding interface.  <a href="classpq_rand_1_1seeded__u_p_r_n_g.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1xorshift1024__star.html">pqRand::xorshift1024_star</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An implementation of the xorshift1024* 64-bit pseudo-random number generator (PRNG).  <a href="classpq_rand_1_1xorshift1024__star.html#details">More...</a><br/></td></tr>
@@ -128,32 +133,44 @@ Namespaces</h2></td></tr>
 <tr class="memdesc:namespacepq_rand"><td class="mdescLeft">&#160;</td><td class="mdescRight">The namespace of the <a class="el" href="namespacepq_rand.html" title="The namespace of the pqRand package. ">pqRand</a> package. <br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:aead33d8b41cbb99b745e2f5f1bcce7a5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aead33d8b41cbb99b745e2f5f1bcce7a5"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pq_rand_8hpp.html#aead33d8b41cbb99b745e2f5f1bcce7a5">PRNG_CAN_JUMP</a>&#160;&#160;&#160;1</td></tr>
+<tr class="memdesc:aead33d8b41cbb99b745e2f5f1bcce7a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does the PRNG have a Jump() function? See <a class="el" href="classpq_rand_1_1seeded__u_p_r_n_g.html#jumping_PRNG">jumping_PRNG</a>. <br/></td></tr>
+<tr class="separator:aead33d8b41cbb99b745e2f5f1bcce7a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a871f715f9553f5e3faee5b139dd88ad5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a871f715f9553f5e3faee5b139dd88ad5"></a>
-typedef xorshift1024_star&#160;</td><td class="memItemRight" valign="bottom"><b>pqRand::PRNG_t</b></td></tr>
+<tr class="memitem:a871f715f9553f5e3faee5b139dd88ad5"><td class="memItemLeft" align="right" valign="top">typedef xorshift1024_star&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepq_rand.html#a871f715f9553f5e3faee5b139dd88ad5">pqRand::PRNG_t</a></td></tr>
+<tr class="memdesc:a871f715f9553f5e3faee5b139dd88ad5"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacepq_rand.html#a871f715f9553f5e3faee5b139dd88ad5">PRNG_t</a> is the PRNG used by <a class="el" href="classpq_rand_1_1engine.html">engine</a>  <a href="#a871f715f9553f5e3faee5b139dd88ad5">More...</a><br/></td></tr>
 <tr class="separator:a871f715f9553f5e3faee5b139dd88ad5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0c99f6f51d1d98f5cdbfe788c631624"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae0c99f6f51d1d98f5cdbfe788c631624"></a>
 typedef double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepq_rand.html#ae0c99f6f51d1d98f5cdbfe788c631624">pqRand::real_t</a></td></tr>
-<tr class="memdesc:ae0c99f6f51d1d98f5cdbfe788c631624"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defined to allow internal testing with float/binary32. <br/></td></tr>
+<tr class="memdesc:ae0c99f6f51d1d98f5cdbfe788c631624"><td class="mdescLeft">&#160;</td><td class="mdescRight">Typedef the real type to allow experimentation with float/binary32. <br/></td></tr>
 <tr class="separator:ae0c99f6f51d1d98f5cdbfe788c631624"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:ab2817ca4f0de962dfb86a59eb6e07e84"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab2817ca4f0de962dfb86a59eb6e07e84"></a>
+real_t&#160;</td><td class="memItemRight" valign="bottom"><b>pqRand::Squared</b> (real_t const x)</td></tr>
+<tr class="separator:ab2817ca4f0de962dfb86a59eb6e07e84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a584ea80b73202a239546a96395361c65"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepq_rand.html#a584ea80b73202a239546a96395361c65">pqRand::operator&lt;&lt;</a> (std::ostream &amp;stream, xorshift1024_star const &amp;gen)</td></tr>
+<tr class="memdesc:a584ea80b73202a239546a96395361c65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Output the complete human-readable state-string of the generator to a stream.  <a href="#a584ea80b73202a239546a96395361c65">More...</a><br/></td></tr>
 <tr class="separator:a584ea80b73202a239546a96395361c65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a479c611e768007595eec70b9f655b731"><td class="memItemLeft" align="right" valign="top">std::istream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacepq_rand.html#a479c611e768007595eec70b9f655b731">pqRand::operator&gt;&gt;</a> (std::istream &amp;stream, xorshift1024_star &amp;gen)</td></tr>
+<tr class="memdesc:a479c611e768007595eec70b9f655b731"><td class="mdescLeft">&#160;</td><td class="mdescRight">Seed the state of the generator from a stream, assuming the state-string format of <a class="el" href="namespacepq_rand.html#a584ea80b73202a239546a96395361c65" title="Output the complete human-readable state-string of the generator to a stream. ">operator&lt;&lt;()</a>.  <a href="#a479c611e768007595eec70b9f655b731">More...</a><br/></td></tr>
 <tr class="separator:a479c611e768007595eec70b9f655b731"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Establishes <a class="el" href="namespacepq_rand.html" title="The namespace of the pqRand package. ">pqRand</a> and defines the PRNG engine needed by distributions. </p>
-<p>The important methods implemented here are the "quasiuniform sample" of the semi-inclusive unit interval (<a class="el" href="classpq_rand_1_1engine.html#ab0370221a1937fec92bf11ef9e701420" title="Draw from quasiuniform . ">pqRand::engine::U_Q</a>) and the random coin-flip (<a class="el" href="classpq_rand_1_1engine.html#ac2156763a0137e6fdfaec698d41a8e5d" title="Return the result of an ideal coin flip. ">pqRand::engine::RandBool</a>).</p>
+<p>The important methods implemented here are the PRNG seeding class (<a class="el" href="classpq_rand_1_1seeded__u_p_r_n_g.html" title="A wrapper for a PRNG (32 or 64 bit), providing a seeding interface. ">pqRand::seeded_uPRNG</a>), the underlying PRNG (<a class="el" href="classpq_rand_1_1xorshift1024__star.html" title="An implementation of the xorshift1024* 64-bit pseudo-random number generator (PRNG). ">pqRand::xorshift1024_star</a>) its the <a class="el" href="classpq_rand_1_1engine.html" title="The random number engine used by all distributions in pqRand. ">pqRand::engine</a> which wraps them together.</p>
 <dl class="section author"><dt>Author</dt><dd>Keith Pedersen (<a href="#" onclick="location.href='mai'+'lto:'+'Kei'+'th'+'.Da'+'vi'+'d.P'+'ed'+'ers'+'en'+'@gm'+'ai'+'l.c'+'om'; return false;">Keith<span style="display: none;">.nosp@m.</span>.Dav<span style="display: none;">.nosp@m.</span>id.Pe<span style="display: none;">.nosp@m.</span>ders<span style="display: none;">.nosp@m.</span>en@gm<span style="display: none;">.nosp@m.</span>ail.<span style="display: none;">.nosp@m.</span>com</a>) </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2017 </dd></dl>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Jul 9 2017 15:38:44 for pqRand by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Dec 30 2017 00:46:48 for pqRand by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.5
 </small></address>

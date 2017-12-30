@@ -18,7 +18,7 @@
     extensions: ["tex2jax.js"],
     jax: ["input/TeX","output/HTML-CSS"],
 });
-</script><script src="../../MathJax-minimal/MathJax.js"></script>
+</script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">pqRand
-   &#160;<span id="projectnumber">0.4.4 (beta)</span>
+   &#160;<span id="projectnumber">0.5.0 (beta)</span>
    </div>
    <div id="projectbrief">The precise quantile random package</div>
   </td>
@@ -72,7 +72,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Friends</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -90,59 +90,72 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>The precise quantile random package <br/>
  <a href="https://github.com/keith-pedersen/pqRand">https://github.com/keith-pedersen/pqRand</a> <br/>
 </p>
-<pre class="fragment">               ____                        _
-.o88o. .o88o. |  _ \    __ _   _ __     __| |
-8    8 8    8 | |_) |  / _` | | '_ \   / _` |
-8    8 8    8 |  _ &lt;  | (_| | | | | | | (_| |
-88oo8' `8oo88 |_| \_\  \__,_| |_| |_|  \__,_|
-8           8
-8           8</pre><dl class="section version"><dt>Version</dt><dd>0.4.3 (beta); June 2017 </dd></dl>
+<pre class="fragment">                     ____                        _
+ .o88o. .o88o. |  _ \    __ _   _ __     __| |
+ 8    8 8    8 | |_) |  / _` | | '_ \   / _` |
+ 8    8 8    8 |  _ &lt;  | (_| | | | | | | (_| |
+ 88oo8' `8oo88 |_| \_\  \__,_| |_| |_|  \__,_|
+ 8           8
+ 8           8</pre><dl class="section version"><dt>Version</dt><dd>0.5.0 (beta); Dec 2017 </dd></dl>
 <dl class="section author"><dt>Author</dt><dd>Keith Pedersen (<a href="#" onclick="location.href='mai'+'lto:'+'Kei'+'th'+'.Da'+'vi'+'d.P'+'ed'+'ers'+'en'+'@gm'+'ai'+'l.c'+'om'; return false;">Keith<span style="display: none;">.nosp@m.</span>.Dav<span style="display: none;">.nosp@m.</span>id.Pe<span style="display: none;">.nosp@m.</span>ders<span style="display: none;">.nosp@m.</span>en@gm<span style="display: none;">.nosp@m.</span>ail.<span style="display: none;">.nosp@m.</span>com</a>) <br/>
  </dd></dl>
 <dl class="section copyright"><dt>Copyright</dt><dd>2017 (see COPYRIGHT_NOTICE)</dd></dl>
 <p>Special thanks to Zack Sullivan, Andrew Webster and Sebastiano Vigna.</p>
 <h2>Description </h2>
-<p>This package is designed to improve sampling the following distributions:</p>
+<p>This package is designed to provide high-precision samples from the following distributions:</p>
 <ul>
+<li><a class="el" href="classpq_rand_1_1uniform.html">uniform</a></li>
 <li><a class="el" href="classpq_rand_1_1normal.html">normal</a></li>
 <li><a class="el" href="classpq_rand_1_1log__normal.html">log-normal</a></li>
 <li><a class="el" href="classpq_rand_1_1exponential.html">exponential</a></li>
 <li><a class="el" href="classpq_rand_1_1weibull.html">weibull</a></li>
 <li><a class="el" href="classpq_rand_1_1pareto.html">pareto</a></li>
+<li><a class="el" href="classpq_rand_1_1logistic.html">logistic</a></li>
+<li><a class="el" href="classpq_rand_1_1log__logistic.html">log-logistic</a></li>
+<li><a class="el" href="classpq_rand_1_1gamma_dist.html">gamma</a></li>
 </ul>
-<p><a class="anchor" id="theory"></a>The principle theory behind <a class="el" href="namespacepq_rand.html" title="The namespace of the pqRand package. ">pqRand</a> is presented in the paper "Conditioning your quantile function," <a href="https://arxiv.org/abs/1704.07949">https://arxiv.org/abs/1704.07949</a> (distributed in doc/). <a class="el" href="namespacepq_rand.html" title="The namespace of the pqRand package. ">pqRand</a> permits a discrete, high-precision sample from a selection of distributions which possess an analytic quantile function (or, as is the case for the normal and log-normal, which can be drawn using a quantile function of an underlying distribution). <a class="el" href="namespacepq_rand.html" title="The namespace of the pqRand package. ">pqRand</a> uses the "quantile flip-flop", as described in the paper. For quality control purposes, the user is "forced" to use the built-in pseudo-random number generator (PRNG), although this can be changed (within limits, see pqRand::PRNG_t).</p>
+<h2>Theory<a class="anchor" id="theory"></a></h2>
+<p>In contrast to many existing implementations of random sampling (e.g. C++11's &lt;<b>random&gt;</b> suite and <b>numpy.random</b>), <a class="el" href="namespacepq_rand.html" title="The namespace of the pqRand package. ">pqRand</a> can deliver the <em> most precise </em> sample possible with floating point arithmetic. This is done via the improved inversion method described in "Reconditioning your quantile function," <a href="https://arxiv.org/abs/1704.07949">https://arxiv.org/abs/1704.07949</a> (also distributed in doc/). This improved method pairs an uneven uniform variate with the "quantile flip-flop". With parallelization in mind, <a class="el" href="namespacepq_rand.html" title="The namespace of the pqRand package. ">pqRand</a>'s default choice of pseudo-random number generator (PRNG) is <a class="el" href="classpq_rand_1_1xorshift1024__star.html">xorshift1024_star</a>, which balances a long period with a compact state (so that each thread can have its own PRNG). Nonetheless, the PRNG can be rather easily changed by redefining <a class="el" href="namespacepq_rand.html#a871f715f9553f5e3faee5b139dd88ad5">pqRand::PRNG_t</a>.</p>
+<p>Many of the distributions distributed with <a class="el" href="namespacepq_rand.html" title="The namespace of the pqRand package. ">pqRand</a> use the improved inversion method (i.e. they have an analytic quantile function). Others, like <a class="el" href="classpq_rand_1_1normal.html">normal</a> and <a class="el" href="classpq_rand_1_1gamma_dist.html">gammaDist</a>, use rejection sampling The latter demonstrates that <a class="el" href="namespacepq_rand.html" title="The namespace of the pqRand package. ">pqRand</a> can generate a maximally precise sample of <em>any</em> distribution (given a sufficiently efficient rejection algorithm).</p>
 <h2>Usage </h2>
 <ol type="1">
-<li>Create a <a class="el" href="classpq_rand_1_1engine.html" title="The random number engine used by all distributions in pqRand. ">pqRand::engine</a> (one per thread) to draw random numbers.<ul>
-<li>"Auto-seed" is highly recommended (see <a class="el" href="classpq_rand_1_1seeded__u_p_r_n_g.html#af8573c4a0f201cf28ab991ef33c25b9a" title="Auto-seed the generator using std::random_device. ">pqRand::engine::Seed</a>).</li>
-<li>For auditing, only the first thread's seed needs to be stored (see <a class="el" href="classpq_rand_1_1xorshift1024__star.html#ab28cf9a4d392ab09e14fdb9bed9a3997" title="Quickly jump the state of the generator forward by  calls. ">pqRand::engine::Jump</a>).</li>
+<li>Create one <a class="el" href="classpq_rand_1_1engine.html">engine</a> (per thread) to draw random numbers.<ul>
+<li>"Auto-seed" is highly recommended (see <a class="el" href="classpq_rand_1_1seeded__u_p_r_n_g.html#af8573c4a0f201cf28ab991ef33c25b9a" title="Auto-seed the generator using std::random_device. ">engine::Seed</a>).</li>
+<li>The seed can be saved via <a class="el" href="classpq_rand_1_1seeded__u_p_r_n_g.html#a022608f64eb41f2f4e1c1d8d26e14ba9" title="Write the state-string of the PRNG to the first line of an ASCII file (e.g. for future reseeding by S...">engine::WriteState</a> be for future audits.</li>
 </ul>
 </li>
 <li>Create as many distributions as you want.</li>
-<li>Call the distributions like functions, passing the engine as the argument.</li>
+<li>Call the distributions like functions, passing the engine as the argument (this mimics the API of the C++11 &lt;<b>random&gt;</b> suite).</li>
 </ol>
-<div class="fragment"><div class="line">gen = <a class="code" href="classpq_rand_1_1engine.html">pqRand::engine</a>(); <span class="comment">// Create the random engine with auto-seed (default constructor)</span></div>
-<div class="line">dist = <a class="code" href="classpq_rand_1_1pareto.html">pqRand::pareto</a>(2); <span class="comment">// Instantiate the distribution</span></div>
+<div class="fragment"><div class="line"><a class="code" href="classpq_rand_1_1engine.html">pqRand::engine</a> gen;  <span class="comment">//........................... Create the random engine with auto-seed (default constructor)</span></div>
+<div class="line">gen.<a class="code" href="classpq_rand_1_1seeded__u_p_r_n_g.html#a022608f64eb41f2f4e1c1d8d26e14ba9">WriteState</a>(<span class="stringliteral">&quot;./mySeed.dat&quot;</span>);  <span class="comment">//............... Save the seed for future auditing</span></div>
+<div class="line"><a class="code" href="classpq_rand_1_1exponential.html">pqRand::exponential</a> expo(2);  <span class="comment">//.................. Instantiate the distribution</span></div>
 <div class="line"></div>
-<div class="line">std::vector&lt;double&gt; sample;</div>
-<div class="line"><span class="keywordflow">for</span>(<span class="keywordtype">size_t</span> i = 0; i &lt; 1024; ++i)</div>
-<div class="line">    sample.push_back(dist(gen)); <span class="comment">// Repeatedly sample from the distribution</span></div>
+<div class="line"><span class="keyword">auto</span> <span class="keyword">const</span> one = expo(gen);  <span class="comment">//................... Sample one variate </span></div>
+<div class="line"><span class="keyword">auto</span> <span class="keyword">const</span> many = expo.GetSample(1e6, gen);  <span class="comment">//... Sample many variates</span></div>
 </div><!-- fragment --><p> For more examples, see "examples/".</p>
-<h2>Python </h2>
-<p>The Python/Cython API is 99% identical to the C++ API, so I have not built a parallel documentation for Python. The two minor differences are due to limitations of the Python language, and are enumerated at the top of "pYqRand.pyx".</p>
+<h2>Python (pYqRand)<a class="anchor" id="pYqRand"></a></h2>
+<p><a class="el" href="index.html#pYqRand">pYqRand</a> is the Python version of <a class="el" href="namespacepq_rand.html" title="The namespace of the pqRand package. ">pqRand</a>. The API is 99% identical to C++, but is independently documented via docstrings (e.g. Python "help") </p>
+<div class="fragment"><div class="line">&gt;&gt;&gt; <span class="keyword">import</span> pYqRand as pqr</div>
+<div class="line">&gt;&gt;&gt; help(pqr)</div>
+<div class="line">&gt;&gt;&gt; help(pqr.engine.GetState)</div>
+<div class="line">&gt;&gt;&gt;</div>
+<div class="line">&gt;&gt;&gt; #<span class="comment">//........................................... Replicate the sample produced by the Usage snippet</span></div>
+<div class="line">&gt;&gt;&gt; gen = pqr.<a class="code" href="classpq_rand_1_1engine.html#a76df0aeca51ed9b92693f43be37905af">engine</a>()</div>
+<div class="line">&gt;&gt;&gt; gen.Seed_FromFile(<span class="stringliteral">&quot;./mySeed.dat&quot;</span>)  #<span class="comment">//........ Re-seed from the stored state</span></div>
+<div class="line">&gt;&gt;&gt; expo = pqr.exponential(2.)</div>
+<div class="line">&gt;&gt;&gt; </div>
+<div class="line">&gt;&gt;&gt; one = expo(gen)</div>
+<div class="line">&gt;&gt;&gt; many = expo.GetSample(1e6, gen)</div>
+</div><!-- fragment --><p> The minor differences (due to limitations of the Python language) are enumerated at the top of <a class="el" href="index.html#pYqRand">pYqRand</a>'s docstring. *</p>
 <h2>Features to consider in future versions </h2>
 <ul>
-<li>Some rejection sampling algorithms (e.g. gamma).</li>
-<li>If a regular sample of \( U \) produces numbers with \( weight = 1 \), supply a sample of \( U \) from the tail \((u \to 0)\), given a supplied \( weight \ll 1 \). *</li>
-</ul>
-<h2>Known bugs </h2>
-<ul>
-<li>None at this time. </li>
+<li>If a regular sample of \( U \) produces numbers with \( weight = 1 \), supply a sample of \( U \) from the tail \((u \to 0)\), given a supplied \( weight \ll 1 \). </li>
 </ul>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Jul 9 2017 15:38:44 for pqRand by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Dec 30 2017 00:46:48 for pqRand by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.5
 </small></address>

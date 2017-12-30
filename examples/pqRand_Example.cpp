@@ -93,7 +93,8 @@ int main()
 		
 		printf("\n Jump test\n");
 		printf("--------------------------------------------------------------------------------\n");
-		printf("    3 calls, then jump all generators to the same state, so their back in sync\n\n");
+		printf("    From the same state, use Jump() to create 5 orthogonal generators, call the generator 3 times, \n");
+		printf("    then jump all generators to the same state, so their back in sync\n\n");
 		
 		for(size_t i = 0; i < 3; ++i)
 		{
@@ -108,7 +109,8 @@ int main()
 		printf("jump-sync ");
 		for(size_t i = 0; i < engineList.size(); ++i)
 		{
-			engineList[i].Jump(engineList.size() - i - 1);
+			for(size_t jump = i; jump < engineList.size(); ++jump)
+				engineList[i].Jump();
 			printf("	 %20lu", engineList[i]());			
 		}
 		printf("\n\n");
@@ -124,8 +126,8 @@ int main()
 	// To get (0., 1.] from pqRand::engine, we use the function U_Q(). 
 	// HalfU_Q() gives a number in (0, 0.5] (for use in certain flip-flops).
 	printf("gen():          %lu\n", gen());
-	printf("gen.U_Q():      %.17e\n", gen.U_Q());
-	printf("gen.HalfU_Q():  %.17e\n", gen.HalfU_Q());
+	printf("gen.U_Q():      %.17e\n", gen.U_uneven());
+	printf("gen.HalfU_Q():  %.17e\n", gen.HalfU_uneven());
 	printf("gen.RandBool():");
 	for(size_t i = 0; i < 15; ++i)
 		printf("  %d", gen.RandBool());
