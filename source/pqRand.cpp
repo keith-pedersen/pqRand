@@ -336,8 +336,11 @@ void pqRand::engine::WriteState_ToStream(std::ostream& stream)
 void pqRand::engine::DefaultInitializeBitCache()
 {
 	// By setting cacheMask to this value, we ensure that the next call to RandBool()
-	// will induce the bitCache to be replenished and reset. We defer this work till it's needed.
+	// will induce the bitCache to be replenished and reset.
 	cacheMask = replenishBitCache;
+	// Even though we will replenish the bit cache the first time access is attempted, 
+	// null initialize the bit cache to prevent spurious valgrind complaints.
+	bitCache = 0;
 }
 
 ////////////////////////////////////////////////////////////////////////
