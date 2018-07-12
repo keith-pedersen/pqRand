@@ -393,10 +393,23 @@ namespace pqRand //! @brief The namespace of the pqRand package
 			*/
 			void Seed_FromFile(std::string const& filePath);
 			
+			/*! @brief \em Always reuse the state-string stored as the first line of an 
+			 *  ASCII or UTF-8 file (e.g. from WriteState()). 
+			 * 
+			 *  If the file cannot be opened, do default Seed(), then try to 
+			 *  WriteState() to the file. This is useful for simulations where
+			 *  a new seed is generated the first time the program is run, 
+			 *  while all subsequent runs reuse the original seed.
+			 *  
+			 *  @param filePath 
+			 *  The full path to the ASCII file containing the state-string (on the first line).
+			*/
+			void Seed_Reuse(std::string const& filePath);
+			
 			/*! @brief Seed the PRNG from a state-string 
 			 *  (e.g. from GetState()).
 			 * 
-			  *  \note A user-created, manual seed should mimic the minimal state-string format of Seed().
+			 *  \note A user-created, manual seed should mimic the minimal state-string format of Seed().
 			 * 
 			 *  \warning If prng_t has an full state-string which is longer than the minimal format (e.g. xorshift2014_star)
 			 *  a user-created, manual seed \em should \em not try to supply this extra information.

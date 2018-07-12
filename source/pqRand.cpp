@@ -82,6 +82,25 @@ void pqRand::seeded_uPRNG<prng_t>::Seed_FromFile(std::string const& filePath)
 ////////////////////////////////////////////////////////////////////////
 
 template<class prng_t>
+void pqRand::seeded_uPRNG<prng_t>::Seed_Reuse(std::string const& filePath)
+{
+	std::ifstream file(filePath.c_str(), std::ios::in);
+	
+	if(not file.is_open())
+	{
+		Seed();
+		WriteState(filePath);
+	}
+	else
+	{
+		this->Seed_FromStream(file);
+		file.close();
+	}
+}
+
+////////////////////////////////////////////////////////////////////////
+
+template<class prng_t>
 void pqRand::seeded_uPRNG<prng_t>::Seed_FromString(std::string const& seedString)
 {
 	std::stringstream stream(seedString);
