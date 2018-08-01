@@ -253,8 +253,8 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include "stdexcept"
 #include "typeinfo"
 #include <vector>
-#include "pqRand/pqRand.hpp"
-#include "pqRand/distributions.hpp"
+#include "pqRand.hpp"
+#include "distributions.hpp"
 #include "stdio.h"
 #include "stdlib.h"
 #include "numpy/arrayobject.h"

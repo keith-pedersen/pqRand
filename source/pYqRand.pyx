@@ -77,7 +77,7 @@ DEF PRNG_CAN_JUMP = 1
 # The second will merely remove the Jump() machinery from the first definition.
 IF PRNG_CAN_JUMP:
 
-	cdef extern from "pqRand/pqRand.hpp" namespace "pqRand":
+	cdef extern from "pqRand.hpp" namespace "pqRand":
 		
 		# To allow the objects to have the same name in Python and C++,
 		# we declare the C++ classes as name_c, followed by the full C++ name in quotes.
@@ -117,7 +117,7 @@ IF PRNG_CAN_JUMP:
 			vector[string] GetState_JumpVec(const size_t)
 			
 ELSE:
-	cdef extern from "pqRand/pqRand.hpp" namespace "pqRand":
+	cdef extern from "pqRand.hpp" namespace "pqRand":
 		
 		cdef cppclass engine_c "pqRand::engine":
 			
@@ -146,7 +146,7 @@ ELSE:
 # declare distributions from distributions.hpp
 ########################################################################
 		
-cdef extern from "pqRand/distributions.hpp" namespace "pqRand":
+cdef extern from "distributions.hpp" namespace "pqRand":
 	
 	########################################################################
 	# First declare the polymorphic interface classes
