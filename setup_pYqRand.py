@@ -14,24 +14,50 @@
 # This allows me to easily build against and link to the C++ libraries, 
 # and to "import module" from any running Python shell
 
+from sys import version_info
 from distutils.core import setup
 from distutils.extension import Extension
-from Cython.Distutils import build_ext
 
-# Tihis build script leverages the pre-compiled pqRand library (libpqr.so), 
-# a library which must be accessible from anywhere you intend to use pYqRand.
-# This keeps the C-compilation of pYqRand.pyx to a minimal (so the Python module is smaller),
-# and allows different compile flags to be used for the Cython build.
-setup(
-	name = "pYqRand",
-	ext_modules=[
-		Extension('pYqRand', # <=This name must be the same as *.pYx file
-			sources=['source/pYqRand.pyx'], # But be careful, *.pYx is automatically converted to *.cpp (overwriting ANY existing file without asking)
-			include_dirs = ['/home/keith/local/include/'],
-			libraries = ['pqr'], # We must build against libpqr.so
-			library_dirs = ['/home/keith/local/lib/'],
-			extra_compile_args=['-std=c++11', '-msse4', '-mavx2', '-mfpmath=sse', '-mieee-fp', '-march=native', '-ftree-vectorize'], # -O2 is default
-			language='c++')
-],
-  cmdclass = {'build_ext': build_ext}
-)
+flags = ['-std=c++11', '-mfpmath=sse', '-mieee-fp', '-march=native', '-ftree-vectorize'] # -O2 is default
+
+from subprocess import check_output
+# Add CPU specific flags to accelerate vector math
+extraFlags = check_output(["sh", "getSSE_AVX.sh"]).split()
+
+# convert 'bytes' to string in python3, and 
+if (version_info > (3, 0)):
+	for i in range(len(extraFlags)):	
+		extraFlags[i] = extraFlags[i].decode()		
+		
+flags += extraFlags
+
+try:
+	from Cython.Distutils import build_ext
+
+	# This build script leverages the pre-compiled pqRand library (libpqr.so), 
+	# a library which must be accessible from anywhere you intend to use pYqRand.
+	# This keeps the C-compilation of pYqRand.pyx to a minimal (so the Python module is smaller),
+	# and allows different compile flags to be used for the Cython build.
+	setup(
+		name = "pYqRand",
+		ext_modules=[
+			Extension('pYqRand', # <=This name must be the same as *.pYx file
+				sources=['source/pYqRand.pyx'], # But be careful, *.pYx is automatically converted to *.cpp (overwriting ANY existing file without asking)
+				include_dirs = ['./include'],
+				libraries = ['pqr'], # We must build against libpqr.so
+				library_dirs = ['./lib'],
+				extra_compile_args=flags,
+						  language='c++')
+				 ], cmdclass = {'build_ext': build_ext})
+except ImportError:
+	setup(
+		name = "pYqRand",
+		ext_modules=[
+			Extension('pYqRand', # <=This name must be the same as *.pYx file
+				sources=['source/pYqRand.cpp'], # But be careful, *.pYx is automatically converted to *.cpp (overwriting ANY existing file without asking)
+				include_dirs = ['./include'],
+				libraries = ['pqr'], # We must build against libpqr.so
+				library_dirs = ['./lib'],
+				extra_compile_args=flags,
+						  language='c++')])
+
