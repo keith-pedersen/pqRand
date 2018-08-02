@@ -156,6 +156,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4b3cb1ced0da76d3514fb8a9f194e8d8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1seeded__u_p_r_n_g.html#a4b3cb1ced0da76d3514fb8a9f194e8d8">Seed_FromFile</a> (std::string const &amp;filePath)</td></tr>
 <tr class="memdesc:a4b3cb1ced0da76d3514fb8a9f194e8d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Seed the PRNG from a state-string stored as the first line of an ASCII or UTF-8 file (e.g. from <a class="el" href="classpq_rand_1_1seeded__u_p_r_n_g.html#a022608f64eb41f2f4e1c1d8d26e14ba9" title="Write the state-string of the PRNG to the first line of an ASCII file (e.g. for future reseeding by S...">WriteState()</a>).  <a href="#a4b3cb1ced0da76d3514fb8a9f194e8d8">More...</a><br/></td></tr>
 <tr class="separator:a4b3cb1ced0da76d3514fb8a9f194e8d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a1aa7f9557a1a75e1925c03595afb12"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1seeded__u_p_r_n_g.html#a2a1aa7f9557a1a75e1925c03595afb12">Seed_Reuse</a> (std::string const &amp;filePath)</td></tr>
+<tr class="memdesc:a2a1aa7f9557a1a75e1925c03595afb12"><td class="mdescLeft">&#160;</td><td class="mdescRight"><em>Always</em> reuse the state-string stored as the first line of an ASCII or UTF-8 file (e.g. from <a class="el" href="classpq_rand_1_1seeded__u_p_r_n_g.html#a022608f64eb41f2f4e1c1d8d26e14ba9" title="Write the state-string of the PRNG to the first line of an ASCII file (e.g. for future reseeding by S...">WriteState()</a>).  <a href="#a2a1aa7f9557a1a75e1925c03595afb12">More...</a><br/></td></tr>
+<tr class="separator:a2a1aa7f9557a1a75e1925c03595afb12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7081d32de272c0009af8348e4686c6e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classpq_rand_1_1seeded__u_p_r_n_g.html#a7081d32de272c0009af8348e4686c6e3">Seed_FromString</a> (std::string const &amp;stateString)</td></tr>
 <tr class="memdesc:a7081d32de272c0009af8348e4686c6e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Seed the PRNG from a state-string (e.g. from <a class="el" href="classpq_rand_1_1seeded__u_p_r_n_g.html#af2a5c09490b4c5c372cfcdd6abdfa38b" title="Return the full ASCII state-string of the PRNG (e.g. for future reseeding by Seed_FromString()). ">GetState()</a>).  <a href="#a7081d32de272c0009af8348e4686c6e3">More...</a><br/></td></tr>
 <tr class="separator:a7081d32de272c0009af8348e4686c6e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -525,6 +528,39 @@ static size_t constexpr&#160;</td><td class="memItemRight" valign="bottom"><a cl
 
 </div>
 </div>
+<a class="anchor" id="a2a1aa7f9557a1a75e1925c03595afb12"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classpq_rand_1_1seeded__u_p_r_n_g.html">pqRand::seeded_uPRNG</a>&lt; <a class="el" href="namespacepq_rand.html#a871f715f9553f5e3faee5b139dd88ad5">PRNG_t</a>  &gt;::Seed_Reuse </td>
+          <td>(</td>
+          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramname"><em>filePath</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><em>Always</em> reuse the state-string stored as the first line of an ASCII or UTF-8 file (e.g. from <a class="el" href="classpq_rand_1_1seeded__u_p_r_n_g.html#a022608f64eb41f2f4e1c1d8d26e14ba9" title="Write the state-string of the PRNG to the first line of an ASCII file (e.g. for future reseeding by S...">WriteState()</a>). </p>
+<p>If the file cannot be opened, do default <a class="el" href="classpq_rand_1_1seeded__u_p_r_n_g.html#af8573c4a0f201cf28ab991ef33c25b9a" title="Auto-seed the generator using std::random_device. ">Seed()</a>, then try to <a class="el" href="classpq_rand_1_1seeded__u_p_r_n_g.html#a022608f64eb41f2f4e1c1d8d26e14ba9" title="Write the state-string of the PRNG to the first line of an ASCII file (e.g. for future reseeding by S...">WriteState()</a> to the file. This is useful for simulations where a new seed is generated the first time the program is run, while all subsequent runs reuse the original seed.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filePath</td><td>The full path to the ASCII file containing the state-string (on the first line). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="a962a6795adef82627de233fd68eefd47"></a>
 <div class="memitem">
 <div class="memproto">
@@ -623,7 +659,7 @@ static size_t constexpr&#160;</td><td class="memItemRight" valign="bottom"><a cl
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Dec 30 2017 00:46:48 for pqRand by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Aug 2 2018 11:49:48 for pqRand by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.5
 </small></address>

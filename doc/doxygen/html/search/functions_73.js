@@ -5,6 +5,7 @@ var searchData=
   ['seed_5ffromfile',['Seed_FromFile',['../classpq_rand_1_1seeded__u_p_r_n_g.html#a4b3cb1ced0da76d3514fb8a9f194e8d8',1,'pqRand::seeded_uPRNG']]],
   ['seed_5ffromstream',['Seed_FromStream',['../classpq_rand_1_1seeded__u_p_r_n_g.html#a6bd04f996446ff5fc7487d5e9fe4bdf8',1,'pqRand::seeded_uPRNG']]],
   ['seed_5ffromstring',['Seed_FromString',['../classpq_rand_1_1seeded__u_p_r_n_g.html#a7081d32de272c0009af8348e4686c6e3',1,'pqRand::seeded_uPRNG']]],
+  ['seed_5freuse',['Seed_Reuse',['../classpq_rand_1_1seeded__u_p_r_n_g.html#a2a1aa7f9557a1a75e1925c03595afb12',1,'pqRand::seeded_uPRNG']]],
   ['seeded_5fuprng',['seeded_uPRNG',['../classpq_rand_1_1seeded__u_p_r_n_g.html#af62d4d94822663b8a86a29e9a76bc339',1,'pqRand::seeded_uPRNG']]],
   ['sigma',['Sigma',['../classpq_rand_1_1normal.html#ac9579f80f6cb684ee2488920f82328bb',1,'pqRand::normal']]]
 ];
