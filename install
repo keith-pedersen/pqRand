@@ -3,7 +3,5 @@
 # You will need to install Cython
 #		sudo yum install Cython
 make all
-rm source/pYqRand.cpp
-python2 setup_pYqRand.py build_ext --inplace
-rm source/pYqRand.cpp
-python3 setup_pYqRand.py build_ext --inplace
+python3 setup_pYqRand.py build_ext --build-lib=./lib
+python2 setup_pYqRand.py build_ext --build-lib=./lib
