@@ -1,5 +1,0 @@
-var searchData=
-[
-  ['q_5flarge',['Q_large',['../classpq_rand_1_1distribution_q2.html#a6c3c7eb0a908854096d3ca50c7adeb10',1,'pqRand::distributionQ2::Q_large()'],['../classpq_rand_1_1weibull.html#ad2896315530435900a3ca214f761beaa',1,'pqRand::weibull::Q_large()'],['../classpq_rand_1_1exponential.html#aa5ea6262b5277722a09571fa4f1d819a',1,'pqRand::exponential::Q_large()'],['../classpq_rand_1_1logistic.html#aee85e10614b786ef105246952c0866dd',1,'pqRand::logistic::Q_large()'],['../classpq_rand_1_1log__logistic.html#aa914dac7457c27a49fed26bb6370668a',1,'pqRand::log_logistic::Q_large()']]],
-  ['q_5fsmall',['Q_small',['../classpq_rand_1_1distribution_q2.html#a3e457a10d1ff7ef75eecfa002bbc5a54',1,'pqRand::distributionQ2::Q_small()'],['../classpq_rand_1_1weibull.html#a4671872e301290e592344c5dddaff7b5',1,'pqRand::weibull::Q_small()'],['../classpq_rand_1_1exponential.html#a6af3a6dc790d57a0c4d3e654e7004e1a',1,'pqRand::exponential::Q_small()'],['../classpq_rand_1_1logistic.html#a531333edee55d8038e9c846b6945481f',1,'pqRand::logistic::Q_small()'],['../classpq_rand_1_1log__logistic.html#a55f8fe79f0a7a4f2499e3efdc0506311',1,'pqRand::log_logistic::Q_small()']]]
-];
