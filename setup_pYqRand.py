@@ -1,5 +1,5 @@
 # run this script via
-# 		$ python3 setup_pYqRand.py build_ext --inplace
+# 		$ python3 setup_pYqRand.py build_ext --build-lib=./lib
 # (or via command python2 if you want a python2 library).
 # This creates a shared library pYqRand.so, which can be imported as a python module
 # 		>>> impoprt pYqRand as pqr

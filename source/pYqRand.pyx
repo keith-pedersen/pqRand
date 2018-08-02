@@ -101,6 +101,7 @@ IF PRNG_CAN_JUMP:
 			# otherwise I think that Cython is interpreting "const" as the name of the argument.
 			void Seed_FromFile(const string&) except +
 			void Seed_FromString(const string&) except +
+			void Seed_Reuse(const string&) except +
 			
 			void WriteState(const string&) except +
 			
@@ -368,27 +369,43 @@ cdef class engine:
 		return deref(self.c_engine)()
 		
 	def Seed(self):
-		'''Auto-seed the PRNG from a good source of entropy (depending on the system, 
+		'''
+		Auto-seed the PRNG from a good source of entropy (depending on the system, 
 		either a hardware RNG or a cryptographic-PRNG seeded from environmental noise).'''
 		self.c_engine.Seed()
 		
 	def Seed_FromFile(self, str filePath):
-		'''Seed the PRNG from a file, interpreting the file's first line as a valid state-string
+		'''
+		Seed the PRNG from a file, interpreting the file's first line as a valid state-string
 		
 		Args:
-			filePath (str): the location of the seed file
+			filePath (str): the full path of the seed file
 		
 		Raises:
 			OSError if the file cannot be found or opened.
 			RuntimeError if the state-string is in the wrong format (see help(pqr.engine.GetState)).'''
 		self.c_engine.Seed_FromFile(_str2string(filePath))
 		
+	def Seed_Reuse(self, str state):
+		'''
+		Seed the PRNG from a file, interpreting the file's first line as a valid state-string.
+		If the file is not found, a default Seed() is conducted, and the resulting
+		state-string is written to the file.
+		
+		Raises:
+			OSError if the file cannot be found or opened.
+			RuntimeError if the state-string is in the wrong format (see help(pqr.engine.GetState))
+		
+		Args:
+			filePath (str): the full path of the seed file'''
+		self.c_engine.Seed_Reuse(_str2string(state))
+		
 	def Seed_FromString(self, str state):
 		'''
 		Seed the PRNG from the supplied state (e.g. one obtained by calling gen.GetState()).
 		
 		Raises:
-			RuntimeError if the state-string is in the wrong format
+			RuntimeError if the state-string is in the wrong format (see help(pqr.engine.GetState))
 		
 		Args:
 			state (str): a specially formatted state-string (see engine.GetState())
